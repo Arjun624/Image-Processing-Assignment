@@ -3,15 +3,15 @@ package model;
 //methods to edit an image
 public interface ImageEditor {
 
-   Image flipVertically(Image image);
+   Image flipVertically();
 
-   Image flipHorizontally(Image image);
+   Image flipHorizontally();
 
-   Image showR(Image image);
+   Image showR();
 
-   Image showG(Image image);
+   Image showG();
 
-   Image showB(Image image);
+   Image showB();
 
    Image adjustBrightness(Image image);
 
