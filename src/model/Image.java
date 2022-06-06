@@ -10,12 +10,40 @@ public class Image implements ImageEditor{
 
   @Override
   public Image flipVertically() {
-    return null;
+    Image newImage = this;
+    int middle = this.imagePixels.length/2;
+    Pixel[][] pixels = newImage.imagePixels;
+
+    for(int i = 0; i< imagePixels.length; i++){
+      for(int j = 0; i<imagePixels[0].length; j++){
+        if(pixels[i][j].x<middle){
+          pixels[i][j].x=middle+(middle-pixels[i][j].x);
+        } else if(pixels[i][j].x>middle){
+          pixels[i][j].x=middle-(pixels[i][j].x-middle);
+        }
+      }
+    }
+
+    return newImage;
   }
 
   @Override
   public Image flipHorizontally() {
-    return null;
+    Image newImage = this;
+    int middle = this.imagePixels[0].length/2;
+    Pixel[][] pixels = newImage.imagePixels;
+
+    for(int i = 0; i< imagePixels.length; i++){
+      for(int j = 0; i<imagePixels[0].length; j++){
+        if(pixels[i][j].y<middle){
+          pixels[i][j].y=middle+(middle-pixels[i][j].y);
+        } else if(pixels[i][j].y>middle){
+          pixels[i][j].y=middle-(pixels[i][j].y-middle);
+        }
+      }
+    }
+
+    return newImage;
   }
 
   @Override
