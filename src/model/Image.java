@@ -5,7 +5,7 @@ package model;
  */
 public class Image implements ImageEditor{
 
-  Pixel[][] imagePixels;
+  public Pixel[][] imagePixels;
 
   /**
    * Constructor for the Image class. Creates a new image with the inputted 2d array of pixels.

@@ -4,8 +4,6 @@ package model;
  * Represents a singular pixel found in an image.
  */
 public class Pixel {
-  protected int x;
-  protected int y;
   protected int r;
   protected int g;
   protected int b;
@@ -26,6 +24,10 @@ public class Pixel {
     if (r < 0 || r > 255 | g < 0 || g > 255 || b < 0 || b > 255){
       throw new IllegalArgumentException("color invalid");
     }
+
+    this.r = r;
+    this.g = g;
+    this.b = b;
   }
 
 }
