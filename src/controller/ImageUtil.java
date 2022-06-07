@@ -64,7 +64,7 @@ public class ImageUtil {
   }
 
   //updated readPPM idea
-  public static Image readPPM2(String filename){
+  public static Image usePPM(String filename){
     Scanner sc;
 
     try {
