@@ -12,6 +12,9 @@ public class Image implements ImageEditor{
    * @param imagePixels is the 2d array of pixels that represents the image.
    */
   public Image(Pixel[][] imagePixels){
+    if(imagePixels == null){
+      throw new IllegalArgumentException("Image pixels cannot be null");
+    }
     this.imagePixels = imagePixels;
   }
 
