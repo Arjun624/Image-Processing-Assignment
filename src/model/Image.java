@@ -52,7 +52,7 @@ public class Image implements ImageEditor{
     for (int row = 0; row < this.imagePixels.length; row++) {
       for (int col = 0; col < this.imagePixels[0].length; col++) {
         int red = this.imagePixels[row][col].r;
-        newImagePixels[row][col]  = new Pixel(col,row,red,red,red);
+        newImagePixels[row][col]  = new Pixel(red,red,red);
       }
     }
     return new Image(newImagePixels);
@@ -64,7 +64,7 @@ public class Image implements ImageEditor{
     for (int row = 0; row < this.imagePixels.length; row++) {
       for (int col = 0; col < this.imagePixels[0].length; col++) {
         int green = this.imagePixels[row][col].g;
-        newImagePixels[row][col]  = new Pixel(col,row,green,green,green);
+        newImagePixels[row][col]  = new Pixel(green,green,green);
       }
     }
     return new Image(newImagePixels);
@@ -76,7 +76,7 @@ public class Image implements ImageEditor{
     for (int row = 0; row < this.imagePixels.length; row++) {
       for (int col = 0; col < this.imagePixels[0].length; col++) {
         int blue = this.imagePixels[row][col].b;
-        newImagePixels[row][col]  = new Pixel(col,row,blue,blue,blue);
+        newImagePixels[row][col]  = new Pixel(blue,blue,blue);
       }
     }
     return new Image(newImagePixels);
@@ -108,7 +108,7 @@ public class Image implements ImageEditor{
         if (newBlue < 0) {
           newBlue = 0;
         }
-        newImagePixels[row][col] = new Pixel(col, row, newRed, newGreen, newBlue);
+        newImagePixels[row][col] = new Pixel(newRed, newGreen, newBlue);
       }
     }
     return new Image(newImagePixels);
