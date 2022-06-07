@@ -16,75 +16,63 @@ public class Image implements ImageEditor{
   }
 
   @Override
-  public Image flipVertically() {
+  public void flipVertically() {
 
-    Pixel[][] newImagePixels = new Pixel[this.imagePixels.length][this.imagePixels[0].length];
     int yLength = imagePixels.length-1;
 
     //System.arraycopy(pixels[yLength - row], 0, pixels[row], 0, imagePixels[0].length);
     for(int row = 0; row< imagePixels.length; row++){
       for(int col = 0; col<imagePixels[0].length; col++){
-        newImagePixels[row][col]=imagePixels[yLength-row][col];
+        imagePixels[row][col]=imagePixels[yLength-row][col];
       }
     }
 
-    return new Image(newImagePixels);
   }
 
   @Override
-  public Image flipHorizontally() {
+  public void flipHorizontally() {
 
-    Pixel[][] newImagePixels = new Pixel[this.imagePixels.length][this.imagePixels[0].length];
     int xLength = imagePixels[0].length-1;
 
     for(int row = 0; row< imagePixels.length; row++){
       for(int col = 0; col<imagePixels[0].length; col++){
-        newImagePixels[row][col]=imagePixels[row][xLength-col];
+        imagePixels[row][col]=imagePixels[row][xLength-col];
       }
     }
-
-    return new Image(newImagePixels);
   }
 
   @Override
-  public Image showR() {
-    Pixel[][] newImagePixels = new Pixel[this.imagePixels.length][this.imagePixels[0].length];
+  public void redGreyscale() {
     for (int row = 0; row < this.imagePixels.length; row++) {
       for (int col = 0; col < this.imagePixels[0].length; col++) {
         int red = this.imagePixels[row][col].r;
-        newImagePixels[row][col]  = new Pixel(red,red,red);
+        imagePixels[row][col]  = new Pixel(red,red,red);
       }
     }
-    return new Image(newImagePixels);
   }
 
   @Override
-  public Image showG() {
-    Pixel[][] newImagePixels = new Pixel[this.imagePixels.length][this.imagePixels[0].length];
+  public void greenGreyscale() {
     for (int row = 0; row < this.imagePixels.length; row++) {
       for (int col = 0; col < this.imagePixels[0].length; col++) {
         int green = this.imagePixels[row][col].g;
-        newImagePixels[row][col]  = new Pixel(green,green,green);
+        imagePixels[row][col]  = new Pixel(green,green,green);
       }
     }
-    return new Image(newImagePixels);
   }
 
   @Override
-  public Image showB() {
-    Pixel[][] newImagePixels = new Pixel[this.imagePixels.length][this.imagePixels[0].length];
+  public void blueGreyscale() {
     for (int row = 0; row < this.imagePixels.length; row++) {
       for (int col = 0; col < this.imagePixels[0].length; col++) {
         int blue = this.imagePixels[row][col].b;
-        newImagePixels[row][col]  = new Pixel(blue,blue,blue);
+        imagePixels[row][col]  = new Pixel(blue,blue,blue);
       }
     }
-    return new Image(newImagePixels);
   }
 
   @Override
-  public Image adjustBrightness(int increment) {
-    Pixel[][] newImagePixels = new Pixel[this.imagePixels.length][this.imagePixels[0].length];
+  public void adjustBrightness(int increment) {
     for(int row = 0; row< imagePixels.length; row++) {
       for (int col = 0; col < imagePixels[0].length; col++) {
         int newRed =  this.imagePixels[row][col].r + increment;
@@ -108,31 +96,39 @@ public class Image implements ImageEditor{
         if (newBlue < 0) {
           newBlue = 0;
         }
-        newImagePixels[row][col] = new Pixel(newRed, newGreen, newBlue);
+        imagePixels[row][col] = new Pixel(newRed, newGreen, newBlue);
       }
     }
-    return new Image(newImagePixels);
   }
 
   @Override
-  public Image showLuma() {
-    //0.2126*R + 0.7152*G + 0.0722*B
-    return null;
+  public void lumaGreyscale() {
+    for (int row = 0; row < this.imagePixels.length; row++) {
+      for (int col = 0; col < this.imagePixels[0].length; col++) {
+        int luma= this.imagePixels[row][col].findLuma();
+        imagePixels[row][col]  = new Pixel(luma,luma,luma);
+      }
+    }
   }
 
   @Override
-  public Image showIntensity() {
-    //average of r,g,b
-    return null;
+  public void intensityGreyscale() {
+    for (int row = 0; row < this.imagePixels.length; row++) {
+      for (int col = 0; col < this.imagePixels[0].length; col++) {
+        int intensity= this.imagePixels[row][col].findIntensity();
+        imagePixels[row][col]  = new Pixel(intensity,intensity,intensity);
+      }
+    }
   }
 
   @Override
-  public Image showValue() {
-    //max of r,g,b
-    return null;
+  public void valueGreyscale() {
+    for (int row = 0; row < this.imagePixels.length; row++) {
+      for (int col = 0; col < this.imagePixels[0].length; col++) {
+        int value= this.imagePixels[row][col].findValue();
+        imagePixels[row][col]  = new Pixel(value,value,value);
+      }
+    }
   }
-
-  //Grey scale methods?
-
 
 }

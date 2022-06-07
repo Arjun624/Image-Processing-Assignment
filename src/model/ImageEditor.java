@@ -5,23 +5,27 @@ package model;
  */
 public interface ImageEditor {
 
-   Image flipVertically();
+   void flipVertically();
 
-   Image flipHorizontally();
+   void flipHorizontally();
 
-   Image showR();
+   void redGreyscale();
 
-   Image showG();
+   void greenGreyscale();
 
-   Image showB();
+   void blueGreyscale();
 
-   Image adjustBrightness(int increment);
+   void lumaGreyscale();
 
-   Image showLuma();
+   void intensityGreyscale();
 
-   Image showIntensity();
+   void valueGreyscale();
 
-   Image showValue();
+
+   void adjustBrightness(int increment);
+
+
+
 
 
 }

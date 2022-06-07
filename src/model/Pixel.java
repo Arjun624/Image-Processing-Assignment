@@ -26,4 +26,17 @@ public class Pixel {
 
   }
 
+  protected int findValue(){
+    return Math.max(Math.max(this.r, this.g), this.b);
+  }
+
+  protected int findIntensity(){
+    return (this.r + this.g + this.b) / 3;
+  }
+
+  protected int findLuma(){
+    return (int) ((0.2126 * this.r) + (0.7152 * this.g) + (0.0722 * this.b));
+  }
+
+
 }
