@@ -13,7 +13,7 @@ public interface ImageEditor {
 
    Image showB();
 
-   Image adjustBrightness(Image image);
+   Image adjustBrightness(int increment);
 
    Image showLuma();
 

@@ -10,17 +10,14 @@ public class Image implements ImageEditor{
 
   @Override
   public Image flipVertically() {
-    Image newImage = this;
-    int middle = this.imagePixels.length/2;
-    Pixel[][] pixels = newImage.imagePixels;
 
-    for(int i = 0; i< imagePixels.length; i++){
-      for(int j = 0; i<imagePixels[0].length; j++){
-        if(pixels[i][j].x<middle){
-          pixels[i][j].x=middle+(middle-pixels[i][j].x);
-        } else if(pixels[i][j].x>middle){
-          pixels[i][j].x=middle-(pixels[i][j].x-middle);
-        }
+    Image newImage = this;
+    Pixel[][] pixels = newImage.imagePixels;
+    int yLength = imagePixels.length-1;
+
+    for(int row = 0; row< imagePixels.length; row++){
+      for(int col = 0; col<imagePixels[0].length; col++){
+        pixels[row][col]=pixels[yLength-row][col];
       }
     }
 
@@ -29,17 +26,14 @@ public class Image implements ImageEditor{
 
   @Override
   public Image flipHorizontally() {
-    Image newImage = this;
-    int middle = this.imagePixels[0].length/2;
-    Pixel[][] pixels = newImage.imagePixels;
 
-    for(int i = 0; i< imagePixels.length; i++){
-      for(int j = 0; i<imagePixels[0].length; j++){
-        if(pixels[i][j].y<middle){
-          pixels[i][j].y=middle+(middle-pixels[i][j].y);
-        } else if(pixels[i][j].y>middle){
-          pixels[i][j].y=middle-(pixels[i][j].y-middle);
-        }
+    Image newImage = this;
+    Pixel[][] pixels = newImage.imagePixels;
+    int xLength = imagePixels[0].length-1;
+
+    for(int row = 0; row< imagePixels.length; row++){
+      for(int col = 0; col<imagePixels[0].length; col++){
+        pixels[row][col]=pixels[row][xLength-col];
       }
     }
 
@@ -49,10 +43,10 @@ public class Image implements ImageEditor{
   @Override
   public Image showR() {
     Pixel[][] newImage = new Pixel[this.imagePixels.length][this.imagePixels[0].length];
-    for (int i = 0; i < this.imagePixels.length; i++) {
-      for (int j = 0; j < this.imagePixels[0].length; j++) {
-        int red = this.imagePixels[i][j].r;
-        newImage[i][j]  = new Pixel(i,j,red,red,red);
+    for (int row = 0; row < this.imagePixels.length; row++) {
+      for (int col = 0; col < this.imagePixels[0].length; col++) {
+        int red = this.imagePixels[row][col].r;
+        newImage[row][col]  = new Pixel(col,row,red,red,red);
       }
     }
     return new Image(newImage);
@@ -61,10 +55,10 @@ public class Image implements ImageEditor{
   @Override
   public Image showG() {
     Pixel[][] newImage = new Pixel[this.imagePixels.length][this.imagePixels[0].length];
-    for (int i = 0; i < this.imagePixels.length; i++) {
-      for (int j = 0; j < this.imagePixels[0].length; j++) {
-        int green = this.imagePixels[i][j].g;
-        newImage[i][j]  = new Pixel(i,j,green,green,green);
+    for (int row = 0; row < this.imagePixels.length; row++) {
+      for (int col = 0; col < this.imagePixels[0].length; col++) {
+        int green = this.imagePixels[row][col].g;
+        newImage[row][col]  = new Pixel(col,row,green,green,green);
       }
     }
     return new Image(newImage);
@@ -73,17 +67,17 @@ public class Image implements ImageEditor{
   @Override
   public Image showB() {
     Pixel[][] newImage = new Pixel[this.imagePixels.length][this.imagePixels[0].length];
-    for (int i = 0; i < this.imagePixels.length; i++) {
-      for (int j = 0; j < this.imagePixels[0].length; j++) {
-        int blue = this.imagePixels[i][j].b;
-        newImage[i][j]  = new Pixel(i,j,blue,blue,blue);
+    for (int row = 0; row < this.imagePixels.length; row++) {
+      for (int col = 0; col < this.imagePixels[0].length; col++) {
+        int blue = this.imagePixels[row][col].b;
+        newImage[row][col]  = new Pixel(col,row,blue,blue,blue);
       }
     }
     return new Image(newImage);
   }
 
   @Override
-  public Image adjustBrightness(Image image) {
+  public Image adjustBrightness(int increment) {
     return null;
   }
 
