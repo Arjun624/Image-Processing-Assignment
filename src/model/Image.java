@@ -86,4 +86,21 @@ public class Image implements ImageEditor{
   public Image adjustBrightness(Image image) {
     return null;
   }
+
+  @Override
+  public Image showLuma() {
+    return null;
+  }
+
+  @Override
+  public Image showIntensity() {
+    return null;
+  }
+
+  @Override
+  public Image showValue() {
+    return null;
+  }
+
+
 }

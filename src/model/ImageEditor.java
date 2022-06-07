@@ -15,5 +15,11 @@ public interface ImageEditor {
 
    Image adjustBrightness(Image image);
 
+   Image showLuma();
+
+   Image showIntensity();
+
+   Image showValue();
+
 
 }
