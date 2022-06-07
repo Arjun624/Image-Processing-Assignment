@@ -1,7 +1,7 @@
 package model;
 
 /**
- * represnets a singular pixel in an image.
+ * Represents a singular pixel found in an image.
  */
 public class Pixel {
   protected int x;

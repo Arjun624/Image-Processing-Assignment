@@ -1,6 +1,8 @@
 package model;
 
-//methods to edit an image
+/**
+ * Represents all the actions that can be performed on an image.
+ */
 public interface ImageEditor {
 
    Image flipVertically();

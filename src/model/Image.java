@@ -1,9 +1,16 @@
 package model;
 
+/**
+ * Represents an image, which is a group of pixels. The image is represented by a 2D array of pixels.
+ */
 public class Image implements ImageEditor{
 
   Pixel[][] imagePixels;
 
+  /**
+   * Constructor for the Image class. Creates a new image with the inputted 2d array of pixels.
+   * @param imagePixels is the 2d array of pixels that represents the image.
+   */
   public Image(Pixel[][] imagePixels){
     this.imagePixels = imagePixels;
   }
