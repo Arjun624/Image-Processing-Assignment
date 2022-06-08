@@ -195,6 +195,7 @@ public class ImageModel {
 
 
   public void saveImage(String pathname, String imageName){
+    StringBuilder sb = new StringBuilder();
     try {
       File newFile = new File(pathname);
       if (newFile.createNewFile()) {
@@ -210,17 +211,25 @@ public class ImageModel {
 
     try {
       FileWriter writer = new FileWriter(pathname);
-      writer.write("P3");
-      writer.write(images.get(imageName)[0].length);
-      writer.write(images.get(imageName).length);
-      writer.write(images.get(imageName)[0][0].findValue());
+      sb.append("P3");
+      sb.append((System.lineSeparator()));
+      sb.append(images.get(imageName)[0].length);
+      sb.append(" ");
+      sb.append(images.get(imageName).length);
+      sb.append((System.lineSeparator()));
+      sb.append(images.get(imageName)[0][0].findValue());
+      sb.append(System.lineSeparator());
       for(int row = 0; row< images.get(imageName).length; row++) {
         for (int col = 0; col < images.get(imageName)[0].length; col++) {
-          writer.write(images.get(imageName)[row][col].r);
-          writer.write(images.get(imageName)[row][col].g);
-          writer.write(images.get(imageName)[row][col].b);
+          sb.append(images.get(imageName)[row][col].r);
+          sb.append((System.lineSeparator()));
+          sb.append((images.get(imageName)[row][col].g));
+          sb.append((System.lineSeparator()));
+          sb.append((images.get(imageName)[row][col].b));
+          sb.append((System.lineSeparator()));
         }
       }
+      writer.write(sb.toString());
       writer.close();
      System.out.println("Successfully wrote to the file.");
     } catch (IOException e) {
