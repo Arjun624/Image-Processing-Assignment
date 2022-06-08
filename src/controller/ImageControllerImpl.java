@@ -8,7 +8,7 @@ import model.Image;
 import model.Pixel;
 
 /**
- * Implementation of a image controller
+ * Implementation of an image controller
  */
 public class ImageControllerImpl implements ImageController{
 

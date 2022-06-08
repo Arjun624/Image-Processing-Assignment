@@ -123,7 +123,7 @@ public class BetterImage {
     }
   }
 
-  protected void load(String filename){
+  protected void load(String filename) throws FileNotFoundException {
     Scanner sc;
 
     try {
@@ -131,7 +131,7 @@ public class BetterImage {
     }
     catch (FileNotFoundException e) {
       System.out.println("File "+filename+ " not found!");
-      return null;
+      throw new FileNotFoundException("File "+filename+ " not found!");
     }
     StringBuilder builder = new StringBuilder();
     //read the file line by line, and populate a string. This will throw away any comment lines
