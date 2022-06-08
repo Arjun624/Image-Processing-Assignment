@@ -176,7 +176,7 @@ public class ImageModel {
   }
 
 
-  protected void saveImage(String pathname){
+  protected void saveImage(String pathname, String imageName){
     try {
       File newFile = new File(pathname);
       if (newFile.createNewFile()) {
@@ -193,14 +193,14 @@ public class ImageModel {
     try {
       FileWriter writer = new FileWriter(pathname);
       writer.write("P3");
-      writer.write(images.get(pathname)[0].length);
-      writer.write(images.get(pathname).length);
-      writer.write(images.get(pathname)[0][0].findValue());
-      for(int row = 0; row< images.get(pathname).length; row++) {
-        for (int col = 0; col < images.get(pathname)[0].length; col++) {
-          writer.write(images.get(pathname)[row][col].r);
-          writer.write(images.get(pathname)[row][col].g);
-          writer.write(images.get(pathname)[row][col].b);
+      writer.write(images.get(imageName)[0].length);
+      writer.write(images.get(imageName).length);
+      writer.write(images.get(imageName)[0][0].findValue());
+      for(int row = 0; row< images.get(imageName).length; row++) {
+        for (int col = 0; col < images.get(imageName)[0].length; col++) {
+          writer.write(images.get(imageName)[row][col].r);
+          writer.write(images.get(imageName)[row][col].g);
+          writer.write(images.get(imageName)[row][col].b);
         }
       }
       writer.close();
