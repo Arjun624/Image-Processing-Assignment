@@ -21,7 +21,7 @@ public class ImageControllerImpl implements ImageController{
       ImageModel model = new ImageModel();
       int i = 0;
       while (i < args.length){
-        if(args[i].equalsIgnoreCase("brighten")){
+        if(args[i].equalsIgnoreCase("adjust-brightness")){
           Actions.preform(model, args[i+2], args[i], args[i+3], Integer.parseInt(args[i+1]));
           i += 4;
         }
