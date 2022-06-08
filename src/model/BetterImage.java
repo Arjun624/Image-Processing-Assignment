@@ -158,15 +158,17 @@ public class BetterImage {
     int maxValue = sc.nextInt();
     System.out.println("Maximum value of a color in this file (usually 255): "+maxValue);
 
-    images.put(filename, new Pixel[height][width]);
-    for (int i=0;i<height;i++) {
-      for (int j=0;j<width;j++) {
+    //now read the image data
+    Pixel[][] pixels = new Pixel[height][width];
+    for (int row=0;row<height;row++) {
+      for (int col=0;col<width;col++) {
         int r = sc.nextInt();
         int g = sc.nextInt();
         int b = sc.nextInt();
-        images.get(filename)[i][j] = new Pixel(r,g,b);
+        pixels[row][col] = new Pixel(r,g,b);
       }
     }
+    images.put(filename, pixels);
   }
 
 }
