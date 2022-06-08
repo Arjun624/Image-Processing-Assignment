@@ -5,14 +5,14 @@ import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Scanner;
 
-public class BetterImage {
+public class ImageModel {
   HashMap<String, Pixel[][]> images;
 
-  public BetterImage(){
+  public ImageModel(){
     images = new HashMap<String, Pixel[][]>();
   }
 
-  public BetterImage(HashMap<String, Pixel[][]> images){
+  public ImageModel(HashMap<String, Pixel[][]> images){
    this.images = images;
   }
 
@@ -123,7 +123,7 @@ public class BetterImage {
     }
   }
 
-  protected void load(String filename) throws FileNotFoundException {
+  protected void load(String filename) throws FileNotFoundException{
     Scanner sc;
 
     try {

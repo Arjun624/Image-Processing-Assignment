@@ -21,7 +21,6 @@ public interface ImageEditor {
 
    void valueGreyscale();
 
-
    void adjustBrightness(int increment);
 
 

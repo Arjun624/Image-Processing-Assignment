@@ -2,38 +2,38 @@ package controller;
 
 import java.util.Locale;
 
-import model.Image;
+import model.ImageModel;
 
 public class Actions {
 
-  public static void preform(Image image, String instruction, int increment){
+  public static void preform(ImageModel image, String instruction, String filename, int increment){
     switch (instruction.toLowerCase(Locale.ROOT)){
       case ("vertical-flip"):
-        image.flipVertically();
+        image.flipVertically(filename);
         break;
       case("horizontal-flip"):
-        image.flipHorizontally();
+        image.flipHorizontally(filename);
         break;
       case("greyscale-red"):
-        image.redGreyscale();
+        image.redGreyscale(filename);
         break;
       case("greyscale-green"):
-        image.greenGreyscale();
+        image.greenGreyscale(filename);
         break;
       case("greyscale-blue"):
-        image.blueGreyscale();
+        image.blueGreyscale(filename);
         break;
       case("adjust-brightness"):
-        image.adjustBrightness(increment);
+        image.adjustBrightness(increment, filename);
         break;
       case("luma"):
-        image.lumaGreyscale();
+        image.lumaGreyscale(filename);
         break;
       case("intensity"):
-        image.intensityGreyscale();
+        image.intensityGreyscale(filename);
         break;
       case("max"):
-        image.valueGreyscale();
+        image.valueGreyscale(filename);
         break;
       default:
         break;

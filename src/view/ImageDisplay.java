@@ -1,8 +1,5 @@
 package view;
 
-import model.Image;
-import model.Pixel;
-
 public class ImageDisplay implements ImageView{
   @Override
   public void printImage(Image image) {
