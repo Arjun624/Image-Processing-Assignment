@@ -42,10 +42,12 @@ public class ImageModel {
     Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
     for(int row = 0; row< images.get(filename).length; row++){
       for(int col = 0; col<images.get(filename)[0].length; col++){
-        arr[row][col]=images.get(filename)[row][xLength-col];
+        arr[row][col]=images.get(filename)[row][xLength - col];
       }
     }
-    images.put(newFilename,arr);
+
+    images.put(newFilename, arr);
+
   }
 
   public void redGreyscale(String filename, String newFilename) {
@@ -217,7 +219,7 @@ public class ImageModel {
       sb.append(" ");
       sb.append(images.get(imageName).length);
       sb.append((System.lineSeparator()));
-      sb.append(images.get(imageName)[0][0].findValue());
+      sb.append(findTotalValue(imageName));
       sb.append(System.lineSeparator());
       for(int row = 0; row< images.get(imageName).length; row++) {
         for (int col = 0; col < images.get(imageName)[0].length; col++) {
@@ -236,6 +238,18 @@ public class ImageModel {
       System.out.println("An error occurred.");
       e.printStackTrace();
     }
+
+  }
+
+  private int findTotalValue(String imageName){
+    int value = images.get(imageName)[0][0].findValue();
+
+    for (int row = 0; row < images.get(imageName).length; row++) {
+      for (int col = 0; col < images.get(imageName)[0].length; col++) {
+        value = Math.max(images.get(imageName)[row][col].findValue(), value);
+      }
+    }
+    return value;
 
   }
 
