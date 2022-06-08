@@ -5,25 +5,59 @@ package model;
  */
 public interface ImageEditor {
 
-   void flipVertically();
+   /**
+    * Flips an image vertically.
+    * @param filename the file reference
+    */
+   void flipVertically(String filename);
 
-   void flipHorizontally();
+   /**
+    * Flips an image horizontally.
+    * @param filename the file reference
+    */
+   void flipHorizontally(String filename);
 
-   void redGreyscale();
+   /**
+    * Preforms a red grayscale on an image.
+    * @param filename the file reference
+    */
+   void redGreyscale(String filename);
 
-   void greenGreyscale();
+   /**
+    * Preforms a green grayscale on an image.
+    * @param filename the file reference
+    */
+   void greenGreyscale(String filename);
 
-   void blueGreyscale();
+   /**
+    * Preforms a blue grayscale on an image.
+    * @param filename the file reference
+    */
+   void blueGreyscale(String filename);
 
-   void lumaGreyscale();
+   /**
+    * Finds the luma of each pixel using its RGB value.
+    * @param filename the file reference
+    */
+   void lumaGreyscale(String filename);
 
-   void intensityGreyscale();
+   /**
+    * Preforms a grayscale on an image.
+    * @param filename the file reference
+    */
+   void intensityGreyscale(String filename);
 
-   void valueGreyscale();
+   /**
+    * Preforms a max value grayscale on an image.
+    * @param filename the file reference
+    */
+   void valueGreyscale(String filename);
 
-   void adjustBrightness(int increment);
-
-
+   /**
+    * Adjusts the brightness of an image.
+    * @param filename the file reference
+    */
+   void adjustBrightness(int increment, String filename);
 
 
 
