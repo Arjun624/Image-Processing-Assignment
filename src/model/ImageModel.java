@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 public class ImageModel {
-  HashMap<String, Pixel[][]> images;
+  public HashMap<String, Pixel[][]> images;
   String pathname;
 
   public ImageModel(){
@@ -20,58 +20,69 @@ public class ImageModel {
    this.images = images;
   }
 
-  public void flipVertically(String filename) {
+  public void flipVertically(String filename, String newFilename) {
 
     int yLength = images.get(filename).length-1;
 
-    //System.arraycopy(pixels[yLength - row], 0, pixels[row], 0, imagePixels[0].length);
+    Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
     for(int row = 0; row< images.get(filename).length; row++){
       for(int col = 0; col<images.get(filename)[0].length; col++){
-        images.get(filename)[row][col]=images.get(filename)[yLength-row][col];
+        arr[row][col]=images.get(filename)[yLength-row][col];
       }
     }
 
+    images.put(newFilename, arr);
+
   }
 
-  public void flipHorizontally(String filename) {
+  public void flipHorizontally(String filename, String newFilename) {
 
     int xLength = images.get(filename)[0].length-1;
 
+    Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
     for(int row = 0; row< images.get(filename).length; row++){
       for(int col = 0; col<images.get(filename)[0].length; col++){
-        images.get(filename)[row][col]=images.get(filename)[row][xLength-col];
+        arr[row][col]=images.get(filename)[row][xLength-col];
       }
     }
+    images.put(newFilename,arr);
   }
 
-  public void redGreyscale(String filename) {
+  public void redGreyscale(String filename, String newFilename) {
+    Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
     for (int row = 0; row < this.images.get(filename).length; row++) {
       for (int col = 0; col < this.images.get(filename)[0].length; col++) {
         int red = this.images.get(filename)[row][col].r;
-        images.get(filename)[row][col]  = new Pixel(red,red,red);
+        arr[row][col]  = new Pixel(red,red,red);
       }
     }
+    images.put(newFilename,arr);
   }
 
-  public void greenGreyscale(String filename) {
+  public void greenGreyscale(String filename, String newFilename) {
+    Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
     for (int row = 0; row < this.images.get(filename).length; row++) {
       for (int col = 0; col < this.images.get(filename)[0].length; col++) {
         int green = this.images.get(filename)[row][col].g;
-        images.get(filename)[row][col]  = new Pixel(green,green,green);
+        arr[row][col]  = new Pixel(green,green,green);
       }
     }
+    images.put(newFilename,arr);
   }
 
-  public void blueGreyscale(String filename) {
+  public void blueGreyscale(String filename, String newFilename) {
+    Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
     for (int row = 0; row < this.images.get(filename).length; row++) {
       for (int col = 0; col < this.images.get(filename)[0].length; col++) {
         int blue = this.images.get(filename)[row][col].b;
-        images.get(filename)[row][col]  = new Pixel(blue,blue,blue);
+        arr[row][col]  = new Pixel(blue,blue,blue);
       }
     }
+    images.put(newFilename,arr);
   }
 
-  public void adjustBrightness(int increment, String filename) {
+  public void adjustBrightness(int increment, String filename, String newFilename) {
+    Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
     for(int row = 0; row< images.get(filename).length; row++) {
       for (int col = 0; col < images.get(filename)[0].length; col++) {
         int newRed =  this.images.get(filename)[row][col].r + increment;
@@ -95,47 +106,54 @@ public class ImageModel {
         if (newBlue < 0) {
           newBlue = 0;
         }
-        images.get(filename)[row][col] = new Pixel(newRed, newGreen, newBlue);
+        arr[row][col] = new Pixel(newRed, newGreen, newBlue);
       }
     }
+    images.put(newFilename,arr);
   }
 
-  public void lumaGreyscale(String filename) {
+  public void lumaGreyscale(String filename, String newFilename) {
+    Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
     for (int row = 0; row < this.images.get(filename).length; row++) {
       for (int col = 0; col < this.images.get(filename)[0].length; col++) {
         int luma= this.images.get(filename)[row][col].findLuma();
-        images.get(filename)[row][col]  = new Pixel(luma,luma,luma);
+        arr[row][col]  = new Pixel(luma,luma,luma);
       }
     }
+    images.put(newFilename,arr);
   }
 
-  public void intensityGreyscale(String filename) {
+  public void intensityGreyscale(String filename, String newFilename) {
+    Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
     for (int row = 0; row < this.images.get(filename).length; row++) {
       for (int col = 0; col < this.images.get(filename)[0].length; col++) {
         int intensity= this.images.get(filename)[row][col].findIntensity();
-        images.get(filename)[row][col]  = new Pixel(intensity,intensity,intensity);
+        arr[row][col]  = new Pixel(intensity,intensity,intensity);
       }
     }
+    images.put(newFilename,arr);
   }
 
-  public void valueGreyscale(String filename) {
+  public void valueGreyscale(String filename, String newFilename) {
+    Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
     for (int row = 0; row < this.images.get(filename).length; row++) {
       for (int col = 0; col < this.images.get(filename)[0].length; col++) {
         int value= this.images.get(filename)[row][col].findValue();
         images.get(filename)[row][col]  = new Pixel(value,value,value);
       }
     }
+    images.put(newFilename,arr);
   }
 
-  public void load(String filename) throws FileNotFoundException{
+  public void load(String pathname, String filename) throws FileNotFoundException{
     Scanner sc;
 
     try {
-      sc = new Scanner(new FileInputStream(filename));
+      sc = new Scanner(new FileInputStream(pathname));
     }
     catch (FileNotFoundException e) {
-      System.out.println("File "+filename+ " not found!");
-      throw new FileNotFoundException("File "+filename+ " not found!");
+      System.out.println("File "+pathname+ " not found!");
+      throw new FileNotFoundException("File "+pathname+ " not found!");
     }
     StringBuilder builder = new StringBuilder();
     //read the file line by line, and populate a string. This will throw away any comment lines
@@ -176,7 +194,7 @@ public class ImageModel {
   }
 
 
-  protected void saveImage(String pathname, String imageName){
+  public void saveImage(String pathname, String imageName){
     try {
       File newFile = new File(pathname);
       if (newFile.createNewFile()) {
