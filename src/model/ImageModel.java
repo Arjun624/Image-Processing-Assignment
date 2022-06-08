@@ -1,12 +1,16 @@
 package model;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Scanner;
 
 public class ImageModel {
   HashMap<String, Pixel[][]> images;
+  String pathname;
 
   public ImageModel(){
     images = new HashMap<String, Pixel[][]>();
@@ -123,7 +127,7 @@ public class ImageModel {
     }
   }
 
-  protected void load(String filename) throws FileNotFoundException{
+  public void load(String filename) throws FileNotFoundException{
     Scanner sc;
 
     try {
@@ -169,6 +173,43 @@ public class ImageModel {
       }
     }
     images.put(filename, pixels);
+  }
+
+
+  protected void saveImage(String pathname){
+    try {
+      File newFile = new File(pathname);
+      if (newFile.createNewFile()) {
+        System.out.println("File created: " + newFile.getName());
+      } else {
+        System.out.println("File already exists.");
+      }
+
+    } catch (IOException e) {
+      System.out.println("An error occurred.");
+      e.printStackTrace();
+    }
+
+    try {
+      FileWriter writer = new FileWriter(pathname);
+      writer.write("P3");
+      writer.write(images.get(pathname)[0].length);
+      writer.write(images.get(pathname).length);
+      writer.write(images.get(pathname)[0][0].findValue());
+      for(int row = 0; row< images.get(pathname).length; row++) {
+        for (int col = 0; col < images.get(pathname)[0].length; col++) {
+          writer.write(images.get(pathname)[row][col].r);
+          writer.write(images.get(pathname)[row][col].g);
+          writer.write(images.get(pathname)[row][col].b);
+        }
+      }
+      writer.close();
+     System.out.println("Successfully wrote to the file.");
+    } catch (IOException e) {
+      System.out.println("An error occurred.");
+      e.printStackTrace();
+    }
+
   }
 
 }

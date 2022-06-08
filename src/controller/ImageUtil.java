@@ -49,7 +49,7 @@ public class ImageUtil {
     System.out.println("Height of image: "+height);
     int maxValue = sc.nextInt();
     System.out.println("Maximum value of a color in this file (usually 255): "+maxValue);
-    
+
     for (int i=0;i<height;i++) {
         for (int j=0;j<width;j++) {
             int r = sc.nextInt();
