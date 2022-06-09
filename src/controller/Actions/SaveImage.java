@@ -19,7 +19,11 @@ public class SaveImage implements ImageCommands {
 
   @Override
   public void execute(ImageModel model, ImageView view) throws IOException {
-    model.saveImage(pathName, fileName);
-    view.renderMessage("Image: " + fileName + "\nsaved as: " + pathName);
+
+    try {
+      model.saveImage(pathName, fileName);
+    } catch (NullPointerException npe) {
+      view.renderMessage("No image loaded!");
+    }
   }
 }

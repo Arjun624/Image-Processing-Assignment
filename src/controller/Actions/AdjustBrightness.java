@@ -20,7 +20,12 @@ public class AdjustBrightness implements ImageCommands {
 
   @Override
   public void execute(ImageModel model, ImageView view) throws IOException {
-    model.adjustBrightness(increment, fileName, newFileName);
-    view.renderMessage("Image: " + fileName + " adjusted brightness by a factor of " + increment);
+
+    try {
+      model.adjustBrightness(increment, fileName, newFileName);
+      view.renderMessage("Image: " + fileName + " adjusted brightness by a factor of " + increment);
+    } catch (NullPointerException npe) {
+      view.renderMessage("No image loaded!");
+    }
   }
 }

@@ -8,18 +8,25 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Scanner;
 
+import view.ImageDisplay;
+import view.ImageView;
+
 public class ImageModel implements ImageEditor{
   public HashMap<String, Pixel[][]> images;
   public boolean quit;
 
+  ImageView view;
+
   public ImageModel(){
     images = new HashMap<>();
     quit = false;
+    view = new ImageDisplay();
   }
 
   public ImageModel(HashMap<String, Pixel[][]> images){
    this.images = images;
    quit = false;
+   view = new ImageDisplay();
   }
 
   public void flipVertically(String filename, String newFilename) {
@@ -150,14 +157,14 @@ public class ImageModel implements ImageEditor{
   }
 
 
-  public void loadImage(String pathname, String filename) {
+  public void loadImage(String pathname, String filename) throws IOException {
     Scanner sc;
 
     try {
       sc = new Scanner(new FileInputStream(pathname));
     }
     catch (FileNotFoundException e) {
-      System.out.println("File "+pathname+ " not found!");
+      view.renderMessage("File "+pathname+ " not found!");
       return;
     }
     StringBuilder builder = new StringBuilder();
@@ -176,14 +183,14 @@ public class ImageModel implements ImageEditor{
 
     token = sc.next();
     if (!token.equals("P3")) {
-      System.out.println("Invalid PPM file: plain RAW file should begin with P3");
+      view.renderMessage("Invalid PPM file: plain RAW file should begin with P3");
     }
     int width = sc.nextInt();
-    System.out.println("Width of image: "+width);
+    view.renderMessage("Width of image: "+width);
     int height = sc.nextInt();
-    System.out.println("Height of image: "+height);
+    view.renderMessage("Height of image: "+height);
     int maxValue = sc.nextInt();
-    System.out.println("Maximum value of a color in this file (usually 255): "+maxValue);
+    view.renderMessage("Maximum value of a color in this file (usually 255): "+maxValue);
 
     //now read the image data
     Pixel[][] pixels = new Pixel[height][width];
@@ -199,18 +206,24 @@ public class ImageModel implements ImageEditor{
   }
 
 
-  public void saveImage(String pathname, String filename){
+  public void saveImage(String pathname, String filename) throws IOException {
+
     StringBuilder sb = new StringBuilder();
+    if(!images.containsKey(filename)){
+      view.renderMessage("Image "+filename+" does not exist or has not been loaded!");
+      return;
+    }
     try {
-      File newFile = new File(pathname);
-      if (newFile.createNewFile()) {
-        System.out.println("File created: " + newFile.getName());
-      } else {
-        System.out.println("File already exists.");
-      }
+        File newFile = new File(pathname);
+        view.renderMessage("Image: " + filename + "\nsaved as: " + pathname);
+        if (newFile.createNewFile()) {
+          view.renderMessage("File created: " + newFile.getName());
+        } else {
+          view.renderMessage("File already exists.");
+        }
 
     } catch (IOException e) {
-      System.out.println("An error occurred.");
+      view.renderMessage("An error occurred.");
       e.printStackTrace();
     }
 
@@ -236,9 +249,9 @@ public class ImageModel implements ImageEditor{
       }
       writer.write(sb.toString());
       writer.close();
-     System.out.println("Successfully wrote to the file.");
+      view.renderMessage("Successfully wrote to the file.");
     } catch (IOException e) {
-      System.out.println("An error occurred.");
+      view.renderMessage("An error occurred.");
       e.printStackTrace();
     }
 

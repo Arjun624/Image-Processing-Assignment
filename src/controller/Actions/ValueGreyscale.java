@@ -19,7 +19,12 @@ public class ValueGreyscale implements ImageCommands {
 
   @Override
   public void execute(ImageModel model, ImageView view) throws IOException {
-    model.valueGreyscale(fileName, newFileName);
-    view.renderMessage("Image " + fileName + " changed to greyscale");
+
+    try {
+      model.valueGreyscale(fileName, newFileName);
+      view.renderMessage("Image " + fileName + " changed to greyscale");
+    } catch (NullPointerException npe) {
+      view.renderMessage("No image loaded!");
+    }
   }
 }

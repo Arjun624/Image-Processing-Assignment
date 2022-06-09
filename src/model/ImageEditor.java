@@ -1,5 +1,7 @@
 package model;
 
+import java.io.IOException;
+
 /**
  * Represents all the actions that can be performed on an image.
  */
@@ -59,9 +61,9 @@ public interface ImageEditor {
     */
    void adjustBrightness(int increment, String filename, String newFilename);
 
-   void loadImage(String pathname, String filename);
+   void loadImage(String pathname, String filename) throws IOException;
 
-   void saveImage(String pathname, String imageName);
+   void saveImage(String pathname, String imageName) throws IOException;
 
 
 

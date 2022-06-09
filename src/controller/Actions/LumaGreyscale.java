@@ -17,7 +17,12 @@ public class LumaGreyscale implements ImageCommands {
 
   @Override
   public void execute(ImageModel model, ImageView view) throws IOException {
-    model.lumaGreyscale(fileName, newFileName);
-    view.renderMessage("Image " + fileName + " changed to luma");
+
+    try {
+      model.lumaGreyscale(fileName, newFileName);
+      view.renderMessage("Image " + fileName + " changed to luma");
+    } catch (NullPointerException npe) {
+      view.renderMessage("No image loaded!");
+    }
   }
 }

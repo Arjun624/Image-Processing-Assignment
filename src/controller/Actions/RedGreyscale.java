@@ -18,7 +18,12 @@ public class RedGreyscale implements ImageCommands {
 
   @Override
   public void execute(ImageModel model, ImageView view) throws IOException {
-    model.redGreyscale(fileName, newFileName);
-    view.renderMessage("Imaged " + fileName + " changed to red greyscale");
+
+    try {
+      model.redGreyscale(fileName, newFileName);
+      view.renderMessage("Imaged " + fileName + " changed to red greyscale");
+    } catch (NullPointerException npe) {
+      view.renderMessage("No image loaded!");
+    }
   }
 }

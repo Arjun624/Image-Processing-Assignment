@@ -17,7 +17,12 @@ public class HorizontalFlip implements ImageCommands {
 
   @Override
   public void execute(ImageModel model, ImageView view) throws IOException {
-    model.flipHorizontally(filepath, filename);
-    view.renderMessage("Image " + filepath + " flipped horizontally");
+
+    try {
+      model.flipHorizontally(filepath, filename);
+      view.renderMessage("Image " + filepath + " flipped horizontally");
+    } catch (NullPointerException npe) {
+      view.renderMessage("No image loaded!");
+    }
   }
 }
