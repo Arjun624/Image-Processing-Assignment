@@ -7,20 +7,20 @@ import model.ImageModel;
 import view.ImageView;
 
 public class VerticalFlip implements ImageCommands {
-  String filepath;
-  String filename;
+  String fileName;
+  String newFileName;
 
-  public VerticalFlip(String filepath, String filename){
-    this.filepath = filepath;
-    this.filename = filename;
+  public VerticalFlip(String fileName, String newFileName){
+    this.fileName = fileName;
+    this.newFileName = newFileName;
   }
 
   @Override
   public void execute(ImageModel model, ImageView view) throws IOException {
     try {
-      model.flipVertically(filepath, filename);
+      model.flipVertically(fileName, newFileName);
     } catch (NullPointerException npe) {
-      view.renderMessage("No image loaded!");
+      view.renderMessage(fileName + " not loaded!");
     }
   }
 }

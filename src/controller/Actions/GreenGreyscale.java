@@ -22,7 +22,7 @@ public class GreenGreyscale implements ImageCommands {
     try {
       model.greenGreyscale(fileName, newFileName);
     } catch (NullPointerException npe) {
-      view.renderMessage("No image loaded!");
+      view.renderMessage(fileName + " not loaded!");
     }
   }
 }

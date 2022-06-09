@@ -20,7 +20,7 @@ public class BlueGreyscale implements ImageCommands {
     try {
       model.blueGreyscale(fileName, newFileName);
     } catch (NullPointerException npe) {
-      view.renderMessage("No image loaded!");
+      view.renderMessage(fileName + " not loaded!");
     }
   }
 }

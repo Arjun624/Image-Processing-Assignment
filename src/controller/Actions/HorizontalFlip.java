@@ -7,21 +7,21 @@ import model.ImageModel;
 import view.ImageView;
 
 public class HorizontalFlip implements ImageCommands {
-  String filepath;
-  String filename;
+  String fileName;
+  String newFileName;
 
-  public HorizontalFlip(String filepath, String filename){
-    this.filepath = filepath;
-    this.filename = filename;
+  public HorizontalFlip(String fileName, String newFileName) {
+    this.fileName = fileName;
+    this.newFileName = newFileName;
   }
 
   @Override
   public void execute(ImageModel model, ImageView view) throws IOException {
 
     try {
-      model.flipHorizontally(filepath, filename);
+      model.flipHorizontally(fileName, newFileName);
     } catch (NullPointerException npe) {
-      view.renderMessage("No image loaded!");
+      view.renderMessage(fileName + " not loaded!");
     }
   }
 }

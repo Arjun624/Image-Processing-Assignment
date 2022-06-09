@@ -23,7 +23,7 @@ public class SaveImage implements ImageCommands {
     try {
       model.saveImage(pathName, fileName);
     } catch (NullPointerException npe) {
-      view.renderMessage("No image loaded!");
+      view.renderMessage(fileName + " not loaded!");
     }
   }
 }

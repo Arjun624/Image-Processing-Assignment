@@ -24,7 +24,7 @@ public class AdjustBrightness implements ImageCommands {
     try {
       model.adjustBrightness(increment, fileName, newFileName);
     } catch (NullPointerException npe) {
-      view.renderMessage("No image loaded!");
+      view.renderMessage(fileName + " not loaded!");
     }
   }
 }

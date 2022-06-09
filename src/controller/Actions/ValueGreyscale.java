@@ -23,7 +23,7 @@ public class ValueGreyscale implements ImageCommands {
     try {
       model.valueGreyscale(fileName, newFileName);
     } catch (NullPointerException npe) {
-      view.renderMessage("No image loaded!");
+      view.renderMessage(fileName + " not loaded!");
     }
   }
 }
