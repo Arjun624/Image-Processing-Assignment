@@ -22,11 +22,11 @@ public class ImageControllerImpl implements ImageController{
       int i = 0;
       while (i < args.length){
         if(args[i].equalsIgnoreCase("adjust-brightness")){
-          Actions.preform(model, args[i+2], args[i], args[i+3], Integer.parseInt(args[i+1]));
+          Actions.preform(model, args[i], args[i+2], args[i+3], Integer.parseInt(args[i+1]));
           i += 4;
         }
         else {
-          Actions.preform(model, args[i+1], args[i], args[i + 2], 0);
+          Actions.preform(model, args[i], args[i+1], args[i + 2], 0);
           i += 3;
         }
       }

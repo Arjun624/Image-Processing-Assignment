@@ -10,21 +10,22 @@ import java.util.Scanner;
 
 public class ImageProgram {
   public static void main(String[] args) throws FileNotFoundException {
+    ImageControllerImpl controller;
     if(args.length < 3){
-      System.out.println("Enter all commands on one line");
+      System.out.println("Enter all commands and then enter 'run' to execute");
       Scanner s = new Scanner(System.in);
-      String info = s.nextLine();
-      Scanner scan = new Scanner(info);
       List<String> input = new ArrayList<>();
-      while (scan.hasNext()){
-        input.add(scan.next());
+      while (!input.contains("run")){
+        input.add(s.next());
       }
-      String[] arr = input.toArray(new String[input.size()]);
-      ImageControllerImpl controller = new ImageControllerImpl(arr);
+      input.remove(input.size()-1);
+      String[] arr = input.toArray(new String[0]);
+      controller = new ImageControllerImpl(arr);
       controller.go();
+
     }
     else {
-      ImageControllerImpl controller = new ImageControllerImpl(args);
+      controller = new ImageControllerImpl(args);
       controller.go();
     }
 
