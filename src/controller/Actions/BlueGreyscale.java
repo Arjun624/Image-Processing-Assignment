@@ -19,7 +19,6 @@ public class BlueGreyscale implements ImageCommands {
   public void execute(ImageModel model, ImageView view) throws IOException {
     try {
       model.blueGreyscale(fileName, newFileName);
-      view.renderMessage("image " + fileName + " changed to blue greyscale");
     } catch (NullPointerException npe) {
       view.renderMessage("No image loaded!");
     }

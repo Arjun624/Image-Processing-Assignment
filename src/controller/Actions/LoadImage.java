@@ -19,6 +19,5 @@ public class LoadImage implements ImageCommands {
   @Override
   public void execute(ImageModel model, ImageView view) throws IOException {
     model.loadImage(pathName, fileName);
-    view.renderMessage("Image: " + pathName + "\nloaded as: " + fileName);
   }
 }

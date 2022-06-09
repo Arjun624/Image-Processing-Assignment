@@ -20,7 +20,6 @@ public class HorizontalFlip implements ImageCommands {
 
     try {
       model.flipHorizontally(filepath, filename);
-      view.renderMessage("Image " + filepath + " flipped horizontally");
     } catch (NullPointerException npe) {
       view.renderMessage("No image loaded!");
     }

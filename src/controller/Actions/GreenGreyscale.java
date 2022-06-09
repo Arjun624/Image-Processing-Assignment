@@ -21,7 +21,6 @@ public class GreenGreyscale implements ImageCommands {
   public void execute(ImageModel model, ImageView view) throws IOException {
     try {
       model.greenGreyscale(fileName, newFileName);
-      view.renderMessage("image " + fileName + " changed to green greyscale");
     } catch (NullPointerException npe) {
       view.renderMessage("No image loaded!");
     }

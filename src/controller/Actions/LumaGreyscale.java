@@ -20,7 +20,6 @@ public class LumaGreyscale implements ImageCommands {
 
     try {
       model.lumaGreyscale(fileName, newFileName);
-      view.renderMessage("Image " + fileName + " changed to luma");
     } catch (NullPointerException npe) {
       view.renderMessage("No image loaded!");
     }

@@ -11,55 +11,55 @@ public interface ImageEditor {
     * Flips an image vertically.
     * @param filename the file reference
     */
-   void flipVertically(String filename, String newFilename);
+   void flipVertically(String filename, String newFilename) throws IOException;
 
    /**
     * Flips an image horizontally.
     * @param filename the file reference
     */
-   void flipHorizontally(String filename, String newFilename);
+   void flipHorizontally(String filename, String newFilename) throws IOException;
 
    /**
     * Preforms a red grayscale on an image.
     * @param filename the file reference
     */
-   void redGreyscale(String filename, String newFilename);
+   void redGreyscale(String filename, String newFilename) throws IOException;
 
    /**
     * Preforms a green grayscale on an image.
     * @param filename the file reference
     */
-   void greenGreyscale(String filename, String newFilename);
+   void greenGreyscale(String filename, String newFilename) throws IOException;
 
    /**
     * Preforms a blue grayscale on an image.
     * @param filename the file reference
     */
-   void blueGreyscale(String filename, String newFilename);
+   void blueGreyscale(String filename, String newFilename) throws IOException;
 
    /**
     * Finds the luma of each pixel using its RGB value.
     * @param filename the file reference
     */
-   void lumaGreyscale(String filename, String newFilename);
+   void lumaGreyscale(String filename, String newFilename) throws IOException;
 
    /**
     * Preforms a grayscale on an image.
     * @param filename the file reference
     */
-   void intensityGreyscale(String filename, String newFilename);
+   void intensityGreyscale(String filename, String newFilename) throws IOException;
 
    /**
     * Preforms a max value grayscale on an image.
     * @param filename the file reference
     */
-   void valueGreyscale(String filename, String newFilename);
+   void valueGreyscale(String filename, String newFilename) throws IOException;
 
    /**
     * Adjusts the brightness of an image.
     * @param filename the file reference
     */
-   void adjustBrightness(int increment, String filename, String newFilename);
+   void adjustBrightness(int increment, String filename, String newFilename) throws IOException;
 
    void loadImage(String pathname, String filename) throws IOException;
 

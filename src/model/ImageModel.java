@@ -29,7 +29,7 @@ public class ImageModel implements ImageEditor{
    view = new ImageDisplay();
   }
 
-  public void flipVertically(String filename, String newFilename) {
+  public void flipVertically(String filename, String newFilename) throws IOException {
 
     int yLength = images.get(filename).length-1;
 
@@ -41,10 +41,10 @@ public class ImageModel implements ImageEditor{
     }
 
     images.put(newFilename, arr);
-
+    view.renderMessage("Image: " + filename + " flipped vertically");
   }
 
-  public void flipHorizontally(String filename, String newFilename) {
+  public void flipHorizontally(String filename, String newFilename) throws IOException {
 
     int xLength = images.get(filename)[0].length-1;
 
@@ -56,10 +56,10 @@ public class ImageModel implements ImageEditor{
     }
 
     images.put(newFilename, arr);
-
+    view.renderMessage("Image " + filename + " flipped horizontally");
   }
 
-  public void redGreyscale(String filename, String newFilename) {
+  public void redGreyscale(String filename, String newFilename) throws IOException {
     Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
     for (int row = 0; row < this.images.get(filename).length; row++) {
       for (int col = 0; col < this.images.get(filename)[0].length; col++) {
@@ -68,9 +68,10 @@ public class ImageModel implements ImageEditor{
       }
     }
     images.put(newFilename,arr);
+    view.renderMessage("Imaged " + filename + " changed to red greyscale");
   }
 
-  public void greenGreyscale(String filename, String newFilename) {
+  public void greenGreyscale(String filename, String newFilename) throws IOException {
     Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
     for (int row = 0; row < this.images.get(filename).length; row++) {
       for (int col = 0; col < this.images.get(filename)[0].length; col++) {
@@ -79,9 +80,10 @@ public class ImageModel implements ImageEditor{
       }
     }
     images.put(newFilename,arr);
+    view.renderMessage("image " + filename + " changed to green greyscale");
   }
 
-  public void blueGreyscale(String filename, String newFilename) {
+  public void blueGreyscale(String filename, String newFilename) throws IOException {
     Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
     for (int row = 0; row < this.images.get(filename).length; row++) {
       for (int col = 0; col < this.images.get(filename)[0].length; col++) {
@@ -90,9 +92,10 @@ public class ImageModel implements ImageEditor{
       }
     }
     images.put(newFilename,arr);
+    view.renderMessage("image " + filename + " changed to blue greyscale");
   }
 
-  public void adjustBrightness(int increment, String filename, String newFilename) {
+  public void adjustBrightness(int increment, String filename, String newFilename) throws IOException {
     Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
     for(int row = 0; row< images.get(filename).length; row++) {
       for (int col = 0; col < images.get(filename)[0].length; col++) {
@@ -121,9 +124,10 @@ public class ImageModel implements ImageEditor{
       }
     }
     images.put(newFilename,arr);
+    view.renderMessage("Image: " + filename + " adjusted brightness by a factor of " + increment);
   }
 
-  public void lumaGreyscale(String filename, String newFilename) {
+  public void lumaGreyscale(String filename, String newFilename) throws IOException {
     Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
     for (int row = 0; row < this.images.get(filename).length; row++) {
       for (int col = 0; col < this.images.get(filename)[0].length; col++) {
@@ -132,9 +136,10 @@ public class ImageModel implements ImageEditor{
       }
     }
     images.put(newFilename,arr);
+    view.renderMessage("Image " + filename + " changed to luma");
   }
 
-  public void intensityGreyscale(String filename, String newFilename) {
+  public void intensityGreyscale(String filename, String newFilename) throws IOException {
     Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
     for (int row = 0; row < this.images.get(filename).length; row++) {
       for (int col = 0; col < this.images.get(filename)[0].length; col++) {
@@ -143,9 +148,10 @@ public class ImageModel implements ImageEditor{
       }
     }
     images.put(newFilename,arr);
+    view.renderMessage("Image " + filename + " changed to intensity greyscale");
   }
 
-  public void valueGreyscale(String filename, String newFilename) {
+  public void valueGreyscale(String filename, String newFilename) throws IOException {
     Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
     for (int row = 0; row < this.images.get(filename).length; row++) {
       for (int col = 0; col < this.images.get(filename)[0].length; col++) {
@@ -154,6 +160,7 @@ public class ImageModel implements ImageEditor{
       }
     }
     images.put(newFilename,arr);
+    view.renderMessage("Image " + filename + " changed to greyscale");
   }
 
 
@@ -203,6 +210,7 @@ public class ImageModel implements ImageEditor{
       }
     }
     images.put(filename, pixels);
+    view.renderMessage("Image: " + pathname + "\nloaded as: " + filename);
   }
 
 

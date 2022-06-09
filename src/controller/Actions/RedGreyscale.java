@@ -21,7 +21,6 @@ public class RedGreyscale implements ImageCommands {
 
     try {
       model.redGreyscale(fileName, newFileName);
-      view.renderMessage("Imaged " + fileName + " changed to red greyscale");
     } catch (NullPointerException npe) {
       view.renderMessage("No image loaded!");
     }

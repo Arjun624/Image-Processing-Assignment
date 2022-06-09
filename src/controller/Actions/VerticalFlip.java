@@ -19,7 +19,6 @@ public class VerticalFlip implements ImageCommands {
   public void execute(ImageModel model, ImageView view) throws IOException {
     try {
       model.flipVertically(filepath, filename);
-      view.renderMessage("Image: " + filepath + " flipped vertically");
     } catch (NullPointerException npe) {
       view.renderMessage("No image loaded!");
     }

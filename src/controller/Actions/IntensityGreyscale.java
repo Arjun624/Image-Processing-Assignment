@@ -22,7 +22,6 @@ public class IntensityGreyscale implements ImageCommands {
 
     try {
       model.intensityGreyscale(fileName, newFileName);
-      view.renderMessage("Image " + fileName + " changed to intensity greyscale");
     } catch (NullPointerException npe) {
       view.renderMessage("No image loaded!");
     }
