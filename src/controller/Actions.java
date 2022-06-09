@@ -56,7 +56,7 @@ public class Actions {
         System.out.println("Saved " + filename);
         break;
       default:
-        throw new IllegalArgumentException("Cannot preform: " + instruction);
+        throw new IllegalArgumentException("Insufficient instruction");
     }
   }
 
