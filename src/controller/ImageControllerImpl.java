@@ -46,7 +46,7 @@ public class ImageControllerImpl implements ImageController{
     Scanner s = new Scanner(rd);
     Function<Scanner, ImageCommands> givenCommand = commands.getOrDefault(s.next(), null);
     if (givenCommand == null) {
-      throw new IllegalArgumentException("Invalid command");
+      view.renderMessage("Invalid command!");
     } else {
       givenCommand.apply(s).execute(model, view);
     }
