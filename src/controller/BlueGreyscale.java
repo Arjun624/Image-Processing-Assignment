@@ -9,7 +9,6 @@ public class BlueGreyscale implements ImageCommands {
   String fileName;
   String newFileName;
 
-
   public BlueGreyscale(String fileName, String newFileName) {
     this.fileName = fileName;
     this.newFileName = newFileName;
