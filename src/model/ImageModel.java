@@ -164,6 +164,12 @@ public class ImageModel implements ImageEditor{
   }
 
 
+  /**
+   * Loads an image from the inputted path and adds it to the map of images.
+   * @param pathname is the path to the image to be loaded.
+   * @param filename is the name of the image to be loaded.
+   * @throws IOException if the image cannot be loaded.
+   */
   public void loadImage(String pathname, String filename) throws IOException {
     Scanner sc;
 
@@ -213,6 +219,12 @@ public class ImageModel implements ImageEditor{
     view.renderMessage("Image: " + pathname + "\nloaded as: " + filename);
   }
 
+  /**
+   * Saves the given filename to the given pathname on the local disk.
+   * @param pathname the pathname of the file to save.
+   * @param filename is the name of the file to save.
+   * @throws IOException if the file cannot be saved.
+   */
 
   public void saveImage(String pathname, String filename) throws IOException {
 
@@ -265,6 +277,11 @@ public class ImageModel implements ImageEditor{
 
   }
 
+  /**
+   * Finds the total value of the image, which is the max value of each pixel.
+   * @param filename is the name of the file
+   * @return an integer representing the total value of the image.
+   */
   private int findTotalValue(String filename){
     int value = images.get(filename)[0][0].findValue();
 

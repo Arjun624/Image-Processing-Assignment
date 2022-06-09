@@ -63,5 +63,4 @@ public class ImageControllerImpl implements ImageController{
       givenCommand.apply(s).execute(model, view);
     }
   }
-
 }

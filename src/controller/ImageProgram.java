@@ -19,8 +19,5 @@ public class ImageProgram {
       controller = new ImageControllerImpl(view, in);
       controller.go(model);
     }
-
-
   }
-
 }
