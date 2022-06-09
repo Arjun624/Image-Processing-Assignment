@@ -1,6 +1,7 @@
 package controller;
 
 import model.ImageModel;
+import view.ImageView;
 
 public class AdjustBrightness implements ImageCommands{
 
@@ -15,7 +16,7 @@ public class AdjustBrightness implements ImageCommands{
   }
 
   @Override
-  public void execute(ImageModel model) {
+  public void execute(ImageModel model, ImageView view) {
     model.adjustBrightness(increment, fileName, newFileName);
   }
 }

@@ -1,6 +1,7 @@
 package controller;
 
 import model.ImageModel;
+import view.ImageView;
 
 public class GreenGreyscale implements ImageCommands {
 
@@ -14,7 +15,7 @@ public class GreenGreyscale implements ImageCommands {
 
 
   @Override
-  public void execute(ImageModel model) {
+  public void execute(ImageModel model, ImageView view) {
     model.greenGreyscale(fileName, newFileName);
   }
 }

@@ -15,7 +15,7 @@ public class BlueGreyscale implements ImageCommands {
   }
 
   @Override
-  public void execute(ImageModel model) throws IOException {
+  public void execute(ImageModel model, ImageView view) throws IOException {
     model.blueGreyscale(fileName, newFileName);
   }
 }
