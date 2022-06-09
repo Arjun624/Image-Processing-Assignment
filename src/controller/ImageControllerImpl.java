@@ -1,6 +1,5 @@
 package controller;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,7 +14,6 @@ import view.ImageView;
  */
 public class ImageControllerImpl implements ImageController{
 
-  String[] args;
   ImageView view;
 
   Readable rd;
@@ -39,28 +37,13 @@ public class ImageControllerImpl implements ImageController{
     commands.put("luma", s -> new LumaGreyscale(s.next(), s.next()));
     commands.put("intensity", s -> new IntensityGreyscale(s.next(), s.next()));
     commands.put("max", s -> new ValueGreyscale(s.next(), s.next()));
+    commands.put("q", s -> new Quit());
 
   }
 
   @Override
   public void go(ImageModel model) throws IllegalArgumentException, IOException {
-//      ImageModel model = new ImageModel();
-//      int i = 0;
-//      while (i < args.length){
-//        if(args[i].equalsIgnoreCase("adjust-brightness")){
-//          Actions.preform(model, args[i], args[i+2], args[i+3],
-//                  Integer.parseInt(args[i+1]), view);
-//          i += 4;
-//        }
-//        else {
-//          Actions.preform(model, args[i], args[i+1], args[i + 2], 0, view);
-//          i += 3;
-//        }
-//      }
-
     Scanner s = new Scanner(rd);
-
-
     Function<Scanner, ImageCommands> givenCommand = commands.getOrDefault(s.next(), null);
     if (givenCommand == null) {
       throw new IllegalArgumentException("Invalid command");

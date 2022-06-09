@@ -10,14 +10,16 @@ import java.util.Scanner;
 
 public class ImageModel {
   public HashMap<String, Pixel[][]> images;
-  String pathname;
+  public boolean quit;
 
   public ImageModel(){
-    images = new HashMap<String, Pixel[][]>();
+    images = new HashMap<>();
+    quit = false;
   }
 
   public ImageModel(HashMap<String, Pixel[][]> images){
    this.images = images;
+   quit = false;
   }
 
   public void flipVertically(String filename, String newFilename) {
