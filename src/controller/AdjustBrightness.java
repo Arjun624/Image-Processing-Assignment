@@ -1,5 +1,7 @@
 package controller;
 
+import java.io.IOException;
+
 import model.ImageModel;
 import view.ImageView;
 
@@ -16,7 +18,8 @@ public class AdjustBrightness implements ImageCommands{
   }
 
   @Override
-  public void execute(ImageModel model, ImageView view) {
+  public void execute(ImageModel model, ImageView view) throws IOException {
     model.adjustBrightness(increment, fileName, newFileName);
+    view.renderMessage("Image: " + fileName + " adjusted brightness by a factor of " + increment);
   }
 }

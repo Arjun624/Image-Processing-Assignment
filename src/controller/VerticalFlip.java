@@ -17,6 +17,6 @@ public class VerticalFlip implements ImageCommands{
   @Override
   public void execute(ImageModel model, ImageView view) throws IOException {
     model.flipVertically(filepath, filename);
-    view.renderMessage("Image flipped vertically");
+    view.renderMessage("Image: " + filepath + " flipped vertically");
   }
 }

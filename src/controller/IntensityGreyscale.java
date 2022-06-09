@@ -18,6 +18,6 @@ public class IntensityGreyscale implements ImageCommands{
   @Override
   public void execute(ImageModel model, ImageView view) throws IOException {
     model.intensityGreyscale(fileName, newFileName);
-    view.renderMessage("Image changed to intensity greyscale");
+    view.renderMessage("Image " + fileName + " changed to intensity greyscale");
   }
 }
