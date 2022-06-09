@@ -22,8 +22,8 @@ public class ImageControllerImpl implements ImageController{
 
   Map<String, Function<Scanner, ImageCommands>> commands;
 
-  public ImageControllerImpl(String[] args, ImageView view, Readable rd){
-    this.args = args;
+  public ImageControllerImpl(ImageView view, Readable rd){
+
     this.view = view;
     this.rd = rd;
 
@@ -43,7 +43,7 @@ public class ImageControllerImpl implements ImageController{
   }
 
   @Override
-  public void go() throws IllegalArgumentException, IOException {
+  public void go(ImageModel model) throws IllegalArgumentException, IOException {
 //      ImageModel model = new ImageModel();
 //      int i = 0;
 //      while (i < args.length){
@@ -58,11 +58,14 @@ public class ImageControllerImpl implements ImageController{
 //        }
 //      }
 
-    Function<Scanner, ImageCommands> givenCommand = commands.get(rd.toString());
+    Scanner s = new Scanner(rd);
+
+
+    Function<Scanner, ImageCommands> givenCommand = commands.getOrDefault(s.next(), null);
     if (givenCommand == null) {
       throw new IllegalArgumentException("Invalid command");
     } else {
-      givenCommand.apply(new Scanner(rd)).execute(new ImageModel());
+      givenCommand.apply(s).execute(model);
     }
   }
 
