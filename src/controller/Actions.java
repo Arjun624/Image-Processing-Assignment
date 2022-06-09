@@ -50,7 +50,7 @@ public class Actions {
         view.renderMessage("Created value greyscale of " + filename);
         break;
       case("load"):
-        image.load(filepath, filename);
+        image.loadImage(filepath, filename);
         view.renderMessage("Loaded " + filename);
         break;
       case("save"):

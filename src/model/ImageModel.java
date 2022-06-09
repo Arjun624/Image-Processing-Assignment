@@ -147,7 +147,7 @@ public class ImageModel {
     images.put(newFilename,arr);
   }
 
-  public void load(String pathname, String filename) throws FileNotFoundException{
+  public void loadImage(String pathname, String filename) throws FileNotFoundException{
     Scanner sc;
 
     try {
@@ -196,7 +196,7 @@ public class ImageModel {
   }
 
 
-  public void saveImage(String pathname, String imageName){
+  public void saveImage(String pathname, String filename){
     StringBuilder sb = new StringBuilder();
     try {
       File newFile = new File(pathname);
@@ -215,19 +215,19 @@ public class ImageModel {
       FileWriter writer = new FileWriter(pathname);
       sb.append("P3");
       sb.append((System.lineSeparator()));
-      sb.append(images.get(imageName)[0].length);
+      sb.append(images.get(filename)[0].length);
       sb.append(" ");
-      sb.append(images.get(imageName).length);
+      sb.append(images.get(filename).length);
       sb.append((System.lineSeparator()));
-      sb.append(findTotalValue(imageName));
+      sb.append(findTotalValue(filename));
       sb.append(System.lineSeparator());
-      for(int row = 0; row< images.get(imageName).length; row++) {
-        for (int col = 0; col < images.get(imageName)[0].length; col++) {
-          sb.append(images.get(imageName)[row][col].r);
+      for(int row = 0; row< images.get(filename).length; row++) {
+        for (int col = 0; col < images.get(filename)[0].length; col++) {
+          sb.append(images.get(filename)[row][col].r);
           sb.append((System.lineSeparator()));
-          sb.append((images.get(imageName)[row][col].g));
+          sb.append((images.get(filename)[row][col].g));
           sb.append((System.lineSeparator()));
-          sb.append((images.get(imageName)[row][col].b));
+          sb.append((images.get(filename)[row][col].b));
           sb.append((System.lineSeparator()));
         }
       }
@@ -241,12 +241,12 @@ public class ImageModel {
 
   }
 
-  private int findTotalValue(String imageName){
-    int value = images.get(imageName)[0][0].findValue();
+  private int findTotalValue(String filename){
+    int value = images.get(filename)[0][0].findValue();
 
-    for (int row = 0; row < images.get(imageName).length; row++) {
-      for (int col = 0; col < images.get(imageName)[0].length; col++) {
-        value = Math.max(images.get(imageName)[row][col].findValue(), value);
+    for (int row = 0; row < images.get(filename).length; row++) {
+      for (int col = 0; col < images.get(filename)[0].length; col++) {
+        value = Math.max(images.get(filename)[row][col].findValue(), value);
       }
     }
     return value;

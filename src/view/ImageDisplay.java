@@ -13,6 +13,6 @@ public class ImageDisplay implements ImageView{
     this.ap = System.out;
   }
   public void renderMessage(String message) throws IOException {
-    this.ap.append(message + System.lineSeparator());
+    this.ap.append(message).append(System.lineSeparator());
   }
 }
