@@ -1,6 +1,9 @@
 package controller;
 
+import java.io.IOException;
+
 import model.ImageModel;
+import view.ImageView;
 
 public class VerticalFlip implements ImageCommands{
   String filepath;
@@ -12,7 +15,8 @@ public class VerticalFlip implements ImageCommands{
   }
 
   @Override
-  public void execute(ImageModel model) {
+  public void execute(ImageModel model, ImageView view) throws IOException {
     model.flipVertically(filepath, filename);
+    view.renderMessage("Image flipped vertically");
   }
 }

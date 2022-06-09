@@ -1,6 +1,9 @@
 package controller;
 
+import java.io.IOException;
+
 import model.ImageModel;
+import view.ImageView;
 
 public class IntensityGreyscale implements ImageCommands{
 
@@ -13,7 +16,8 @@ public class IntensityGreyscale implements ImageCommands{
   }
 
   @Override
-  public void execute(ImageModel model) {
+  public void execute(ImageModel model, ImageView view) throws IOException {
     model.intensityGreyscale(fileName, newFileName);
+    view.renderMessage("Image changed to intensity greyscale");
   }
 }

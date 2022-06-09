@@ -1,8 +1,10 @@
 package controller;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import model.ImageModel;
+import view.ImageView;
 
 public class LoadImage implements ImageCommands{
 
@@ -15,7 +17,8 @@ public class LoadImage implements ImageCommands{
   }
 
   @Override
-  public void execute(ImageModel model) throws FileNotFoundException {
+  public void execute(ImageModel model, ImageView view) throws IOException {
     model.loadImage(pathName, fileName);
+    view.renderMessage("Image: " + pathName + "\nloaded as: " + fileName);
   }
 }

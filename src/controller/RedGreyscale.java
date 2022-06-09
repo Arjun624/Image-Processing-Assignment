@@ -1,8 +1,10 @@
 package controller;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import model.ImageModel;
+import view.ImageView;
 
 public class RedGreyscale implements ImageCommands {
   String fileName;
@@ -15,7 +17,8 @@ public class RedGreyscale implements ImageCommands {
 
 
   @Override
-  public void execute(ImageModel model) {
+  public void execute(ImageModel model, ImageView view) throws IOException {
     model.redGreyscale(fileName, newFileName);
+    view.renderMessage("Imaged changed to red greyscale");
   }
 }

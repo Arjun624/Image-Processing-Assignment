@@ -1,8 +1,10 @@
 package controller;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import model.ImageModel;
+import view.ImageView;
 
 public class SaveImage implements ImageCommands{
 
@@ -16,7 +18,8 @@ public class SaveImage implements ImageCommands{
 
 
   @Override
-  public void execute(ImageModel model)  {
+  public void execute(ImageModel model, ImageView view) throws IOException {
     model.saveImage(pathName, fileName);
+    view.renderMessage("Image: " + fileName + "\nsaved as: " + pathName);
   }
 }

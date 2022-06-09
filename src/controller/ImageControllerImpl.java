@@ -48,7 +48,7 @@ public class ImageControllerImpl implements ImageController{
     if (givenCommand == null) {
       throw new IllegalArgumentException("Invalid command");
     } else {
-      givenCommand.apply(s).execute(model);
+      givenCommand.apply(s).execute(model, view);
     }
   }
 
