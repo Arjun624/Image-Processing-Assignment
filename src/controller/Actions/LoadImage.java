@@ -1,12 +1,13 @@
-package controller;
+package controller.Actions;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import controller.ImageCommands;
 import model.ImageModel;
 import view.ImageView;
 
-public class LoadImage implements ImageCommands{
+public class LoadImage implements ImageCommands {
 
   String pathName;
   String fileName;

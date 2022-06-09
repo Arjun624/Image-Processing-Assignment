@@ -1,11 +1,12 @@
-package controller;
+package controller.Actions;
 
 import java.io.IOException;
 
+import controller.ImageCommands;
 import model.ImageModel;
 import view.ImageView;
 
-public class AdjustBrightness implements ImageCommands{
+public class AdjustBrightness implements ImageCommands {
 
   int increment;
   String fileName;

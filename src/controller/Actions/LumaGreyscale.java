@@ -1,8 +1,9 @@
-package controller;
+package controller.Actions;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import controller.ImageCommands;
 import model.ImageModel;
 import view.ImageView;
 

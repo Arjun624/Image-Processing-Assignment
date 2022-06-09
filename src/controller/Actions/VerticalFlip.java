@@ -1,11 +1,12 @@
-package controller;
+package controller.Actions;
 
 import java.io.IOException;
 
+import controller.ImageCommands;
 import model.ImageModel;
 import view.ImageView;
 
-public class VerticalFlip implements ImageCommands{
+public class VerticalFlip implements ImageCommands {
   String filepath;
   String filename;
 

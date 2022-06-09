@@ -6,6 +6,18 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.function.Function;
 
+import controller.Actions.AdjustBrightness;
+import controller.Actions.BlueGreyscale;
+import controller.Actions.GreenGreyscale;
+import controller.Actions.HorizontalFlip;
+import controller.Actions.IntensityGreyscale;
+import controller.Actions.LoadImage;
+import controller.Actions.LumaGreyscale;
+import controller.Actions.Quit;
+import controller.Actions.RedGreyscale;
+import controller.Actions.SaveImage;
+import controller.Actions.ValueGreyscale;
+import controller.Actions.VerticalFlip;
 import model.ImageModel;
 import view.ImageView;
 
