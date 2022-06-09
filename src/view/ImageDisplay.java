@@ -2,20 +2,33 @@ package view;
 
 import java.io.IOException;
 
+/**
+ * Represents a way to display messages to the user.
+ */
 public class ImageDisplay implements ImageView{
   Appendable ap;
 
+  /**
+   * Constructs a {@code ImageDisplay} where the user sets the appendable object.
+   * @param ap the appendable object
+   */
   public ImageDisplay(Appendable ap){
     this.ap = ap;
   }
 
+  /**
+   * Constructs a default {@code ImageDisplay} where the view appends System.out.
+   */
   public ImageDisplay(){
     this.ap = System.out;
   }
+
+  @Override
   public void renderMessage(String message) throws IOException {
     this.ap.append(message).append(System.lineSeparator());
   }
 
+  @Override
   public void displayWelcomeMessage() throws IOException {
     this.renderMessage("Welcome to the Image Program!");
     this.renderMessage("Valid Commands include:");

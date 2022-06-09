@@ -10,6 +10,8 @@ import model.ImageModel;
 public interface ImageController {
   /**
    * Method that takes in the user arguments and preforms any action.
+   * @param model the image model to be edited
+   * @throws IOException if the program cannot read the input or write the output
    */
    void go(ImageModel model) throws IOException;
 }

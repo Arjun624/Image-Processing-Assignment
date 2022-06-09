@@ -11,24 +11,35 @@ import java.util.Scanner;
 import view.ImageDisplay;
 import view.ImageView;
 
+/**
+ * Represents a way to edit, load, and save PPM images.
+ */
 public class ImageModel implements ImageEditor{
   public HashMap<String, Pixel[][]> images;
   public boolean quit;
 
   ImageView view;
 
+  /**
+   * Constructs a {@code ImageModel} that sets the map of files and their pixels to an empty one.
+   */
   public ImageModel(){
     images = new HashMap<>();
     quit = false;
     view = new ImageDisplay();
   }
 
+  /**
+   * Constructs a {@code ImageModel} where the user can input a map of files and their pixels.
+   * @param images the map of files and their pixels
+   */
   public ImageModel(HashMap<String, Pixel[][]> images){
    this.images = images;
    quit = false;
    view = new ImageDisplay();
   }
 
+  @Override
   public void flipVertically(String filename, String newFilename) throws IOException {
 
     int yLength = images.get(filename).length-1;
@@ -44,6 +55,7 @@ public class ImageModel implements ImageEditor{
     view.renderMessage("Image: " + filename + " flipped vertically");
   }
 
+  @Override
   public void flipHorizontally(String filename, String newFilename) throws IOException {
 
     int xLength = images.get(filename)[0].length-1;
@@ -59,6 +71,7 @@ public class ImageModel implements ImageEditor{
     view.renderMessage("Image " + filename + " flipped horizontally");
   }
 
+  @Override
   public void redGreyscale(String filename, String newFilename) throws IOException {
     Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
     for (int row = 0; row < this.images.get(filename).length; row++) {
@@ -71,6 +84,7 @@ public class ImageModel implements ImageEditor{
     view.renderMessage("Imaged " + filename + " changed to red greyscale");
   }
 
+  @Override
   public void greenGreyscale(String filename, String newFilename) throws IOException {
     Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
     for (int row = 0; row < this.images.get(filename).length; row++) {
@@ -83,6 +97,7 @@ public class ImageModel implements ImageEditor{
     view.renderMessage("image " + filename + " changed to green greyscale");
   }
 
+  @Override
   public void blueGreyscale(String filename, String newFilename) throws IOException {
     Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
     for (int row = 0; row < this.images.get(filename).length; row++) {
@@ -95,6 +110,7 @@ public class ImageModel implements ImageEditor{
     view.renderMessage("image " + filename + " changed to blue greyscale");
   }
 
+  @Override
   public void adjustBrightness(int increment, String filename, String newFilename) throws IOException {
     Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
     for(int row = 0; row< images.get(filename).length; row++) {
@@ -127,6 +143,7 @@ public class ImageModel implements ImageEditor{
     view.renderMessage("Image: " + filename + " adjusted brightness by a factor of " + increment);
   }
 
+  @Override
   public void lumaGreyscale(String filename, String newFilename) throws IOException {
     Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
     for (int row = 0; row < this.images.get(filename).length; row++) {
@@ -139,6 +156,7 @@ public class ImageModel implements ImageEditor{
     view.renderMessage("Image " + filename + " changed to luma");
   }
 
+  @Override
   public void intensityGreyscale(String filename, String newFilename) throws IOException {
     Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
     for (int row = 0; row < this.images.get(filename).length; row++) {
@@ -151,6 +169,7 @@ public class ImageModel implements ImageEditor{
     view.renderMessage("Image " + filename + " changed to intensity greyscale");
   }
 
+  @Override
   public void valueGreyscale(String filename, String newFilename) throws IOException {
     Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
     for (int row = 0; row < this.images.get(filename).length; row++) {
@@ -164,12 +183,7 @@ public class ImageModel implements ImageEditor{
   }
 
 
-  /**
-   * Loads an image from the inputted path and adds it to the map of images.
-   * @param pathname is the path to the image to be loaded.
-   * @param filename is the name of the image to be loaded.
-   * @throws IOException if the image cannot be loaded.
-   */
+  @Override
   public void loadImage(String pathname, String filename) throws IOException {
     Scanner sc;
 
@@ -219,13 +233,8 @@ public class ImageModel implements ImageEditor{
     view.renderMessage("Image: " + pathname + "\nloaded as: " + filename);
   }
 
-  /**
-   * Saves the given filename to the given pathname on the local disk.
-   * @param pathname the pathname of the file to save.
-   * @param filename is the name of the file to save.
-   * @throws IOException if the file cannot be saved.
-   */
 
+  @Override
   public void saveImage(String pathname, String filename) throws IOException {
 
     StringBuilder sb = new StringBuilder();

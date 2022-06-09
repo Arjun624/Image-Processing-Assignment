@@ -22,7 +22,7 @@ import model.ImageModel;
 import view.ImageView;
 
 /**
- * Implementation of an image controller
+ * Implementation of an image controller.
  */
 public class ImageControllerImpl implements ImageController{
 
@@ -32,6 +32,11 @@ public class ImageControllerImpl implements ImageController{
 
   Map<String, Function<Scanner, ImageCommands>> commands;
 
+  /**
+   * Constructs an {@code ImageControllerImpl} where the user can set the view and readable object.
+   * @param view the view
+   * @param rd the readable object to be read by the scanner
+   */
   public ImageControllerImpl(ImageView view, Readable rd){
 
     this.view = view;

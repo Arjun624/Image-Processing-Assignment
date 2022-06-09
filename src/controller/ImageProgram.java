@@ -7,7 +7,15 @@ import model.ImageModel;
 import view.ImageDisplay;
 import view.ImageView;
 
+/**
+ * The class that runs the program in its entirety.
+ */
 public class ImageProgram {
+  /**
+   * The main method.
+   * @param args the arguments
+   * @throws IOException if the program cannot read the input or write the output
+   */
   public static void main(String[] args) throws IOException {
     ImageControllerImpl controller;
     ImageView view = new ImageDisplay();
