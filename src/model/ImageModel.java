@@ -253,4 +253,12 @@ public class ImageModel {
 
   }
 
+  public Pixel[][] getPixels(String filename){
+    return this.images.get(filename);
+  }
+
+  public void add(String filename, Pixel[][] pixels){
+    this.images.put(filename, pixels);
+  }
+
 }
