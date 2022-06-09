@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Scanner;
 
-public class ImageModel {
+public class ImageModel implements ImageEditor{
   public HashMap<String, Pixel[][]> images;
   public boolean quit;
 
@@ -149,7 +149,8 @@ public class ImageModel {
     images.put(newFilename,arr);
   }
 
-  public void loadImage(String pathname, String filename) throws FileNotFoundException{
+
+  public void loadImage(String pathname, String filename) {
     Scanner sc;
 
     try {
@@ -157,7 +158,7 @@ public class ImageModel {
     }
     catch (FileNotFoundException e) {
       System.out.println("File "+pathname+ " not found!");
-      throw new FileNotFoundException("File "+pathname+ " not found!");
+      return;
     }
     StringBuilder builder = new StringBuilder();
     //read the file line by line, and populate a string. This will throw away any comment lines

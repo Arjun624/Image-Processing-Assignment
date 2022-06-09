@@ -57,9 +57,9 @@ public interface ImageEditor {
     * Adjusts the brightness of an image.
     * @param filename the file reference
     */
-   void adjustBrightness(int increment, String filename);
+   void adjustBrightness(int increment, String filename, String newFilename);
 
-   void load(String pathname, String filename);
+   void loadImage(String pathname, String filename);
 
    void saveImage(String pathname, String imageName);
 
