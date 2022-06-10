@@ -38,7 +38,7 @@ public class SaveImage implements ImageCommands {
     try {
       model.saveImage(pathName, fileName);
     } catch (NullPointerException npe) {
-      view.renderMessage(fileName + " not loaded!");
+      view.renderMessage(pathName + " does not exist!");
     }
   }
 }
