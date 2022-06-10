@@ -18,7 +18,7 @@ public class ImageProgram {
    */
   public static void main(String[] args) throws IOException {
     ImageControllerImpl controller;
-    ImageView view = new ImageDisplay();
+    ImageView view = new ImageDisplay(System.out);
     ImageModel model = new ImageModel();
     InputStreamReader in = new InputStreamReader(System.in);
     view.displayWelcomeMessage();

@@ -5,6 +5,8 @@ import java.util.HashMap;
 
 import model.ImageModel;
 import model.Pixel;
+import view.ImageDisplay;
+import view.ImageView;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -15,6 +17,7 @@ public class TestModel {
   @Test
   public void testValidInitialization(){
     ImageModel m = new ImageModel();
+    ImageView v = new ImageDisplay(System.out);
     assertFalse(m.quit);
     assertTrue(m.images.isEmpty());
 
@@ -27,7 +30,7 @@ public class TestModel {
       }
     }
     testMap.put(file, arr);
-    ImageModel m1 = new ImageModel(testMap);
+    ImageModel m1 = new ImageModel(testMap, v);
     assertFalse(m1.quit);
     for (int i = 0; i < 3; i++) {
       for (int j = 0; j < 3; j++) {
@@ -37,16 +40,28 @@ public class TestModel {
   }
 
   @Test
-  public void testInvalidInitialization(){
+  public void testNullMap(){
+    ImageView v = new ImageDisplay(System.out);
     try {
-      new ImageModel(null);
+      new ImageModel(null, v);
     } catch (IllegalArgumentException e){
-      assertEquals(e.getMessage(), "hash map is null");
+      assertEquals(e.getMessage(), "HashMap or ImageView cannot be null");
+    }
+  }
+
+  @Test
+  public void testNullView(){
+    HashMap<String, Pixel[][]> testMap = new HashMap<>();
+    try {
+      new ImageModel(testMap, null);
+    } catch (IllegalArgumentException e){
+      assertEquals(e.getMessage(), "HashMap or ImageView cannot be null");
     }
   }
 
   @Test
   public void testFlipVertically() throws IOException {
+    ImageView v = new ImageDisplay(System.out);
     HashMap<String, Pixel[][]> testMap = new HashMap<>();
     String file = "test";
     Pixel[][] arr = new Pixel[3][3];
@@ -56,7 +71,7 @@ public class TestModel {
       }
     }
     testMap.put(file, arr);
-    ImageModel m1 = new ImageModel(testMap);
+    ImageModel m1 = new ImageModel(testMap, v);
     m1.flipVertically("test", "test-vf");
     Pixel[][] arr1 = new Pixel[3][3];
     for (int i = 0; i < 3; i++) {

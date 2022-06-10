@@ -19,12 +19,6 @@ public class ImageDisplay implements ImageView{
     this.ap = ap;
   }
 
-  /**
-   * Constructs a default {@code ImageDisplay} where the view appends System.out.
-   */
-  public ImageDisplay(){
-    this.ap = System.out;
-  }
 
   @Override
   public void renderMessage(String message) throws IOException {

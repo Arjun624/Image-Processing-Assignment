@@ -24,19 +24,22 @@ public class ImageModel implements ImageEditor{
    * Constructs a {@code ImageModel} that sets the map of files and their pixels to an empty one.
    */
   public ImageModel(){
-    images = new HashMap<>();
-    quit = false;
-    view = new ImageDisplay();
+    this.images = new HashMap<>();
+    this.quit = false;
+    this.view = new ImageDisplay(System.out);
   }
 
   /**
    * Constructs a {@code ImageModel} where the user can input a map of files and their pixels.
    * @param images the map of files and their pixels
    */
-  public ImageModel(HashMap<String, Pixel[][]> images){
+  public ImageModel(HashMap<String, Pixel[][]> images, ImageView view){
+    if(images==null || view==null){
+      throw new IllegalArgumentException("HashMap or ImageView cannot be null");
+    }
    this.images = images;
-   quit = false;
-   view = new ImageDisplay();
+   this.quit = false;
+   this.view = view;
   }
 
   @Override
