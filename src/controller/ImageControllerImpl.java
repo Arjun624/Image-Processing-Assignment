@@ -58,7 +58,7 @@ public class ImageControllerImpl implements ImageController {
     commands.put("greyscale-blue", s -> new BlueGreyscale(s.next(), s.next()));
     commands.put("luma", s -> new LumaGreyscale(s.next(), s.next()));
     commands.put("intensity", s -> new IntensityGreyscale(s.next(), s.next()));
-    commands.put("max", s -> new ValueGreyscale(s.next(), s.next()));
+    commands.put("value", s -> new ValueGreyscale(s.next(), s.next()));
     commands.put("q", s -> new Quit());
 
   }
