@@ -4,6 +4,9 @@ import model.Pixel;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Tests the {@code Pixel}.
+ */
 public class TestPixel {
   @Test
   public void testValidInitialization(){
