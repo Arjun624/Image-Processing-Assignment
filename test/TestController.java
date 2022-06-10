@@ -123,12 +123,12 @@ public class TestController {
     Appendable ap2 = new StringBuilder();
     ImageView vModel = new ImageDisplay(ap2);
     ImageEditor m2 = new ImageModel(new HashMap<>(),vModel);
-    Readable r2 = new StringReader("load hello test q");
+    Readable r2 = new StringReader("load hello1 test q");
     Appendable apView2 = new StringBuilder();
     ImageView v2 = new ImageDisplay(apView2);
     ImageController c2 = new ImageControllerImpl(v2, r2);
     c2.go(m2);
-    assertEquals("File hello not found!\n", ap2.toString());
+    assertEquals("File hello1 not found!\n", ap2.toString());
 
     Appendable ap3 = new StringBuilder();
     ImageView vModel2 = new ImageDisplay(ap3);
@@ -141,5 +141,7 @@ public class TestController {
     ImageController c3 = new ImageControllerImpl(v3, r3);
     c3.go(m3);
     assertEquals("hello not loaded!", apView3.toString().split("\n")[2]);
+
+
   }
 }
