@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import model.ImageEditor;
@@ -15,6 +16,7 @@ import view.ImageView;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * Tests the {@code ImageModel}.
@@ -51,6 +53,7 @@ public class TestModel {
     ImageView v = new ImageDisplay(System.out);
     try {
       new ImageModel(null, v);
+      fail("Should have thrown an exception");
     } catch (IllegalArgumentException e) {
       assertEquals(e.getMessage(), "HashMap or ImageView cannot be null");
     }
@@ -61,6 +64,7 @@ public class TestModel {
     HashMap<String, Pixel[][]> testMap = new HashMap<>();
     try {
       new ImageModel(testMap, null);
+      fail("Should have thrown an exception");
     } catch (IllegalArgumentException e) {
       assertEquals(e.getMessage(), "HashMap or ImageView cannot be null");
     }
@@ -92,6 +96,13 @@ public class TestModel {
         assertEquals(m1.images.get("test-vf")[i][j], arr1[i][j]);
       }
     }
+
+    try{
+      m1.flipVertically("yes", "no");
+      fail("Should have thrown an exception");
+    } catch (NullPointerException e){
+      assertEquals(e.getMessage(), "file doesn't exist");
+    }
   }
 
   @Test
@@ -119,6 +130,13 @@ public class TestModel {
       for (int j = 0; j < 3; j++) {
         assertEquals(m1.images.get("test-hf")[i][j], arr1[i][j]);
       }
+    }
+
+    try{
+      m1.flipHorizontally("yes", "no");
+      fail("Should have thrown an exception");
+    } catch (NullPointerException e){
+      assertEquals(e.getMessage(), "file doesn't exist");
     }
   }
 
@@ -148,6 +166,13 @@ public class TestModel {
         assertEquals(m1.images.get("test-r")[i][j], arr1[i][j]);
       }
     }
+
+    try{
+      m1.redGreyscale("yes", "no");
+      fail("Should have thrown an exception");
+    } catch (NullPointerException e){
+      assertEquals(e.getMessage(), "file doesn't exist");
+    }
   }
 
   @Test
@@ -176,6 +201,13 @@ public class TestModel {
         assertEquals(m1.images.get("test-g")[i][j], arr1[i][j]);
       }
     }
+
+    try{
+      m1.greenGreyscale("yes", "no");
+      fail("Should have thrown an exception");
+    } catch (NullPointerException e){
+      assertEquals(e.getMessage(), "file doesn't exist");
+    }
   }
 
   @Test
@@ -203,6 +235,13 @@ public class TestModel {
       for (int j = 0; j < 3; j++) {
         assertEquals(m1.images.get("test-b")[i][j], arr1[i][j]);
       }
+    }
+
+    try{
+      m1.blueGreyscale("yes", "no");
+      fail("Should have thrown an exception");
+    } catch (NullPointerException e){
+      assertEquals(e.getMessage(), "file doesn't exist");
     }
   }
 
@@ -307,6 +346,13 @@ public class TestModel {
         assertEquals(m4.images.get("test-b4")[i][j], testArr4[i][j]);
       }
     }
+
+    try{
+      m4.adjustBrightness(40, "yes", "no");
+      fail("Should have thrown an exception");
+    } catch (NullPointerException e){
+      assertEquals(e.getMessage(), "file doesn't exist");
+    }
   }
 
   @Test
@@ -335,6 +381,13 @@ public class TestModel {
       for (int j = 0; j < 3; j++) {
         assertEquals(m1.images.get("test-lg")[i][j], arr1[i][j]);
       }
+    }
+
+    try{
+      m1.lumaGreyscale("yes", "no");
+      fail("Should have thrown an exception");
+    } catch (NullPointerException e){
+      assertEquals(e.getMessage(), "file doesn't exist");
     }
   }
 
@@ -365,6 +418,12 @@ public class TestModel {
         assertEquals(m1.images.get("test-ig")[i][j], arr1[i][j]);
       }
     }
+    try{
+      m1.intensityGreyscale("yes", "no");
+      fail("Should have thrown an exception");
+    } catch (NullPointerException e){
+      assertEquals(e.getMessage(), "file doesn't exist");
+    }
   }
 
   @Test
@@ -392,6 +451,13 @@ public class TestModel {
       for (int j = 0; j < 3; j++) {
         assertEquals(m1.images.get("test-vg")[i][j], arr1[i][j]);
       }
+    }
+
+    try{
+      m1.valueGreyscale("yes", "no");
+      fail("Should have thrown an exception");
+    } catch (NullPointerException e){
+      assertEquals(e.getMessage(), "file doesn't exist");
     }
   }
 
@@ -447,6 +513,13 @@ public class TestModel {
       for (int j = 0; j < pixels[0].length; j++) {
         assertEquals(m.images.get("test")[i][j], pixels[i][j]);
       }
+    }
+
+    try {
+      m.loadImage("noam", "ood");
+      fail("should have thrown an exception");
+    } catch (NoSuchElementException e){
+      assertEquals(e.getMessage(), "File noam not found!");
     }
   }
 

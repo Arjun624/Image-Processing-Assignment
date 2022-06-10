@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import view.ImageDisplay;
@@ -43,8 +44,11 @@ public class ImageModel implements ImageEditor{
   }
 
   @Override
-  public void flipVertically(String filename, String newFilename) throws IOException {
-
+  public void flipVertically(String filename, String newFilename) throws IOException,
+          NullPointerException{
+    if(images.get(filename) == null){
+      throw new NullPointerException("file doesn't exist");
+    }
     int yLength = images.get(filename).length-1;
 
     Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
@@ -59,7 +63,11 @@ public class ImageModel implements ImageEditor{
   }
 
   @Override
-  public void flipHorizontally(String filename, String newFilename) throws IOException {
+  public void flipHorizontally(String filename, String newFilename) throws IOException,
+          NullPointerException{
+    if(images.get(filename) == null){
+      throw new NullPointerException("file doesn't exist");
+    }
 
     int xLength = images.get(filename)[0].length-1;
 
@@ -75,7 +83,12 @@ public class ImageModel implements ImageEditor{
   }
 
   @Override
-  public void redGreyscale(String filename, String newFilename) throws IOException {
+  public void redGreyscale(String filename, String newFilename) throws IOException,
+          NullPointerException{
+    if(images.get(filename) == null){
+      throw new NullPointerException("file doesn't exist");
+    }
+
     Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
     for (int row = 0; row < this.images.get(filename).length; row++) {
       for (int col = 0; col < this.images.get(filename)[0].length; col++) {
@@ -88,7 +101,12 @@ public class ImageModel implements ImageEditor{
   }
 
   @Override
-  public void greenGreyscale(String filename, String newFilename) throws IOException {
+  public void greenGreyscale(String filename, String newFilename) throws IOException,
+          NullPointerException{
+    if(images.get(filename) == null){
+      throw new NullPointerException("file doesn't exist");
+    }
+
     Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
     for (int row = 0; row < this.images.get(filename).length; row++) {
       for (int col = 0; col < this.images.get(filename)[0].length; col++) {
@@ -101,7 +119,12 @@ public class ImageModel implements ImageEditor{
   }
 
   @Override
-  public void blueGreyscale(String filename, String newFilename) throws IOException {
+  public void blueGreyscale(String filename, String newFilename) throws IOException,
+          NullPointerException{
+    if(images.get(filename) == null){
+      throw new NullPointerException("file doesn't exist");
+    }
+
     Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
     for (int row = 0; row < this.images.get(filename).length; row++) {
       for (int col = 0; col < this.images.get(filename)[0].length; col++) {
@@ -114,7 +137,12 @@ public class ImageModel implements ImageEditor{
   }
 
   @Override
-  public void adjustBrightness(int increment, String filename, String newFilename) throws IOException {
+  public void adjustBrightness(int increment, String filename, String newFilename)
+          throws IOException, NullPointerException {
+    if(images.get(filename) == null){
+      throw new NullPointerException("file doesn't exist");
+    }
+
     Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
     for(int row = 0; row< images.get(filename).length; row++) {
       for (int col = 0; col < images.get(filename)[0].length; col++) {
@@ -147,7 +175,12 @@ public class ImageModel implements ImageEditor{
   }
 
   @Override
-  public void lumaGreyscale(String filename, String newFilename) throws IOException {
+  public void lumaGreyscale(String filename, String newFilename) throws IOException,
+          NullPointerException{
+    if(images.get(filename) == null){
+      throw new NullPointerException("file doesn't exist");
+    }
+
     Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
     for (int row = 0; row < this.images.get(filename).length; row++) {
       for (int col = 0; col < this.images.get(filename)[0].length; col++) {
@@ -160,7 +193,12 @@ public class ImageModel implements ImageEditor{
   }
 
   @Override
-  public void intensityGreyscale(String filename, String newFilename) throws IOException {
+  public void intensityGreyscale(String filename, String newFilename) throws IOException,
+          NullPointerException{
+    if(images.get(filename) == null){
+      throw new NullPointerException("file doesn't exist");
+    }
+
     Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
     for (int row = 0; row < this.images.get(filename).length; row++) {
       for (int col = 0; col < this.images.get(filename)[0].length; col++) {
@@ -173,7 +211,12 @@ public class ImageModel implements ImageEditor{
   }
 
   @Override
-  public void valueGreyscale(String filename, String newFilename) throws IOException {
+  public void valueGreyscale(String filename, String newFilename) throws IOException,
+          NullPointerException{
+    if(images.get(filename) == null){
+      throw new NullPointerException("file doesn't exist");
+    }
+
     Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
     for (int row = 0; row < this.images.get(filename).length; row++) {
       for (int col = 0; col < this.images.get(filename)[0].length; col++) {
@@ -187,15 +230,15 @@ public class ImageModel implements ImageEditor{
 
 
   @Override
-  public void loadImage(String pathname, String filename) throws IOException {
+  public void loadImage(String pathname, String filename) throws IOException,
+          NoSuchElementException{
     Scanner sc;
 
     try {
       sc = new Scanner(new FileInputStream(pathname));
     }
     catch (FileNotFoundException e) {
-      view.renderMessage("File "+pathname+ " not found!");
-      return;
+      throw new NoSuchElementException("File "+pathname+ " not found!");
     }
     StringBuilder builder = new StringBuilder();
     //read the file line by line, and populate a string. This will throw away any comment lines
@@ -287,6 +330,16 @@ public class ImageModel implements ImageEditor{
       e.printStackTrace();
     }
 
+  }
+
+  @Override
+  public boolean getStatus() {
+    return this.quit;
+  }
+
+  @Override
+  public void quit() {
+    this.quit = true;
   }
 
   /**
