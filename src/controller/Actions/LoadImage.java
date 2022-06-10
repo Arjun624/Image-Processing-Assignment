@@ -1,8 +1,10 @@
 package controller.Actions;
 
 import java.io.IOException;
+import java.util.NoSuchElementException;
 
 import controller.ImageCommands;
+import model.ImageEditor;
 import model.ImageModel;
 import view.ImageView;
 
@@ -31,7 +33,12 @@ public class LoadImage implements ImageCommands {
    * @throws IOException if the program cannot read the input or write the output
    */
   @Override
-  public void execute(ImageModel model, ImageView view) throws IOException {
-    model.loadImage(pathName, fileName);
+  public void execute(ImageEditor model, ImageView view) throws IOException {
+    try {
+      model.loadImage(pathName, fileName);
+    }
+    catch (NoSuchElementException npe) {
+      view.renderMessage(pathName + " does not exist!");
+    }
   }
 }

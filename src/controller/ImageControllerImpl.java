@@ -18,13 +18,14 @@ import controller.Actions.RedGreyscale;
 import controller.Actions.SaveImage;
 import controller.Actions.ValueGreyscale;
 import controller.Actions.VerticalFlip;
+import model.ImageEditor;
 import model.ImageModel;
 import view.ImageView;
 
 /**
  * Implementation of an image controller.
  */
-public class ImageControllerImpl implements ImageController{
+public class ImageControllerImpl implements ImageController {
 
   ImageView view;
 
@@ -34,11 +35,12 @@ public class ImageControllerImpl implements ImageController{
 
   /**
    * Constructs an {@code ImageControllerImpl} where the user can set the view and readable object.
+   *
    * @param view the view
-   * @param rd the readable object to be read by the scanner
+   * @param rd   the readable object to be read by the scanner
    */
-  public ImageControllerImpl(ImageView view, Readable rd){
-    if(view == null || rd == null){
+  public ImageControllerImpl(ImageView view, Readable rd) throws IllegalArgumentException {
+    if (view == null || rd == null) {
       throw new IllegalArgumentException("View or readable cannot be null");
     }
 
@@ -62,10 +64,10 @@ public class ImageControllerImpl implements ImageController{
   }
 
   @Override
-  public void go(ImageModel model) throws IllegalArgumentException, IOException {
+  public void go(ImageEditor model) throws IllegalArgumentException, IOException {
     Scanner s = new Scanner(rd);
 
-    while(!model.quit){
+    while (!model.getStatus()) {
       view.renderMessage("Enter a command: ");
       Function<Scanner, ImageCommands> givenCommand = commands.getOrDefault(s.next(), null);
       if (givenCommand == null) {

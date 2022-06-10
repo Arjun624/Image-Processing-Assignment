@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 
+import model.ImageEditor;
 import model.ImageModel;
 
 /**
@@ -13,5 +14,5 @@ public interface ImageController {
    * @param model the image model to be edited
    * @throws IOException if the program cannot read the input or write the output
    */
-   void go(ImageModel model) throws IOException;
+   void go(ImageEditor model) throws IOException;
 }

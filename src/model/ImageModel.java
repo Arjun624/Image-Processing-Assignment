@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import view.ImageDisplay;
@@ -287,6 +288,16 @@ public class ImageModel implements ImageEditor{
       e.printStackTrace();
     }
 
+  }
+
+  @Override
+  public boolean getStatus() {
+    return this.quit;
+  }
+
+  @Override
+  public void quit() {
+    this.quit = true;
   }
 
   /**

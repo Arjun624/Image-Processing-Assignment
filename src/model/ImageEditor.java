@@ -93,6 +93,14 @@ public interface ImageEditor {
     */
    void saveImage(String pathname, String filename) throws IOException;
 
+   /**
+    * Returns whether the program should be quit.
+    * @return the quit field of the class
+    */
+   boolean getStatus();
 
-
+   /**
+    * changes the quit boolean in order to tell the program to quit
+    */
+   void quit() throws IOException;
 }

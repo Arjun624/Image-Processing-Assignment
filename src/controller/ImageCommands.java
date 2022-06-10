@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 
+import model.ImageEditor;
 import model.ImageModel;
 import view.ImageView;
 
@@ -16,6 +17,6 @@ public interface ImageCommands {
     * @param view the view
     * @throws IOException if the program cannot read the input or write the output
     */
-   void execute(ImageModel model, ImageView view) throws IOException;
+   void execute(ImageEditor model, ImageView view) throws IOException;
 
 }

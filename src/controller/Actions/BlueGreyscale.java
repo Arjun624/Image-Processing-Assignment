@@ -3,6 +3,7 @@ package controller.Actions;
 import java.io.IOException;
 
 import controller.ImageCommands;
+import model.ImageEditor;
 import model.ImageModel;
 import view.ImageView;
 
@@ -30,7 +31,7 @@ public class BlueGreyscale implements ImageCommands {
    * @throws IOException if the program cannot read the input or write the output
    */
   @Override
-  public void execute(ImageModel model, ImageView view) throws IOException {
+  public void execute(ImageEditor model, ImageView view) throws IOException {
     try {
       model.blueGreyscale(fileName, newFileName);
     } catch (NullPointerException npe) {
