@@ -61,11 +61,16 @@ public class ImageControllerImpl implements ImageController{
   @Override
   public void go(ImageModel model) throws IllegalArgumentException, IOException {
     Scanner s = new Scanner(rd);
-    Function<Scanner, ImageCommands> givenCommand = commands.getOrDefault(s.next(), null);
-    if (givenCommand == null) {
-      view.renderMessage("Invalid command!");
-    } else {
-      givenCommand.apply(s).execute(model, view);
+
+    while(!model.quit){
+      view.renderMessage("Enter a command: ");
+      Function<Scanner, ImageCommands> givenCommand = commands.getOrDefault(s.next(), null);
+      if (givenCommand == null) {
+        view.renderMessage("Invalid command!");
+      } else {
+        givenCommand.apply(s).execute(model, view);
+      }
     }
+
   }
 }

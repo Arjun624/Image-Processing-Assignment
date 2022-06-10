@@ -22,10 +22,7 @@ public class ImageProgram {
     ImageModel model = new ImageModel();
     InputStreamReader in = new InputStreamReader(System.in);
     view.displayWelcomeMessage();
-    while (!model.quit) {
-      view.renderMessage("Enter a command: ");
-      controller = new ImageControllerImpl(view, in);
-      controller.go(model);
-    }
+    controller = new ImageControllerImpl(view, in);
+    controller.go(model);
   }
 }
