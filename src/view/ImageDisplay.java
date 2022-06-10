@@ -39,7 +39,7 @@ public class ImageDisplay implements ImageView{
     this.renderMessage("(8) 'greyscale-blue' <filename> <new filename>");
     this.renderMessage("(9) 'luma' <filename> <new filename>");
     this.renderMessage("(10) 'intensity' <filename> <new filename>");
-    this.renderMessage("(11) 'max' <filepath> <filename>");
+    this.renderMessage("(11) 'value' <filename> <new filename>");
     this.renderMessage("(12) 'q' to quit");
   }
 }
