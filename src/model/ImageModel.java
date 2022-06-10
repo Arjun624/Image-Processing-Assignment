@@ -178,7 +178,7 @@ public class ImageModel implements ImageEditor{
     for (int row = 0; row < this.images.get(filename).length; row++) {
       for (int col = 0; col < this.images.get(filename)[0].length; col++) {
         int value= this.images.get(filename)[row][col].findValue();
-        images.get(filename)[row][col]  = new Pixel(value,value,value);
+        arr[row][col]  = new Pixel(value,value,value);
       }
     }
     images.put(newFilename,arr);
