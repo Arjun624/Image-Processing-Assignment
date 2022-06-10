@@ -4,6 +4,7 @@ import org.junit.Test;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringReader;
+import java.util.HashMap;
 import java.util.NoSuchElementException;
 
 import controller.ImageController;
@@ -14,6 +15,7 @@ import view.ImageDisplay;
 import view.ImageView;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * Test that the {@code ImageControllerImpl} handles inout correctly
@@ -41,7 +43,7 @@ public class TestController {
   }
 
   @Test
-  public void testInvalidInitialization(){
+  public void testInvalidInitialization() throws IOException {
     try {
       new ImageControllerImpl(null, new StringReader(""));
 
@@ -55,6 +57,15 @@ public class TestController {
     } catch (IllegalArgumentException e){
       assertEquals(e.getMessage(), "View or readable cannot be null");
     }
+
+    Readable r = new StringReader("");
+    ImageController c = new ImageControllerImpl(v,r);
+    try {
+      c.go(m);
+    } catch (NoSuchElementException e){
+      assertNull(e.getMessage());
+    }
+
   }
 
   @Test
@@ -103,24 +114,33 @@ public class TestController {
   @Test
   public void testInvalidInput() throws IOException {
     Readable r = new StringReader("hello q");
-    ImageController c = new ImageControllerImpl(v,r);
+    ImageController c = new ImageControllerImpl(v, r);
     c.go(m);
     assertEquals("Enter a command: \n" +
             "Invalid command!\n" +
             "Enter a command: \n" +
-            "Thanks!\n",apView.toString());
+            "Thanks!\n", apView.toString());
 
-    ImageEditor m2 = new ImageModel();
-    Readable r2 = new StringReader("load hello q");
-    ImageController c2 = new ImageControllerImpl(v,r2);
-    try {
-      c2.go(m2);
-    } catch (NoSuchElementException e){
-      assertEquals(e.getMessage(), "File hello not found");
-    }
-    assertEquals("Enter a command: \n" +
-            "Invalid command!\n" +
-            "Enter a command: \n" +
-            "Thanks!\n",apView.toString());
+    Appendable ap2 = new StringBuilder();
+    ImageView vModel = new ImageDisplay(ap2);
+    ImageEditor m2 = new ImageModel(new HashMap<>(),vModel);
+    Readable r2 = new StringReader("load hello test q");
+    Appendable apView2 = new StringBuilder();
+    ImageView v2 = new ImageDisplay(apView2);
+    ImageController c2 = new ImageControllerImpl(v2, r2);
+    c2.go(m2);
+    assertEquals("File hello not found!\n", ap2.toString());
+
+    Appendable ap3 = new StringBuilder();
+    ImageView vModel2 = new ImageDisplay(ap3);
+    ImageEditor m3 = new ImageModel(new HashMap<>(),vModel2);
+    Readable r3 = new StringReader("load " +
+            "/Users/noamgreenstein/Documents/OOD/Image-Processing-Assignment/images/Test.ppm " +
+            "test max hello test-max q");
+    Appendable apView3 = new StringBuilder();
+    ImageView v3 = new ImageDisplay(apView3);
+    ImageController c3 = new ImageControllerImpl(v3, r3);
+    c3.go(m3);
+    assertEquals("hello not loaded!", apView3.toString().split("\n")[2]);
   }
 }
