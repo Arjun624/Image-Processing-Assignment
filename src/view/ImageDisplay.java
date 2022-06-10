@@ -13,6 +13,9 @@ public class ImageDisplay implements ImageView{
    * @param ap the appendable object
    */
   public ImageDisplay(Appendable ap){
+    if(ap==null){
+      throw new IllegalArgumentException("Appendable cannot be null");
+    }
     this.ap = ap;
   }
 
