@@ -15,6 +15,7 @@ import view.ImageView;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 
 /**
  * Test that the {@code ImageControllerImpl} handles inout correctly
@@ -45,14 +46,14 @@ public class TestController {
   public void testInvalidInitialization() throws IOException {
     try {
       new ImageControllerImpl(null, new StringReader(""));
-
+      fail("Should have thrown an exception");
     } catch (IllegalArgumentException e){
       assertEquals(e.getMessage(), "View or readable cannot be null");
     }
 
     try {
       new ImageControllerImpl(v, null);
-
+      fail("Should have thrown an exception");
     } catch (IllegalArgumentException e){
       assertEquals(e.getMessage(), "View or readable cannot be null");
     }
@@ -61,6 +62,7 @@ public class TestController {
     ImageController c = new ImageControllerImpl(v,r);
     try {
       c.go(m);
+      fail("Should have thrown an exception");
     } catch (NoSuchElementException e){
       assertNull(e.getMessage());
     }

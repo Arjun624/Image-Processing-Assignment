@@ -22,6 +22,7 @@ import view.ImageDisplay;
 import view.ImageView;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  * Test Each action class in the controller.
@@ -45,120 +46,93 @@ public class TestActions {
 
   @Test
   public void testAdjustBrightness() throws IOException {
-    AdjustBrightness ab = new AdjustBrightness(10, "hello", "test");
+    AdjustBrightness ab = new AdjustBrightness(10, "bright", "test");
     ab.execute(m, v);
-    assertEquals("adjusted hello by 10. Is now test\n", ap.toString());
+    assertEquals("adjusted bright by 10. Is now test\n", ap.toString());
 
-    try {
-      ab.execute(m2, v);
-    } catch (NullPointerException e){
-      assertEquals("hello not loaded!", ap2.toString());
-    }
+    ab.execute(m2, v);
+    assertEquals(ap2.toString(), "bright not loaded!\n");
 
   }
 
   @Test
   public void testBlueGreyscale() throws IOException{
-    BlueGreyscale bg = new BlueGreyscale("hello", "test");
+    BlueGreyscale bg = new BlueGreyscale("arjun", "test");
     bg.execute(m, v);
-    assertEquals("preformed a blue greyscale hello. Is now test\n", ap.toString());
+    assertEquals("preformed a blue greyscale arjun. Is now test\n", ap.toString());
 
-    try {
-      bg.execute(m2, v);
-    } catch (NullPointerException e){
-      assertEquals("hello not loaded!", ap2.toString());
-    }
+    bg.execute(m2, v);
+    assertEquals("arjun not loaded!\n", ap2.toString());
   }
 
   @Test
   public void testGreenGreyscale() throws IOException{
-    GreenGreyscale gg = new GreenGreyscale("hello", "test");
+    GreenGreyscale gg = new GreenGreyscale("arjun", "test");
     gg.execute(m, v);
-    assertEquals("preformed a green greyscale hello. Is now test\n", ap.toString());
+    assertEquals("preformed a green greyscale arjun. Is now test\n", ap.toString());
 
-    try {
-      gg.execute(m2, v);
-    } catch (NullPointerException e){
-      assertEquals("hello not loaded!", ap2.toString());
-    }
+    gg.execute(m2, v);
+    assertEquals("arjun not loaded!\n", ap2.toString());
   }
 
   @Test
   public void testRedGreyscale() throws IOException{
-    RedGreyscale rg = new RedGreyscale("hello", "test");
+    RedGreyscale rg = new RedGreyscale("arjun", "test");
     rg.execute(m, v);
-    assertEquals("preformed a red greyscale hello. Is now test\n", ap.toString());
+    assertEquals("preformed a red greyscale arjun. Is now test\n", ap.toString());
 
-    try {
-      rg.execute(m2, v);
-    } catch (NullPointerException e){
-      assertEquals("hello not loaded!", ap2.toString());
-    }
+    rg.execute(m2, v);
+    assertEquals("arjun not loaded!\n", ap2.toString());
   }
 
   @Test
   public void testLumaGreyscale() throws IOException{
-    LumaGreyscale lg = new LumaGreyscale("hello", "test");
+    LumaGreyscale lg = new LumaGreyscale("arjun", "test");
     lg.execute(m, v);
-    assertEquals("preformed a luma greyscale hello. Is now test\n", ap.toString());
+    assertEquals("preformed a luma greyscale arjun. Is now test\n", ap.toString());
 
-    try {
-      lg.execute(m2, v);
-    } catch (NullPointerException e){
-      assertEquals("hello not loaded!", ap2.toString());
-    }
+    lg.execute(m2, v);
+    assertEquals("arjun not loaded!\n", ap2.toString());
   }
 
   @Test
   public void testIntensityGreyscale() throws IOException{
-    IntensityGreyscale ig = new IntensityGreyscale("hello", "test");
+    IntensityGreyscale ig = new IntensityGreyscale("arjun", "test");
     ig.execute(m, v);
-    assertEquals("preformed an intensity greyscale hello. Is now test\n", ap.toString());
+    assertEquals("preformed an intensity greyscale arjun. Is now test\n", ap.toString());
 
-    try {
-      ig.execute(m2, v);
-    } catch (NullPointerException e){
-      assertEquals("hello not loaded!", ap2.toString());
-    }
+    ig.execute(m2, v);
+    assertEquals("arjun not loaded!\n", ap2.toString());
   }
 
   @Test
   public void testValueGreyscale() throws IOException{
-    ValueGreyscale vg = new ValueGreyscale("hello", "test");
+    ValueGreyscale vg = new ValueGreyscale("arjun", "test");
     vg.execute(m, v);
-    assertEquals("preformed a value greyscale hello. Is now test\n", ap.toString());
+    assertEquals("preformed a value greyscale arjun. Is now test\n", ap.toString());
 
-    try {
-      vg.execute(m2, v);
-    } catch (NullPointerException e){
-      assertEquals("hello not loaded!", ap2.toString());
-    }
+    vg.execute(m2, v);
+    assertEquals("arjun not loaded!\n", ap2.toString());
   }
 
   @Test
   public void testHorizontalFLip() throws IOException{
-    HorizontalFlip hp = new HorizontalFlip("hello", "test");
+    HorizontalFlip hp = new HorizontalFlip("arjun", "test");
     hp.execute(m, v);
-    assertEquals("flipped hello horizontally. Is now test\n", ap.toString());
+    assertEquals("flipped arjun horizontally. Is now test\n", ap.toString());
 
-    try {
-      hp.execute(m2, v);
-    } catch (NullPointerException e){
-      assertEquals("hello not loaded!", ap2.toString());
-    }
+    hp.execute(m2, v);
+    assertEquals("arjun not loaded!\n", ap2.toString());
   }
 
   @Test
   public void testVerticalFLip() throws IOException{
-    VerticalFlip vf = new VerticalFlip("hello", "test");
+    VerticalFlip vf = new VerticalFlip("arjun", "test");
     vf.execute(m, v);
-    assertEquals("flipped hello vertically. Is now test\n", ap.toString());
+    assertEquals("flipped arjun vertically. Is now test\n", ap.toString());
 
-    try {
-      vf.execute(m2, v);
-    } catch (NullPointerException e){
-      assertEquals("hello not loaded!", ap2.toString());
-    }
+    vf.execute(m2, v);
+    assertEquals("arjun not loaded!\n", ap2.toString());
   }
 
   @Test
@@ -171,27 +145,18 @@ public class TestActions {
 
   @Test
   public void testLoadImage() throws IOException{
-    LoadImage l = new LoadImage("hello", "test");
+    LoadImage l = new LoadImage("arjun", "test");
     l.execute(m, v);
-    assertEquals("loaded hello as test\n", ap.toString());
+    assertEquals("loaded arjun as test\n", ap.toString());
 
-    try {
-      l.execute(m2, v);
-    } catch (NullPointerException e){
-      assertEquals("hello does not exist!", ap2.toString());
-    }
+    l.execute(m2, v);
+    assertEquals("arjun does not exist!\n", ap2.toString());
   }
 
   @Test
   public void testSaveImage() throws IOException{
-    SaveImage s = new SaveImage("hello", "test");
+    SaveImage s = new SaveImage("arjun", "test");
     s.execute(m, v);
-    assertEquals("saved test as hello\n", ap.toString());
-
-    try {
-      s.execute(m2, v);
-    } catch (NullPointerException e){
-      assertEquals("hello does not exist!", ap2.toString());
-    }
+    assertEquals("saved test as arjun\n", ap.toString());
   }
 }
