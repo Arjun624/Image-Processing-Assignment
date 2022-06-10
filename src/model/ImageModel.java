@@ -34,6 +34,9 @@ public class ImageModel implements ImageEditor{
    * @param images the map of files and their pixels
    */
   public ImageModel(HashMap<String, Pixel[][]> images){
+    if(images == null){
+      throw new IllegalArgumentException("images cannot be null");
+    }
    this.images = images;
    quit = false;
    view = new ImageDisplay();

@@ -38,6 +38,9 @@ public class ImageControllerImpl implements ImageController{
    * @param rd the readable object to be read by the scanner
    */
   public ImageControllerImpl(ImageView view, Readable rd){
+    if(view == null || rd == null){
+      throw new IllegalArgumentException("View or readable cannot be null");
+    }
 
     this.view = view;
     this.rd = rd;
