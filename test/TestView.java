@@ -14,5 +14,7 @@ public class TestView {
     ImageDisplay test = new ImageDisplay(out);
     test.renderMessage("Go Broncos!");
     assertEquals("Go Broncos!\n", out.toString());
+
+
   }
 }
