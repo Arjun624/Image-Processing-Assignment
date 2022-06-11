@@ -10,10 +10,11 @@ public class MockImageModel implements ImageEditor {
   Appendable ap;
   boolean quit;
 
-  public MockImageModel(Appendable ap){
+  public MockImageModel(Appendable ap) {
     this.ap = ap;
     this.quit = false;
   }
+
   @Override
   public void flipVertically(String filename, String newFilename) throws IOException {
     this.ap.append("flipped " + filename + " vertically. Is now " + newFilename + "\n");
@@ -46,7 +47,11 @@ public class MockImageModel implements ImageEditor {
 
   @Override
   public void intensityGreyscale(String filename, String newFilename) throws IOException {
-    this.ap.append("preformed an intensity greyscale " + filename + ". Is now " + newFilename + "\n");
+    this.ap.append("preformed an intensity greyscale "
+            + filename
+            + ". Is now "
+            + newFilename
+            + "\n");
   }
 
   @Override
@@ -57,7 +62,7 @@ public class MockImageModel implements ImageEditor {
   @Override
   public void adjustBrightness(int increment, String filename, String newFilename)
           throws IOException {
-    this.ap.append("adjusted " + filename + " by "+ increment + ". Is now " + newFilename + "\n");
+    this.ap.append("adjusted " + filename + " by " + increment + ". Is now " + newFilename + "\n");
   }
 
   @Override

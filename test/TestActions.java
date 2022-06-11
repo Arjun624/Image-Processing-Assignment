@@ -4,25 +4,24 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.HashMap;
 
-import controller.Actions.AdjustBrightness;
-import controller.Actions.BlueGreyscale;
-import controller.Actions.GreenGreyscale;
-import controller.Actions.HorizontalFlip;
-import controller.Actions.IntensityGreyscale;
-import controller.Actions.LoadImage;
-import controller.Actions.LumaGreyscale;
-import controller.Actions.Quit;
-import controller.Actions.RedGreyscale;
-import controller.Actions.SaveImage;
-import controller.Actions.ValueGreyscale;
-import controller.Actions.VerticalFlip;
+import controller.commands.AdjustBrightness;
+import controller.commands.BlueGreyscale;
+import controller.commands.GreenGreyscale;
+import controller.commands.HorizontalFlip;
+import controller.commands.IntensityGreyscale;
+import controller.commands.LoadImage;
+import controller.commands.LumaGreyscale;
+import controller.commands.Quit;
+import controller.commands.RedGreyscale;
+import controller.commands.SaveImage;
+import controller.commands.ValueGreyscale;
+import controller.commands.VerticalFlip;
 import model.ImageEditor;
 import model.ImageModel;
 import view.ImageDisplay;
 import view.ImageView;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 /**
  * Test Each action class in the controller.
@@ -56,7 +55,7 @@ public class TestActions {
   }
 
   @Test
-  public void testBlueGreyscale() throws IOException{
+  public void testBlueGreyscale() throws IOException {
     BlueGreyscale bg = new BlueGreyscale("arjun", "test");
     bg.execute(m, v);
     assertEquals("preformed a blue greyscale arjun. Is now test\n", ap.toString());
@@ -66,7 +65,7 @@ public class TestActions {
   }
 
   @Test
-  public void testGreenGreyscale() throws IOException{
+  public void testGreenGreyscale() throws IOException {
     GreenGreyscale gg = new GreenGreyscale("arjun", "test");
     gg.execute(m, v);
     assertEquals("preformed a green greyscale arjun. Is now test\n", ap.toString());
@@ -76,7 +75,7 @@ public class TestActions {
   }
 
   @Test
-  public void testRedGreyscale() throws IOException{
+  public void testRedGreyscale() throws IOException {
     RedGreyscale rg = new RedGreyscale("arjun", "test");
     rg.execute(m, v);
     assertEquals("preformed a red greyscale arjun. Is now test\n", ap.toString());
@@ -86,7 +85,7 @@ public class TestActions {
   }
 
   @Test
-  public void testLumaGreyscale() throws IOException{
+  public void testLumaGreyscale() throws IOException {
     LumaGreyscale lg = new LumaGreyscale("arjun", "test");
     lg.execute(m, v);
     assertEquals("preformed a luma greyscale arjun. Is now test\n", ap.toString());
@@ -96,7 +95,7 @@ public class TestActions {
   }
 
   @Test
-  public void testIntensityGreyscale() throws IOException{
+  public void testIntensityGreyscale() throws IOException {
     IntensityGreyscale ig = new IntensityGreyscale("arjun", "test");
     ig.execute(m, v);
     assertEquals("preformed an intensity greyscale arjun. Is now test\n", ap.toString());
@@ -106,7 +105,7 @@ public class TestActions {
   }
 
   @Test
-  public void testValueGreyscale() throws IOException{
+  public void testValueGreyscale() throws IOException {
     ValueGreyscale vg = new ValueGreyscale("arjun", "test");
     vg.execute(m, v);
     assertEquals("preformed a value greyscale arjun. Is now test\n", ap.toString());
@@ -116,7 +115,7 @@ public class TestActions {
   }
 
   @Test
-  public void testHorizontalFLip() throws IOException{
+  public void testHorizontalFLip() throws IOException {
     HorizontalFlip hp = new HorizontalFlip("arjun", "test");
     hp.execute(m, v);
     assertEquals("flipped arjun horizontally. Is now test\n", ap.toString());
@@ -126,7 +125,7 @@ public class TestActions {
   }
 
   @Test
-  public void testVerticalFLip() throws IOException{
+  public void testVerticalFLip() throws IOException {
     VerticalFlip vf = new VerticalFlip("arjun", "test");
     vf.execute(m, v);
     assertEquals("flipped arjun vertically. Is now test\n", ap.toString());
@@ -136,7 +135,7 @@ public class TestActions {
   }
 
   @Test
-  public void testQuit() throws IOException{
+  public void testQuit() throws IOException {
     Quit q = new Quit();
     q.execute(m, v);
     assertEquals("program quit", ap.toString());
@@ -144,7 +143,7 @@ public class TestActions {
   }
 
   @Test
-  public void testLoadImage() throws IOException{
+  public void testLoadImage() throws IOException {
     LoadImage l = new LoadImage("arjun", "test");
     l.execute(m, v);
     assertEquals("loaded arjun as test\n", ap.toString());
@@ -154,7 +153,7 @@ public class TestActions {
   }
 
   @Test
-  public void testSaveImage() throws IOException{
+  public void testSaveImage() throws IOException {
     SaveImage s = new SaveImage("arjun", "test");
     s.execute(m, v);
     assertEquals("saved test as arjun\n", ap.toString());

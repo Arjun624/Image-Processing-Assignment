@@ -10,49 +10,52 @@ import static org.junit.Assert.fail;
  */
 public class TestPixel {
   @Test
-  public void testValidInitialization(){
-    Pixel p = new Pixel(0,255,1);
+  public void testValidInitialization() {
+    Pixel p = new Pixel(0, 255, 1);
+    assertEquals(0, p.getRed());
+    assertEquals(255, p.getGreen());
+    assertEquals(1, p.getBlue());
   }
 
   @Test
-  public void testInvalidInitialization(){
+  public void testInvalidInitialization() {
     try {
-      new Pixel(-1,1,1);
+      new Pixel(-1, 1, 1);
       fail("Should have thrown an exception");
     } catch (IllegalArgumentException e) {
       assertEquals(e.getMessage(), "color invalid");
     }
 
     try {
-      new Pixel(0,-1,1);
+      new Pixel(0, -1, 1);
       fail("Should have thrown an exception");
     } catch (IllegalArgumentException e) {
       assertEquals(e.getMessage(), "color invalid");
     }
 
     try {
-      new Pixel(1,1,-1);
+      new Pixel(1, 1, -1);
       fail("Should have thrown an exception");
     } catch (IllegalArgumentException e) {
       assertEquals(e.getMessage(), "color invalid");
     }
 
     try {
-      new Pixel(13,14,321);
+      new Pixel(13, 14, 321);
       fail("Should have thrown an exception");
     } catch (IllegalArgumentException e) {
       assertEquals(e.getMessage(), "color invalid");
     }
 
     try {
-      new Pixel(255,256,1);
+      new Pixel(255, 256, 1);
       fail("Should have thrown an exception");
     } catch (IllegalArgumentException e) {
       assertEquals(e.getMessage(), "color invalid");
     }
 
     try {
-      new Pixel(1000,1,1);
+      new Pixel(1000, 1, 1);
       fail("Should have thrown an exception");
     } catch (IllegalArgumentException e) {
       assertEquals(e.getMessage(), "color invalid");

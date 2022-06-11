@@ -1,0 +1,14 @@
+load res/colors.ppm test
+vertical-flip test test-vf
+horizontal-flip test tests-hf
+greyscale-red test test-rg
+greyscale-blue test test-bg
+greyscale-green test test-gg
+luma test test-lg
+intensity test test-ig
+value test test-vg
+adjust-brightness 10 test test-ab
+save res/vertical.ppm test-vf
+save res/blue-greyscale.ppm test-bg
+save res/brightened.ppm test-ab
+q

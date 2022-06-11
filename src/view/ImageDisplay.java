@@ -5,15 +5,16 @@ import java.io.IOException;
 /**
  * Represents a way to display messages to the user.
  */
-public class ImageDisplay implements ImageView{
+public class ImageDisplay implements ImageView {
   Appendable ap;
 
   /**
    * Constructs a {@code ImageDisplay} where the user sets the appendable object.
+   *
    * @param ap the appendable object
    */
-  public ImageDisplay(Appendable ap){
-    if(ap==null){
+  public ImageDisplay(Appendable ap) {
+    if (ap == null) {
       throw new IllegalArgumentException("Appendable cannot be null");
     }
     this.ap = ap;

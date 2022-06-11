@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-import model.ImageEditor;
 import model.ImageModel;
 import model.Pixel;
 import view.ImageDisplay;
@@ -97,10 +96,10 @@ public class TestModel {
       }
     }
 
-    try{
+    try {
       m1.flipVertically("yes", "no");
       fail("Should have thrown an exception");
-    } catch (NullPointerException e){
+    } catch (NullPointerException e) {
       assertEquals(e.getMessage(), "file doesn't exist");
     }
   }
@@ -132,10 +131,10 @@ public class TestModel {
       }
     }
 
-    try{
+    try {
       m1.flipHorizontally("yes", "no");
       fail("Should have thrown an exception");
-    } catch (NullPointerException e){
+    } catch (NullPointerException e) {
       assertEquals(e.getMessage(), "file doesn't exist");
     }
   }
@@ -167,10 +166,10 @@ public class TestModel {
       }
     }
 
-    try{
+    try {
       m1.redGreyscale("yes", "no");
       fail("Should have thrown an exception");
-    } catch (NullPointerException e){
+    } catch (NullPointerException e) {
       assertEquals(e.getMessage(), "file doesn't exist");
     }
   }
@@ -202,10 +201,10 @@ public class TestModel {
       }
     }
 
-    try{
+    try {
       m1.greenGreyscale("yes", "no");
       fail("Should have thrown an exception");
-    } catch (NullPointerException e){
+    } catch (NullPointerException e) {
       assertEquals(e.getMessage(), "file doesn't exist");
     }
   }
@@ -237,10 +236,10 @@ public class TestModel {
       }
     }
 
-    try{
+    try {
       m1.blueGreyscale("yes", "no");
       fail("Should have thrown an exception");
-    } catch (NullPointerException e){
+    } catch (NullPointerException e) {
       assertEquals(e.getMessage(), "file doesn't exist");
     }
   }
@@ -347,10 +346,10 @@ public class TestModel {
       }
     }
 
-    try{
+    try {
       m4.adjustBrightness(40, "yes", "no");
       fail("Should have thrown an exception");
-    } catch (NullPointerException e){
+    } catch (NullPointerException e) {
       assertEquals(e.getMessage(), "file doesn't exist");
     }
   }
@@ -373,7 +372,7 @@ public class TestModel {
     for (int i = 0; i < 3; i++) {
       for (int j = 0; j < 3; j++) {
         int luma = (int) ((0.2126 * i) + (0.7152 * j) + (0.0722 * (i + j)));
-        arr1[i][j] = new Pixel(luma,luma,luma);
+        arr1[i][j] = new Pixel(luma, luma, luma);
       }
     }
 
@@ -383,10 +382,10 @@ public class TestModel {
       }
     }
 
-    try{
+    try {
       m1.lumaGreyscale("yes", "no");
       fail("Should have thrown an exception");
-    } catch (NullPointerException e){
+    } catch (NullPointerException e) {
       assertEquals(e.getMessage(), "file doesn't exist");
     }
   }
@@ -409,7 +408,7 @@ public class TestModel {
     for (int i = 0; i < 3; i++) {
       for (int j = 0; j < 3; j++) {
         int intensity = (2 * i + 2 * j) / 3;
-        arr1[i][j] = new Pixel(intensity,intensity,intensity);
+        arr1[i][j] = new Pixel(intensity, intensity, intensity);
       }
     }
 
@@ -418,10 +417,10 @@ public class TestModel {
         assertEquals(m1.images.get("test-ig")[i][j], arr1[i][j]);
       }
     }
-    try{
+    try {
       m1.intensityGreyscale("yes", "no");
       fail("Should have thrown an exception");
-    } catch (NullPointerException e){
+    } catch (NullPointerException e) {
       assertEquals(e.getMessage(), "file doesn't exist");
     }
   }
@@ -443,7 +442,7 @@ public class TestModel {
     Pixel[][] arr1 = new Pixel[3][3];
     for (int i = 0; i < 3; i++) {
       for (int j = 0; j < 3; j++) {
-        arr1[i][j] = new Pixel(i + j,i + j,i + j);
+        arr1[i][j] = new Pixel(i + j, i + j, i + j);
       }
     }
 
@@ -453,10 +452,10 @@ public class TestModel {
       }
     }
 
-    try{
+    try {
       m1.valueGreyscale("yes", "no");
       fail("Should have thrown an exception");
-    } catch (NullPointerException e){
+    } catch (NullPointerException e) {
       assertEquals(e.getMessage(), "file doesn't exist");
     }
   }
@@ -465,22 +464,21 @@ public class TestModel {
   public void testLoadImage() throws IOException {
     ImageModel m = new ImageModel();
     m.loadImage("/Users/noamgreenstein/Documents/OOD" +
-            "/Image-Processing-Assignment/images/Koala.ppm","test");
+            "/Image-Processing-Assignment/images/Koala.ppm", "test");
 
     Scanner sc;
 
     try {
       sc = new Scanner(new FileInputStream("/Users/noamgreenstein/Documents/OOD" +
               "/Image-Processing-Assignment/images/Koala.ppm"));
-    }
-    catch (FileNotFoundException e) {
+    } catch (FileNotFoundException e) {
       return;
     }
     StringBuilder builder = new StringBuilder();
     //read the file line by line, and populate a string. This will throw away any comment lines
     while (sc.hasNextLine()) {
       String s = sc.nextLine();
-      if (s.charAt(0)!='#') {
+      if (s.charAt(0) != '#') {
         builder.append(s).append(System.lineSeparator());
       }
     }
@@ -500,12 +498,12 @@ public class TestModel {
 
     //now read the image data
     Pixel[][] pixels = new Pixel[height][width];
-    for (int row=0;row<height;row++) {
-      for (int col=0;col<width;col++) {
+    for (int row = 0; row < height; row++) {
+      for (int col = 0; col < width; col++) {
         int r = sc.nextInt();
         int g = sc.nextInt();
         int b = sc.nextInt();
-        pixels[row][col] = new Pixel(r,g,b);
+        pixels[row][col] = new Pixel(r, g, b);
       }
     }
 
@@ -518,7 +516,7 @@ public class TestModel {
     try {
       m.loadImage("noam", "ood");
       fail("should have thrown an exception");
-    } catch (NoSuchElementException e){
+    } catch (NoSuchElementException e) {
       assertEquals(e.getMessage(), "File noam not found!");
     }
   }
@@ -527,24 +525,23 @@ public class TestModel {
   public void testSaveImage() throws IOException {
     ImageModel m = new ImageModel();
     m.loadImage("/Users/noamgreenstein/Documents/OOD" +
-            "/Image-Processing-Assignment/images/Koala.ppm","test");
+            "/Image-Processing-Assignment/images/Koala.ppm", "test");
     m.saveImage("/Users/noamgreenstein/Documents/OOD" +
-            "/Image-Processing-Assignment/images/Test.ppm","test");
+            "/Image-Processing-Assignment/images/Test.ppm", "test");
 
     Scanner sc;
 
     try {
       sc = new Scanner(new FileInputStream("/Users/noamgreenstein/Documents/OOD" +
               "/Image-Processing-Assignment/images/Test.ppm"));
-    }
-    catch (FileNotFoundException e) {
+    } catch (FileNotFoundException e) {
       return;
     }
     StringBuilder builder = new StringBuilder();
     //read the file line by line, and populate a string. This will throw away any comment lines
     while (sc.hasNextLine()) {
       String s = sc.nextLine();
-      if (s.charAt(0)!='#') {
+      if (s.charAt(0) != '#') {
         builder.append(s).append(System.lineSeparator());
       }
     }
@@ -564,12 +561,12 @@ public class TestModel {
 
     //now read the image data
     Pixel[][] pixels = new Pixel[height][width];
-    for (int row=0;row<height;row++) {
-      for (int col=0;col<width;col++) {
+    for (int row = 0; row < height; row++) {
+      for (int col = 0; col < width; col++) {
         int r = sc.nextInt();
         int g = sc.nextInt();
         int b = sc.nextInt();
-        pixels[row][col] = new Pixel(r,g,b);
+        pixels[row][col] = new Pixel(r, g, b);
       }
     }
 

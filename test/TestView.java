@@ -1,11 +1,14 @@
-import java.io.IOException;
-
 import org.junit.Test;
+
+import java.io.IOException;
 
 import view.ImageDisplay;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Tests the methods in the ImageDisplay class which implements the ImageView interface.
+ */
 public class TestView {
 
   @Test
@@ -55,7 +58,7 @@ public class TestView {
             out.toString().split("\n")[10]);
     assertEquals("(10) 'intensity' <filename> <new filename>",
             out.toString().split("\n")[11]);
-    assertEquals("(11) 'max' <filepath> <filename>",
+    assertEquals("(11) 'value' <filename> <new filename>",
             out.toString().split("\n")[12]);
     assertEquals("(12) 'q' to quit", out.toString().split("\n")[13]);
 

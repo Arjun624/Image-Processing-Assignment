@@ -6,20 +6,19 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.function.Function;
 
-import controller.Actions.AdjustBrightness;
-import controller.Actions.BlueGreyscale;
-import controller.Actions.GreenGreyscale;
-import controller.Actions.HorizontalFlip;
-import controller.Actions.IntensityGreyscale;
-import controller.Actions.LoadImage;
-import controller.Actions.LumaGreyscale;
-import controller.Actions.Quit;
-import controller.Actions.RedGreyscale;
-import controller.Actions.SaveImage;
-import controller.Actions.ValueGreyscale;
-import controller.Actions.VerticalFlip;
+import controller.commands.AdjustBrightness;
+import controller.commands.BlueGreyscale;
+import controller.commands.GreenGreyscale;
+import controller.commands.HorizontalFlip;
+import controller.commands.IntensityGreyscale;
+import controller.commands.LoadImage;
+import controller.commands.LumaGreyscale;
+import controller.commands.Quit;
+import controller.commands.RedGreyscale;
+import controller.commands.SaveImage;
+import controller.commands.ValueGreyscale;
+import controller.commands.VerticalFlip;
 import model.ImageEditor;
-import model.ImageModel;
 import view.ImageView;
 
 /**
@@ -27,11 +26,11 @@ import view.ImageView;
  */
 public class ImageControllerImpl implements ImageController {
 
-  ImageView view;
+  private final ImageView view;
 
-  Readable rd;
+  private final Readable rd;
 
-  Map<String, Function<Scanner, ImageCommands>> commands;
+  private final Map<String, Function<Scanner, ImageCommands>> commands;
 
   /**
    * Constructs an {@code ImageControllerImpl} where the user can set the view and readable object.
@@ -64,7 +63,7 @@ public class ImageControllerImpl implements ImageController {
   }
 
   @Override
-  public void go(ImageEditor model) throws IllegalArgumentException, IOException {
+  public void start(ImageEditor model) throws IllegalArgumentException, IOException {
     Scanner s = new Scanner(rd);
 
     while (!model.getStatus()) {

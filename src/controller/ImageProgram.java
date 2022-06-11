@@ -13,6 +13,7 @@ import view.ImageView;
 public class ImageProgram {
   /**
    * The main method.
+   *
    * @param args the arguments
    * @throws IOException if the program cannot read the input or write the output
    */
@@ -23,6 +24,6 @@ public class ImageProgram {
     InputStreamReader in = new InputStreamReader(System.in);
     view.displayWelcomeMessage();
     controller = new ImageControllerImpl(view, in);
-    controller.go(model);
+    controller.start(model);
   }
 }
