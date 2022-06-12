@@ -177,4 +177,13 @@ save res/colors-vertical.ppm vFlippedColors
 
 Refer to the full script found in the Script.txt file located in the res directory.
 
+**Go to the res directory, and copy the script text and paste it to run the given commands.**
+
+IMAGE CITATION:
+
+Colors.ppm: https://people.sc.fsu.edu/~jburkardt/data/ppma/pbmlib.ascii.ppm
+
+Found on: https://people.sc.fsu.edu/~jburkardt/data/ppma/ppma.html (called pbmlib.ascii.ppm)
+
+
 
