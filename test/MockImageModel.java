@@ -67,15 +67,6 @@ public class MockImageModel implements ImageEditor {
     this.ap.append("adjusted " + filename + " by " + increment + ". Is now " + newFilename + "\n");
   }
 
-  @Override
-  public void loadImage(String pathname, String filename) throws IOException {
-    this.ap.append("loaded " + pathname + " as " + filename + "\n");
-  }
-
-  @Override
-  public void saveImage(String pathname, String filename) throws IOException {
-    this.ap.append("saved " + filename + " as " + pathname + "\n");
-  }
 
   @Override
   public boolean getStatus() {
@@ -90,7 +81,7 @@ public class MockImageModel implements ImageEditor {
 
   @Override
   public void add(String imageName, Pixel[][] arr) throws IOException {
-    this.ap.append("added " + imageName + " to hashmap");
+    this.ap.append("added " + imageName + " to hashmap\n");
   }
 
   @Override
@@ -101,5 +92,10 @@ public class MockImageModel implements ImageEditor {
   @Override
   public int findTotalValue(String filename) {
     return 0;
+  }
+
+  @Override
+  public void sharpenImage(String fileName, String newFileName) throws IOException, IllegalArgumentException {
+    this.ap.append("sharpened " + fileName + ". Is now " + newFileName + "\n");
   }
 }

@@ -1,15 +1,25 @@
 import org.junit.Before;
 import org.junit.Test;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
+import java.util.Scanner;
+
+import javax.imageio.ImageIO;
 
 import controller.ImageController;
 import controller.ImageControllerImpl;
 import model.ImageEditor;
 import model.ImageModel;
+import model.Pixel;
 import view.ImageDisplay;
 import view.ImageView;
 
@@ -153,21 +163,192 @@ public class TestController {
   }
 
   @Test
-  public void testLoadPPM(){
+  public void testLoadPPM() throws IOException {
+    ImageModel m = new ImageModel();
+    ImageView view = new ImageDisplay(new StringBuilder());
+    ImageController c = new ImageControllerImpl(view,new InputStreamReader(System.in),m);
+    c.loadImage("/Users/noamgreenstein/Documents/OOD" +
+            "/Image-Processing-Assignment/res/colors.ppm", "test");
 
+
+    Scanner sc;
+
+    try {
+      sc = new Scanner(new FileInputStream("/Users/noamgreenstein/Documents/OOD" +
+              "/Image-Processing-Assignment/res/colors.ppm"));
+    } catch (FileNotFoundException e) {
+      return;
+    }
+    StringBuilder builder = new StringBuilder();
+    //read the file line by line, and populate a string. This will throw away any comment lines
+    while (sc.hasNextLine()) {
+      String s = sc.nextLine();
+      if (s.charAt(0) != '#') {
+        builder.append(s).append(System.lineSeparator());
+      }
+    }
+
+    //now set up the scanner to read from the string we just built
+    sc = new Scanner(builder.toString());
+
+    String token;
+
+    token = sc.next();
+    if (!token.equals("P3")) {
+      System.out.println("what?");
+    }
+    int width = sc.nextInt();
+    int height = sc.nextInt();
+    int maxValue = sc.nextInt();
+
+    //now read the image data
+    Pixel[][] pixels = new Pixel[height][width];
+    for (int row = 0; row < height; row++) {
+      for (int col = 0; col < width; col++) {
+        int r = sc.nextInt();
+        int g = sc.nextInt();
+        int b = sc.nextInt();
+        pixels[row][col] = new Pixel(r, g, b);
+      }
+    }
+
+    for (int i = 0; i < pixels.length; i++) {
+      for (int j = 0; j < pixels[0].length; j++) {
+        assertEquals(m.images.get("test")[i][j], pixels[i][j]);
+      }
+    }
+
+    try {
+      c.loadImage("noam", "ood");
+      fail("should have thrown an exception");
+    } catch (NoSuchElementException e) {
+      assertEquals(e.getMessage(), "File noam not found!");
+    }
   }
 
   @Test
-  public void testLoadOther(){
+  public void testLoadOther() throws IOException {
+    ImageModel m = new ImageModel();
+    ImageView view = new ImageDisplay(new StringBuilder());
+    ImageController c = new ImageControllerImpl(view,new InputStreamReader(System.in),m);
+    c.loadImage("/Users/noamgreenstein/Documents/OOD" +
+            "/Image-Processing-Assignment/res/ClassDiagram.png", "test");
 
+    BufferedImage b;
+    try {
+      b = ImageIO.read(new File("/Users/noamgreenstein/Documents/OOD" +
+              "/Image-Processing-Assignment/res/ClassDiagram.png"));
+    }
+    catch (IOException e) {
+      throw new NoSuchElementException();
+    }
+    int width = b.getWidth();
+    int height = b.getHeight();
+    Pixel[][] arr = new Pixel[height][width];
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
+        Color co = new Color(b.getRGB(i,j));
+        arr[j][i] = new Pixel(co.getRed(), co.getGreen(), co.getBlue(), co.getAlpha());
+      }
+    }
+
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width; j++) {
+        assertEquals(m.images.get("test")[i][j], arr[i][j]);
+      }
+    }
   }
   @Test
-  public void testSavePPM(){
+  public void testSavePPM() throws IOException {
+    ImageModel m = new ImageModel();
+    ImageView view = new ImageDisplay(new StringBuilder());
+    ImageController c = new ImageControllerImpl(view,new InputStreamReader(System.in),m);
+    c.loadImage("/Users/noamgreenstein/Documents/OOD" +
+            "/Image-Processing-Assignment/res/colors.ppm", "test");
+    c.saveImage("/Users/noamgreenstein/Documents/OOD" +
+            "/Image-Processing-Assignment/res/SaveTest.ppm", "test");
 
+    Scanner sc;
+
+    try {
+      sc = new Scanner(new FileInputStream("/Users/noamgreenstein/Documents/OOD" +
+              "/Image-Processing-Assignment/res/SaveTest.ppm"));
+    } catch (FileNotFoundException e) {
+      return;
+    }
+    StringBuilder builder = new StringBuilder();
+    //read the file line by line, and populate a string. This will throw away any comment lines
+    while (sc.hasNextLine()) {
+      String s = sc.nextLine();
+      if (s.charAt(0) != '#') {
+        builder.append(s).append(System.lineSeparator());
+      }
+    }
+
+    //now set up the scanner to read from the string we just built
+    sc = new Scanner(builder.toString());
+
+    String token;
+
+    token = sc.next();
+    if (!token.equals("P3")) {
+      System.out.println("what?");
+    }
+    int width = sc.nextInt();
+    int height = sc.nextInt();
+    int maxValue = sc.nextInt();
+
+    //now read the image data
+    Pixel[][] pixels = new Pixel[height][width];
+    for (int row = 0; row < height; row++) {
+      for (int col = 0; col < width; col++) {
+        int r = sc.nextInt();
+        int g = sc.nextInt();
+        int b = sc.nextInt();
+        pixels[row][col] = new Pixel(r, g, b);
+      }
+    }
+
+    for (int i = 0; i < pixels.length; i++) {
+      for (int j = 0; j < pixels[0].length; j++) {
+        assertEquals(m.images.get("test")[i][j], pixels[i][j]);
+      }
+    }
   }
 
   @Test
-  public void testSaveOther(){
+  public void testSaveOther() throws IOException {
+    ImageModel m = new ImageModel();
+    ImageView view = new ImageDisplay(new StringBuilder());
+    ImageController c = new ImageControllerImpl(view,new InputStreamReader(System.in),m);
+    c.loadImage("/Users/noamgreenstein/Documents/OOD" +
+            "/Image-Processing-Assignment/res/ClassDiagram.png", "test");
+    c.saveImage("/Users/noamgreenstein/Documents/OOD" +
+            "/Image-Processing-Assignment/res/SaveTest.png", "test");
+
+    BufferedImage b;
+    try {
+      b = ImageIO.read(new File("/Users/noamgreenstein/Documents/OOD" +
+              "/Image-Processing-Assignment/res/SaveTest.png"));
+    }
+    catch (IOException e) {
+      throw new NoSuchElementException();
+    }
+    int width = b.getWidth();
+    int height = b.getHeight();
+    Pixel[][] arr = new Pixel[height][width];
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
+        Color co = new Color(b.getRGB(i,j));
+        arr[j][i] = new Pixel(co.getRed(), co.getGreen(), co.getBlue(), co.getAlpha());
+      }
+    }
+
+//    for (int i = 0; i < height; i++) {
+//      for (int j = 0; j < width; j++) {
+//        assertEquals(m.images.get("test")[i][j], arr[i][j]);
+//      }
+//    }
 
   }
 }

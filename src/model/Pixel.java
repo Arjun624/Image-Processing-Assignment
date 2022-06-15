@@ -88,7 +88,8 @@ public class Pixel {
    */
   public boolean equals(Object o) {
     if (o instanceof Pixel) {
-      return this.r == ((Pixel) o).r && this.g == ((Pixel) o).g && this.b == ((Pixel) o).b;
+      return this.r == ((Pixel) o).r && this.g == ((Pixel) o).g && this.b == ((Pixel) o).b
+              && this.alpha == ((Pixel) o).alpha;
     }
     return false;
   }

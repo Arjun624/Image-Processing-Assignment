@@ -108,24 +108,6 @@ public interface ImageEditor {
   void adjustBrightness(int increment, String filename, String newFilename) throws IOException,
           NullPointerException;
 
-  /**
-   * Loads an image from the inputted path and adds it to the map of images.
-   *
-   * @param pathname is the path to the image to be loaded.
-   * @param filename is the name of the image to be loaded.
-   * @throws IOException            if the image cannot be loaded.
-   * @throws NoSuchElementException if the path does not exist
-   */
-  void loadImage(String pathname, String filename) throws IOException, NoSuchElementException;
-
-  /**
-   * Saves the given filename to the given pathname on the local disk.
-   *
-   * @param pathname the pathname of the file to save.
-   * @param filename is the name of the file to save.
-   * @throws IOException if the file cannot be saved.
-   */
-  void saveImage(String pathname, String filename) throws IOException;
 
   /**
    * Returns whether the program should be quit.
