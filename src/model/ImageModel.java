@@ -343,6 +343,11 @@ public class ImageModel implements ImageEditor {
     this.quit = true;
   }
 
+  @Override
+  public void add(String imageName, Pixel[][] arr) {
+    images.put(imageName,arr);
+  }
+
   /**
    * Finds the total value of the image, which is the max value of each pixel.
    *
@@ -360,5 +365,7 @@ public class ImageModel implements ImageEditor {
     return value;
 
   }
+
+
 
 }

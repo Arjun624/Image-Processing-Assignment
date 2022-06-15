@@ -137,4 +137,11 @@ public interface ImageEditor {
    * changes the quit boolean in order to tell the program to quit.
    */
   void quit() throws IOException;
+
+  /**
+   * adds an image to the image hashmap.
+   * @param imageName the name of the image
+   * @param arr the array of pixels
+   */
+  void add(String imageName, Pixel[][] arr);
 }
