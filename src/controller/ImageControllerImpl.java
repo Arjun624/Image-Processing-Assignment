@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -170,5 +171,86 @@ public class ImageControllerImpl implements ImageController {
     }
     model.add(filename,arr);
     view.renderMessage("Image: " + pathname + "\nloaded as: " + filename);
+  }
+
+  public void saveImage(String pathname, String filename) throws IOException,
+          NoSuchElementException {
+    if(pathname.substring(pathname.length() -4).equalsIgnoreCase(".ppm")){
+      savePPM(pathname, filename);
+    }
+    else {
+      saveOther(pathname, filename);
+    }
+
+  }
+
+  private void savePPM(String pathname, String filename) throws IOException {
+
+    StringBuilder sb = new StringBuilder();
+    if (!model.getMap().containsKey(filename)) {
+      view.renderMessage("Image " + filename + " does not exist or has not been loaded!");
+      return;
+    }
+    try {
+      File newFile = new File(pathname);
+      view.renderMessage("Image: " + filename + "\nsaved as: " + pathname);
+      if (newFile.createNewFile()) {
+        view.renderMessage("File created: " + newFile.getName());
+      } else {
+        view.renderMessage("File already exists.");
+      }
+
+    } catch (IOException e) {
+      view.renderMessage("An error occurred.");
+      e.printStackTrace();
+    }
+
+    try {
+      FileWriter writer = new FileWriter(pathname);
+      sb.append("P3");
+      sb.append((System.lineSeparator()));
+      sb.append(model.getMap().get(filename)[0].length);
+      sb.append(" ");
+      sb.append(model.getMap().get(filename).length);
+      sb.append((System.lineSeparator()));
+      sb.append(model.findTotalValue(filename));
+      sb.append(System.lineSeparator());
+      for (int row = 0; row < model.getMap().get(filename).length; row++) {
+        for (int col = 0; col < model.getMap().get(filename)[0].length; col++) {
+          sb.append(model.getMap().get(filename)[row][col].getRed());
+          sb.append(" ");
+          sb.append((model.getMap().get(filename)[row][col].getGreen()));
+          sb.append(" ");
+          sb.append((model.getMap().get(filename)[row][col].getBlue()));
+          sb.append(" ");
+        }
+        sb.append((System.lineSeparator()));
+      }
+      writer.write(sb.toString());
+      writer.close();
+      view.renderMessage("Successfully wrote to the file.");
+    } catch (IOException e) {
+      view.renderMessage("An error occurred.");
+      e.printStackTrace();
+    }
+
+  }
+
+  private void saveOther(String pathname, String filename) throws IOException {
+    int width = model.getMap().get(filename).length;
+    int height = model.getMap().get(filename)[0].length;
+    BufferedImage bufferedImage = new BufferedImage(width,
+            height, BufferedImage.TYPE_INT_RGB);
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
+        Color c = new Color(model.getMap().get(filename)[i][j].getRed(),
+                model.getMap().get(filename)[i][j].getGreen(),
+                model.getMap().get(filename)[i][j].getBlue());
+        bufferedImage.setRGB(i,j,c.getRGB());
+      }
+    }
+
+    File file = new File(pathname);
+    ImageIO.write(bufferedImage, "jpg", file);
   }
 }

@@ -348,13 +348,12 @@ public class ImageModel implements ImageEditor {
     images.put(imageName,arr);
   }
 
-  /**
-   * Finds the total value of the image, which is the max value of each pixel.
-   *
-   * @param filename is the name of the file
-   * @return an integer representing the total value of the image.
-   */
-  private int findTotalValue(String filename) {
+  public HashMap<String,Pixel[][]> getMap(){
+    return this.images;
+  }
+
+  @Override
+  public int findTotalValue(String filename) {
     int value = images.get(filename)[0][0].findValue();
 
     for (int row = 0; row < images.get(filename).length; row++) {

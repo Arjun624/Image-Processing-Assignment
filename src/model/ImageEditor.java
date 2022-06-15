@@ -1,6 +1,7 @@
 package model;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.NoSuchElementException;
 
 /**
@@ -144,4 +145,18 @@ public interface ImageEditor {
    * @param arr the array of pixels
    */
   void add(String imageName, Pixel[][] arr);
+
+  /**
+   * returns the hashmap of images.
+   * @return the hashmap of images
+   */
+  HashMap<String,Pixel[][]> getMap();
+
+  /**
+   * Finds the total value of the image, which is the max value of each pixel.
+   *
+   * @param filename is the name of the file
+   * @return an integer representing the total value of the image.
+   */
+    int findTotalValue(String filename);
 }
