@@ -75,6 +75,7 @@ public class ImageControllerImpl implements ImageController {
     commands.put("value", s -> new ValueGreyscale(s.next(), s.next()));
     commands.put("sharpen", s -> new Sharpen(s.next(), s.next()));
     commands.put("sepia", s -> new Sepia(s.next(), s.next()));
+    commands.put("greyscale", s -> new LumaGreyscale(s.next(), s.next()));
     commands.put("q", s -> new Quit());
 
   }
