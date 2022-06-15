@@ -3,6 +3,7 @@ package controller.commands;
 import java.io.IOException;
 
 import controller.ImageCommands;
+import controller.ImageController;
 import model.ImageEditor;
 import view.ImageView;
 
@@ -14,15 +15,18 @@ public class SaveImage implements ImageCommands {
   private final String pathName;
   private final String fileName;
 
+  private final ImageController controller;
+
   /**
    * Constructs a {@code SaveImage} that saves the filename to the pathname on the local disk.
    *
    * @param pathName the path to save the file
    * @param fileName the name of the file to be saved
    */
-  public SaveImage(String pathName, String fileName) {
+  public SaveImage(String pathName, String fileName, ImageController controller) {
     this.pathName = pathName;
     this.fileName = fileName;
+    this.controller = controller;
   }
 
 
@@ -37,7 +41,7 @@ public class SaveImage implements ImageCommands {
   public void execute(ImageEditor model, ImageView view) throws IOException {
 
     try {
-      model.saveImage(pathName, fileName);
+      controller.saveImage(pathName, fileName);
     } catch (IllegalArgumentException e) {
       view.renderMessage(pathName + " does not exist!");
     }

@@ -62,8 +62,8 @@ public class ImageControllerImpl implements ImageController {
 
     commands = new HashMap<>();
     commands.put("adjust-brightness", s -> new AdjustBrightness(s.nextInt(), s.next(), s.next()));
-    commands.put("load", s -> new LoadImage(s.next(), s.next()));
-    commands.put("save", s -> new SaveImage(s.next(), s.next()));
+    commands.put("load", s -> new LoadImage(s.next(), s.next(), this));
+    commands.put("save", s -> new SaveImage(s.next(), s.next(), this));
     commands.put("vertical-flip", s -> new VerticalFlip(s.next(), s.next()));
     commands.put("horizontal-flip", s -> new HorizontalFlip(s.next(), s.next()));
     commands.put("greyscale-red", s -> new RedGreyscale(s.next(), s.next()));
