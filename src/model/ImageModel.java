@@ -5,7 +5,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -229,6 +231,69 @@ public class ImageModel implements ImageEditor {
     view.renderMessage("Image " + filename + " changed to greyscale");
   }
 
+  public void sharpenImage(String filename, String newFilename) throws IOException,
+          IllegalArgumentException {
+
+    if (images.get(filename) == null) {
+      throw new IllegalArgumentException("file doesn't exist");
+    }
+
+    view.renderMessage("Image " + filename + " sharpened");
+    List<Integer> newR = new ArrayList<Integer>();
+    List<Integer> newG = new ArrayList<Integer>();
+    List<Integer> newB = new ArrayList<Integer>();
+
+    Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
+    for (int row = 0; row < this.images.get(filename).length; row++) {
+      for (int col = 0; col < this.images.get(filename)[0].length; col++) {
+
+
+        this.getRightTotalRGB(row, col, filename, newR, newG, newB);
+        this.getLeftTotalRGB(row, col, filename, newR, newG, newB);
+        this.getBottomTotalRGB(row, col, filename, newR, newG, newB);
+        this.getTopTotalRGB(row, col, filename, newR, newG, newB);
+        this.getTopLeftTotalRGB(row, col, filename, newR, newG, newB);
+        this.getTopRightTotalRGB(row, col, filename, newR, newG, newB);
+        this.getBottomLeftTotalRGB(row, col, filename, newR, newG, newB);
+        this.getBottomRightTotalRGB(row, col, filename, newR, newG, newB);
+
+        int rSum = newR.stream()
+                .mapToInt(Integer::intValue)
+                .sum();
+
+        int gSum = newG.stream()
+                .mapToInt(Integer::intValue)
+                .sum();
+
+        int bSum = newB.stream()
+                .mapToInt(Integer::intValue)
+                .sum();
+
+
+
+
+        if(rSum > 255){
+          rSum = 255;
+        }
+        if(gSum > 255){
+          gSum = 255;
+        }
+        if(bSum > 255){
+          bSum = 255;
+        }
+
+        arr[row][col] = new Pixel(rSum, gSum, bSum);
+        newR.clear();
+        newG.clear();
+        newB.clear();
+      }
+    }
+    images.put(newFilename, arr);
+
+
+  }
+
+
 
   @Override
   public void loadImage(String pathname, String filename) throws IOException,
@@ -278,6 +343,7 @@ public class ImageModel implements ImageEditor {
     images.put(filename, pixels);
     view.renderMessage("Image: " + pathname + "\nloaded as: " + filename);
   }
+
 
 
   @Override
@@ -332,6 +398,109 @@ public class ImageModel implements ImageEditor {
     }
 
   }
+
+
+
+  protected void getRightTotalRGB(int row, int col, String filename, List<Integer> r, List<Integer> g, List<Integer> b) {
+    if (col != this.images.get(filename)[0].length - 1) {
+      Pixel p = this.images.get(filename)[row][col + 1];
+      r.add(p.getRed()/8);
+      g.add(p.getGreen()/8);
+      b.add(p.getBlue()/8);
+    }
+
+
+
+
+  }
+
+  protected void getLeftTotalRGB(int row, int col, String filename,  List<Integer> r, List<Integer> g, List<Integer> b) {
+    if (col != 0) {
+      Pixel p = this.images.get(filename)[row][col - 1];
+      r.add(p.getRed()/8);
+      g.add(p.getGreen()/8);
+      b.add(p.getBlue()/8);
+    }
+
+
+  }
+
+
+  protected void getTopTotalRGB(int row, int col, String filename,  List<Integer> r, List<Integer> g, List<Integer> b) {
+    if (row != 0) {
+      Pixel p = this.images.get(filename)[row - 1][col];
+      r.add(p.getRed()/8);
+      g.add(p.getGreen()/8);
+      b.add(p.getBlue()/8);
+    }
+
+
+
+  }
+
+
+  protected void getBottomTotalRGB(int row, int col, String filename,  List<Integer> r, List<Integer> g, List<Integer> b) {
+    if (row != this.images.get(filename).length - 1) {
+      Pixel p = this.images.get(filename)[row + 1][col];
+      r.add(p.getRed()/8);
+      g.add(p.getGreen()/8);
+      b.add(p.getBlue()/8);
+    }
+
+
+
+  }
+
+  private void getTopLeftTotalRGB(int row, int col, String filename,  List<Integer> r, List<Integer> g, List<Integer> b) {
+    if (row != 0 && col != 0) {
+      Pixel p = this.images.get(filename)[row - 1][col - 1];
+      r.add(p.getRed()/16);
+      g.add(p.getGreen()/16);
+      b.add(p.getBlue()/16);
+    }
+
+
+
+  }
+
+  private void getTopRightTotalRGB(int row, int col, String filename,  List<Integer> r, List<Integer> g, List<Integer> b) {
+    if (row != 0  && col != this.images.get(filename)[0].length  - 1) {
+      Pixel p = this.images.get(filename)[row - 1][col + 1];
+      r.add(p.getRed()/16);
+      g.add(p.getGreen()/16);
+      b.add(p.getBlue()/16);
+    }
+
+
+
+  }
+
+
+  private void getBottomRightTotalRGB(int row, int col, String filename,  List<Integer> r, List<Integer> g, List<Integer> b) {
+    if (row != this.images.get(filename).length - 1 && col != this.images.get(filename)[0].length  - 1) {
+      Pixel p = this.images.get(filename)[row + 1][col + 1];
+      r.add(p.getRed()/16);
+      g.add(p.getGreen()/16);
+      b.add(p.getBlue()/16);
+    }
+
+
+
+  }
+
+  private void getBottomLeftTotalRGB(int row, int col, String filename,  List<Integer> r, List<Integer> g, List<Integer> b) {
+    if (row != this.images.get(filename).length - 1 && col != 0) {
+      Pixel p = this.images.get(filename)[row + 1][col - 1];
+      r.add(p.getRed()/16);
+      g.add(p.getGreen()/16);
+      b.add(p.getBlue()/16);
+
+    }
+
+
+
+  }
+
 
   @Override
   public boolean getStatus() {

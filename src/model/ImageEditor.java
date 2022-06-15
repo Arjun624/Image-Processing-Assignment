@@ -159,4 +159,6 @@ public interface ImageEditor {
    * @return an integer representing the total value of the image.
    */
     int findTotalValue(String filename);
+
+  void sharpenImage(String fileName, String newFileName) throws IOException, IllegalArgumentException;
 }

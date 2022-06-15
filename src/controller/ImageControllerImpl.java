@@ -25,6 +25,7 @@ import controller.commands.LumaGreyscale;
 import controller.commands.Quit;
 import controller.commands.RedGreyscale;
 import controller.commands.SaveImage;
+import controller.commands.Sharpen;
 import controller.commands.ValueGreyscale;
 import controller.commands.VerticalFlip;
 import model.ImageEditor;
@@ -71,6 +72,7 @@ public class ImageControllerImpl implements ImageController {
     commands.put("luma", s -> new LumaGreyscale(s.next(), s.next()));
     commands.put("intensity", s -> new IntensityGreyscale(s.next(), s.next()));
     commands.put("value", s -> new ValueGreyscale(s.next(), s.next()));
+    commands.put("sharpen", s -> new Sharpen(s.next(), s.next()));
     commands.put("q", s -> new Quit());
 
   }
