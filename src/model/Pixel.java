@@ -16,8 +16,8 @@ public class Pixel {
    * Constructs a new Pixel by its position and color on the image.
    *
    * @param r the red value
-   * @param g the blue value
-   * @param b the green value
+   * @param g the green value
+   * @param b the blue value
    * @throws IllegalArgumentException if color values are out of bounds
    */
   public Pixel(int r, int g, int b) throws IllegalArgumentException {
@@ -36,8 +36,8 @@ public class Pixel {
    * Constructs a new Pixel by its position and color on the image.
    *
    * @param r the red value
-   * @param g the blue value
-   * @param b the green value
+   * @param g the green value
+   * @param b the blue value
    * @throws IllegalArgumentException if color values are out of bounds
    */
   public Pixel(int r, int g, int b, int alpha) throws IllegalArgumentException {
