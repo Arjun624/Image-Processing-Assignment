@@ -28,7 +28,7 @@ public class Pixel {
     this.r = r;
     this.g = g;
     this.b = b;
-    this.alpha = 1;
+    this.alpha = 255;
 
   }
 
