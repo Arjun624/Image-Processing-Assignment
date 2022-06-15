@@ -1,5 +1,8 @@
 package controller;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -8,6 +11,8 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.function.Function;
+
+import javax.imageio.ImageIO;
 
 import controller.commands.AdjustBrightness;
 import controller.commands.BlueGreyscale;
@@ -145,7 +150,25 @@ public class ImageControllerImpl implements ImageController {
 
   }
 
-  private void loadOther(String pathname, String filename){
-
+  private void loadOther(String pathname, String filename) throws IOException,
+          NoSuchElementException {
+    BufferedImage b = null;
+    try {
+      b = ImageIO.read(new File(pathname));
+    }
+    catch (IOException e) {
+      throw new NoSuchElementException("File " + pathname + " not found!");
+    }
+    int width = b.getWidth();
+    int height = b.getHeight();
+    Pixel[][] arr = new Pixel[width][height];
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
+        Color c = new Color(b.getRGB(i,j));
+        arr[i][j] = new Pixel(c.getRed(), c.getGreen(), c.getBlue());
+      }
+    }
+    model.add(filename,arr);
+    view.renderMessage("Image: " + pathname + "\nloaded as: " + filename);
   }
 }
