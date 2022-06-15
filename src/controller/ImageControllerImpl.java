@@ -155,7 +155,7 @@ public class ImageControllerImpl implements ImageController {
 
   private void loadOther(String pathname, String filename) throws IOException,
           NoSuchElementException {
-    BufferedImage b = null;
+    BufferedImage b;
     try {
       b = ImageIO.read(new File(pathname));
     }
@@ -164,11 +164,11 @@ public class ImageControllerImpl implements ImageController {
     }
     int width = b.getWidth();
     int height = b.getHeight();
-    Pixel[][] arr = new Pixel[width][height];
+    Pixel[][] arr = new Pixel[height][width];
     for (int i = 0; i < width; i++) {
       for (int j = 0; j < height; j++) {
         Color c = new Color(b.getRGB(i,j));
-        arr[i][j] = new Pixel(c.getRed(), c.getGreen(), c.getBlue());
+        arr[j][i] = new Pixel(c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha());
       }
     }
     model.add(filename,arr);
@@ -239,20 +239,31 @@ public class ImageControllerImpl implements ImageController {
   }
 
   private void saveOther(String pathname, String filename) throws IOException {
-    int width = model.getMap().get(filename).length;
-    int height = model.getMap().get(filename)[0].length;
-    BufferedImage bufferedImage = new BufferedImage(width,
-            height, BufferedImage.TYPE_INT_RGB);
-    for (int i = 0; i < width; i++) {
-      for (int j = 0; j < height; j++) {
+    int row = model.getMap().get(filename).length;
+    int col = model.getMap().get(filename)[0].length;
+    BufferedImage bufferedImage = new BufferedImage(col,
+            row, BufferedImage.TYPE_INT_RGB);
+    for (int i = 0; i < row; i++) {
+      for (int j = 0; j < col; j++) {
         Color c = new Color(model.getMap().get(filename)[i][j].getRed(),
                 model.getMap().get(filename)[i][j].getGreen(),
-                model.getMap().get(filename)[i][j].getBlue());
-        bufferedImage.setRGB(i,j,c.getRGB());
+                model.getMap().get(filename)[i][j].getBlue(),
+                model.getMap().get(filename)[i][j].getAlpha());
+        bufferedImage.setRGB(j,i,c.getRGB());
       }
     }
 
     File file = new File(pathname);
-    ImageIO.write(bufferedImage, "jpg", file);
+    String type = pathname.substring(pathname.length() -4);
+    if(type.equalsIgnoreCase(".png")){
+      ImageIO.write(bufferedImage, "png", file);
+    }
+    if(type.equalsIgnoreCase(".bmp")){
+      ImageIO.write(bufferedImage, "bmp", file);
+    }
+    else {
+      ImageIO.write(bufferedImage, "jpg", file);
+    }
+
   }
 }

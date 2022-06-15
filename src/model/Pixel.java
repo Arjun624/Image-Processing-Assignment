@@ -41,7 +41,7 @@ public class Pixel {
    * @throws IllegalArgumentException if color values are out of bounds
    */
   public Pixel(int r, int g, int b, int alpha) throws IllegalArgumentException {
-    if (r < 0 || r > 255 | g < 0 || g > 255 || b < 0 || b > 255 || alpha < 0 || alpha > 1) {
+    if (r < 0 || r > 255 | g < 0 || g > 255 || b < 0 || b > 255) {
       throw new IllegalArgumentException("color invalid");
     }
 
