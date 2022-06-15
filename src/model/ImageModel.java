@@ -395,6 +395,16 @@ public class ImageModel implements ImageEditor {
 
   }
 
+  @Override
+  public void sepia(String filename, String newFilename){
+    Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
+    for (int i = 0; i < images.get(filename).length; i++) {
+      for (int j = 0; j < images.get(filename)[0].length; j++) {
+        arr[i][j] = images.get(filename)[i][j].getSepia();
+      }
+    }
+    images.put(newFilename,arr);
+  }
 
   @Override
   public boolean getStatus() {

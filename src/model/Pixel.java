@@ -135,4 +135,20 @@ public class Pixel {
     return alpha;
   }
 
+  public Pixel getSepia(){
+    int r = (int) (.393 * this.r + .769 * this.g + .189 * this.b);
+    int g = (int) (.349 * this.r + .686 * this.g + .168 * this.b);
+    int b = (int) (.272 * this.r + .534 * this.g + .131 * this.b);
+    if(r > 255){
+      r = 255;
+    }
+    if(g > 255){
+      g = 255;
+    }
+    if(b > 255){
+      b = 255;
+    }
+    return new Pixel(r,g,b,this.alpha);
+  }
+
 }

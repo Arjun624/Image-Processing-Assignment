@@ -109,6 +109,7 @@ public interface ImageEditor {
           NullPointerException;
 
 
+  void sepia(String filename, String newFilename);
   /**
    * Returns whether the program should be quit.
    *
