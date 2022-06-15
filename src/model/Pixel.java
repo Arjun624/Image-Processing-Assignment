@@ -6,11 +6,11 @@ import java.util.Objects;
  * Represents a singular pixel found in an image.
  */
 public class Pixel {
-  private int r;
-  private int g;
-  private int b;
+  private final int r;
+  private final int g;
+  private final int b;
 
-  private int alpha;
+  private final int alpha;
 
   /**
    * Constructs a new Pixel by its position and color on the image.
