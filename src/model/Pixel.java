@@ -10,13 +10,15 @@ public class Pixel {
   private int g;
   private int b;
 
+  private int alpha;
+
   /**
    * Constructs a new Pixel by its position and color on the image.
    *
    * @param r the red value
-   * @param g the blue value
-   * @param b the green value
-   * @throws IllegalArgumentException if the position or color values are out of bounds
+   * @param g the green value
+   * @param b the blue value
+   * @throws IllegalArgumentException if color values are out of bounds
    */
   public Pixel(int r, int g, int b) throws IllegalArgumentException {
     if (r < 0 || r > 255 | g < 0 || g > 255 || b < 0 || b > 255) {
@@ -26,6 +28,27 @@ public class Pixel {
     this.r = r;
     this.g = g;
     this.b = b;
+    this.alpha = 1;
+
+  }
+
+  /**
+   * Constructs a new Pixel by its position and color on the image.
+   *
+   * @param r the red value
+   * @param g the green value
+   * @param b the blue value
+   * @throws IllegalArgumentException if color values are out of bounds
+   */
+  public Pixel(int r, int g, int b, int alpha) throws IllegalArgumentException {
+    if (r < 0 || r > 255 | g < 0 || g > 255 || b < 0 || b > 255 || alpha < 0 || alpha > 1) {
+      throw new IllegalArgumentException("color invalid");
+    }
+
+    this.r = r;
+    this.g = g;
+    this.b = b;
+    this.alpha = alpha;
 
   }
 
@@ -101,6 +124,14 @@ public class Pixel {
    */
   public int getBlue() {
     return b;
+  }
+
+  /**
+   * Gets the alpha value of the pixel.
+   * @return an integer representing the alpha value
+   */
+  public int getAlpha() {
+    return alpha;
   }
 
 }

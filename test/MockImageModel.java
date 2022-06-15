@@ -1,6 +1,8 @@
 import java.io.IOException;
+import java.util.HashMap;
 
 import model.ImageEditor;
+import model.Pixel;
 
 /**
  * A mock {@code ImageModel} used strictly for testing.
@@ -84,5 +86,20 @@ public class MockImageModel implements ImageEditor {
   public void quit() throws IOException {
     this.quit = true;
     this.ap.append("program quit");
+  }
+
+  @Override
+  public void add(String imageName, Pixel[][] arr) throws IOException {
+    this.ap.append("added " + imageName + " to hashmap");
+  }
+
+  @Override
+  public HashMap<String, Pixel[][]> getMap() {
+    return null;
+  }
+
+  @Override
+  public int findTotalValue(String filename) {
+    return 0;
   }
 }

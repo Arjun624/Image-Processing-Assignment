@@ -151,4 +151,23 @@ public class TestController {
 
 
   }
+
+  @Test
+  public void testLoadPPM(){
+
+  }
+
+  @Test
+  public void testLoadOther(){
+
+  }
+  @Test
+  public void testSavePPM(){
+
+  }
+
+  @Test
+  public void testSaveOther(){
+
+  }
 }

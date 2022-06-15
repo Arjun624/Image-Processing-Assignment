@@ -144,7 +144,7 @@ public interface ImageEditor {
    * @param imageName the name of the image
    * @param arr the array of pixels
    */
-  void add(String imageName, Pixel[][] arr);
+  void add(String imageName, Pixel[][] arr) throws IOException;
 
   /**
    * returns the hashmap of images.
