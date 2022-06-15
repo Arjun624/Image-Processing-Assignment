@@ -38,31 +38,38 @@ public class TestController {
   @Test
   public void testValidInitialization() throws IOException {
     Readable r = new StringReader("q");
-    ImageController c = new ImageControllerImpl(v, r);
-    c.start(m);
+    ImageController c = new ImageControllerImpl(v, r, m);
+    c.start();
     assertEquals("program quit", ap.toString());
   }
 
   @Test
   public void testInvalidInitialization() throws IOException {
     try {
-      new ImageControllerImpl(null, new StringReader(""));
+      new ImageControllerImpl(null, new StringReader(""), m);
       fail("Should have thrown an exception");
     } catch (IllegalArgumentException e) {
-      assertEquals(e.getMessage(), "View or readable cannot be null");
+      assertEquals(e.getMessage(), "View, readable, or model cannot be null");
     }
 
     try {
-      new ImageControllerImpl(v, null);
+      new ImageControllerImpl(v, null,m);
       fail("Should have thrown an exception");
     } catch (IllegalArgumentException e) {
-      assertEquals(e.getMessage(), "View or readable cannot be null");
+      assertEquals(e.getMessage(), "View, readable, or model cannot be null");
+    }
+
+    try {
+      new ImageControllerImpl(v, new StringReader(""),null);
+      fail("Should have thrown an exception");
+    } catch (IllegalArgumentException e) {
+      assertEquals(e.getMessage(), "View, readable, or model cannot be null");
     }
 
     Readable r = new StringReader("");
-    ImageController c = new ImageControllerImpl(v, r);
+    ImageController c = new ImageControllerImpl(v, r, m);
     try {
-      c.start(m);
+      c.start();
       fail("Should have thrown an exception");
     } catch (NoSuchElementException e) {
       assertNull(e.getMessage());
@@ -84,8 +91,8 @@ public class TestController {
             "luma test test-l " +
             "intensity test test-i  " +
             "max test test-m  q");
-    ImageController c = new ImageControllerImpl(v, r);
-    c.start(m);
+    ImageController c = new ImageControllerImpl(v, r,m);
+    c.start();
     assertEquals("loaded " +
             "/Users/noamgreenstein/Documents/OOD/Image-Processing-Assignment/images/Koala.ppm" +
             " as test", ap.toString().split("\n")[0]);
@@ -114,8 +121,8 @@ public class TestController {
   @Test
   public void testInvalidInput() throws IOException {
     Readable r = new StringReader("hello q");
-    ImageController c = new ImageControllerImpl(v, r);
-    c.start(m);
+    ImageController c = new ImageControllerImpl(v, r,m);
+    c.start();
     assertEquals("Enter a command: \n" +
             "Invalid command!\n" +
             "Enter a command: \n" +
@@ -127,8 +134,8 @@ public class TestController {
     Readable r2 = new StringReader("load hello1 test q");
     Appendable apView2 = new StringBuilder();
     ImageView v2 = new ImageDisplay(apView2);
-    ImageController c2 = new ImageControllerImpl(v2, r2);
-    c2.start(m2);
+    ImageController c2 = new ImageControllerImpl(v2, r2,m2);
+    c2.start();
 
     Appendable ap3 = new StringBuilder();
     ImageView vModel2 = new ImageDisplay(ap3);
@@ -138,8 +145,8 @@ public class TestController {
             "test max hello test-max q");
     Appendable apView3 = new StringBuilder();
     ImageView v3 = new ImageDisplay(apView3);
-    ImageController c3 = new ImageControllerImpl(v3, r3);
-    c3.start(m3);
+    ImageController c3 = new ImageControllerImpl(v3, r3,m3);
+    c3.start();
     assertEquals("Enter a command: ", apView3.toString().split("\n")[2]);
 
 

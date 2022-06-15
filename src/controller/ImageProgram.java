@@ -23,7 +23,7 @@ public class ImageProgram {
     ImageModel model = new ImageModel();
     InputStreamReader in = new InputStreamReader(System.in);
     view.displayWelcomeMessage();
-    controller = new ImageControllerImpl(view, in);
-    controller.start(model);
+    controller = new ImageControllerImpl(view, in, model);
+    controller.start();
   }
 }

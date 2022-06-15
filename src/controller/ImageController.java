@@ -11,8 +11,7 @@ public interface ImageController {
   /**
    * Method that takes in the user arguments and preforms any action.
    *
-   * @param model the image model to be edited
    * @throws IOException if the program cannot read the input or write the output
    */
-  void start(ImageEditor model) throws IOException;
+  void start() throws IOException;
 }
