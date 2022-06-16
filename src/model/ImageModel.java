@@ -233,14 +233,16 @@ public class ImageModel implements ImageEditor {
 
 
 
-  public void blurImage(String filename, String newFilename, double[][] kernal) throws IOException,
+  public void filterImage(String filename, String newFilename, double[][] kernal) throws IOException,
           IllegalArgumentException {
 
     int length = kernal.length;
     int width = kernal[0].length;
-    List<Double> newRs = new ArrayList<Double>();
-    List<Double> newGs = new ArrayList<Double>();
-    List<Double> newBs = new ArrayList<Double>();
+
+    int newRed = 0;
+    int newGreen = 0;
+    int newBlue = 0;
+
 
     Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
     for (int row = 0; row < this.images.get(filename).length; row++) {
@@ -249,53 +251,23 @@ public class ImageModel implements ImageEditor {
         for (int kernalRow = row-(length/2); kernalRow < (row-(length/2)) + length; kernalRow++) {
           for (int kernalCol = col-(length/2); kernalCol < (col-(length/2)) + width; kernalCol++) {
             try{
-              newRs.add(images.get(filename)[kernalRow][kernalCol].getRed()*kernal[kernalRow-(row-(length/2))][kernalCol-(col-(length/2))]);
-              newGs.add(images.get(filename)[kernalRow][kernalCol].getGreen()*kernal[kernalRow-(row-(length/2))][kernalCol-(col-(length/2))]);
-              newBs.add(images.get(filename)[kernalRow][kernalCol].getBlue()*kernal[kernalRow-(row-(length/2))][kernalCol-(col-(length/2))]);
-            } catch(ArrayIndexOutOfBoundsException e){
-              continue;
-            }
+              newRed += images.get(filename)[kernalRow][kernalCol].getRed()*kernal[kernalRow-(row-(length/2))][kernalCol-(col-(length/2))];
+              newGreen += images.get(filename)[kernalRow][kernalCol].getGreen()*kernal[kernalRow-(row-(length/2))][kernalCol-(col-(length/2))];
+              newBlue += images.get(filename)[kernalRow][kernalCol].getBlue()*kernal[kernalRow-(row-(length/2))][kernalCol-(col-(length/2))];
+            } catch(ArrayIndexOutOfBoundsException ignored){}
 
           }
         }
 
-        int rSum = newRs.stream()
-                .mapToInt(Double::intValue)
-                .sum();
+        newRed = fixRGBRange(newRed);
+        newGreen = fixRGBRange(newGreen);
+        newBlue = fixRGBRange(newBlue);
 
-        int gSum = newGs.stream()
-                .mapToInt(Double::intValue)
-                .sum();
+        arr[row][col] = new Pixel(newRed, newGreen, newBlue);
 
-        int bSum = newBs.stream()
-                .mapToInt(Double::intValue)
-                .sum();
-
-
-        if(rSum > 255){
-          rSum = 255;
-        }
-        if(gSum > 255){
-          gSum = 255;
-        }
-        if(bSum > 255){
-          bSum = 255;
-        }
-        if(rSum < 0){
-          rSum = 0;
-        }
-        if(gSum < 0){
-          gSum = 0;
-        }
-        if(bSum < 0){
-          bSum = 0;
-        }
-
-        arr[row][col] = new Pixel(rSum, gSum, bSum);
-        newRs.clear();
-        newGs.clear();
-        newBs.clear();
-
+        newRed = 0;
+        newGreen = 0;
+        newBlue = 0;
 
       }
     }
@@ -348,6 +320,13 @@ public class ImageModel implements ImageEditor {
     }
     return value;
 
+  }
+
+  private int fixRGBRange(int value){
+    if(value > 255){
+      return 255;
+    }
+    return Math.max(value, 0);
   }
 
 
