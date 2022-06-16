@@ -1,5 +1,6 @@
 package controller;
 
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -21,9 +22,19 @@ public class ImageProgram {
     ImageControllerImpl controller;
     ImageView view = new ImageDisplay(System.out);
     ImageModel model = new ImageModel();
-    InputStreamReader in = new InputStreamReader(System.in);
-    view.displayWelcomeMessage();
-    controller = new ImageControllerImpl(view, in, model);
-    controller.start();
+    if (args.length > 0) {
+      for (int i = 0; i < args.length - 1; i++) {
+        if (args[i].contains("-file")) {
+          InputStreamReader in = new FileReader(args[i + 1]);
+          controller = new ImageControllerImpl(view, in, model);
+          controller.start();
+        }
+      }
+    } else {
+      InputStreamReader in = new InputStreamReader(System.in);
+      view.displayWelcomeMessage();
+      controller = new ImageControllerImpl(view, in, model);
+      controller.start();
+    }
   }
 }
