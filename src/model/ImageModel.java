@@ -152,25 +152,8 @@ public class ImageModel implements ImageEditor {
         int newRed = this.images.get(filename)[row][col].getRed() + increment;
         int newGreen = this.images.get(filename)[row][col].getGreen() + increment;
         int newBlue = this.images.get(filename)[row][col].getBlue() + increment;
-        if (newRed > 255) {
-          newRed = 255;
-        }
-        if (newGreen > 255) {
-          newGreen = 255;
-        }
-        if (newBlue > 255) {
-          newBlue = 255;
-        }
-        if (newRed < 0) {
-          newRed = 0;
-        }
-        if (newGreen < 0) {
-          newGreen = 0;
-        }
-        if (newBlue < 0) {
-          newBlue = 0;
-        }
-        arr[row][col] = new Pixel(newRed, newGreen, newBlue);
+
+        arr[row][col] = new Pixel(fixRGBRange(newRed), fixRGBRange(newGreen), fixRGBRange(newBlue));
       }
     }
     images.put(newFilename, arr);
@@ -239,9 +222,9 @@ public class ImageModel implements ImageEditor {
     int length = kernal.length;
     int width = kernal[0].length;
 
-    int newRed = 0;
-    int newGreen = 0;
-    int newBlue = 0;
+    double newRed = 0;
+    double newGreen = 0;
+    double newBlue = 0;
 
 
     Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
@@ -259,11 +242,7 @@ public class ImageModel implements ImageEditor {
           }
         }
 
-        newRed = fixRGBRange(newRed);
-        newGreen = fixRGBRange(newGreen);
-        newBlue = fixRGBRange(newBlue);
-
-        arr[row][col] = new Pixel(newRed, newGreen, newBlue);
+        arr[row][col] = new Pixel(fixRGBRange(newRed), fixRGBRange(newGreen), fixRGBRange(newBlue));
 
         newRed = 0;
         newGreen = 0;
@@ -284,28 +263,20 @@ public class ImageModel implements ImageEditor {
     for (int i = 0; i < images.get(filename).length; i++) {
       for (int j = 0; j < images.get(filename)[0].length; j++) {
         Pixel p = images.get(filename)[i][j];
-        int r = (int)
+        double newRed =
                 (colors[0][0] * p.getRed()
                         + colors[0][1] * p.getGreen()
                         + colors[0][2] * p.getBlue());
-        int g = (int)
+        double newGreen =
                 (colors[1][0] * p.getRed()
                         + colors[1][1] * p.getGreen()
                         + colors[1][2] * p.getBlue());
-        int b = (int)
+        double newBlue=
                 (colors[2][0] * p.getRed()
                         + colors[2][1] * p.getGreen()
                         + colors[2][2] * p.getBlue());
-        if(r > 255){
-          r = 255;
-        }
-        if(g > 255){
-          g = 255;
-        }
-        if(b > 255){
-          b = 255;
-        }
-        arr[i][j] = new Pixel(r,g,b,p.getAlpha());
+
+        arr[i][j] = new Pixel(fixRGBRange(newRed), fixRGBRange(newGreen), fixRGBRange(newBlue),p.getAlpha());
       }
     }
     images.put(newFilename,arr);
@@ -343,11 +314,15 @@ public class ImageModel implements ImageEditor {
 
   }
 
-  private int fixRGBRange(int value){
+  private int fixRGBRange(double value){
     if(value > 255){
       return 255;
     }
-    return Math.max(value, 0);
+    if(value < 0){
+      return 0;
+    }
+
+    return (int) Math.round(value);
   }
 
 
