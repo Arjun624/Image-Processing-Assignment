@@ -15,10 +15,10 @@ public interface ImageEditor {
    * @param filename    the file reference
    * @param newFilename what the new file will be stored as
    * @throws IOException          if the program cannot read the input or write the output
-   * @throws NullPointerException if inputted file does not exist
+   * @throws IllegalArgumentException if inputted file does not exist
    */
   void flipVertically(String filename, String newFilename) throws IOException,
-          NullPointerException;
+          IllegalArgumentException;
 
   /**
    * Flips an image horizontally.
@@ -26,10 +26,10 @@ public interface ImageEditor {
    * @param filename    the file reference
    * @param newFilename what the new file will be stored as
    * @throws IOException          if the program cannot read the input or write the output
-   * @throws NullPointerException if inputted file does not exist
+   * @throws IllegalArgumentException if inputted file does not exist
    */
   void flipHorizontally(String filename, String newFilename) throws IOException,
-          NullPointerException;
+          IllegalArgumentException;
 
   /**
    * Preforms a red grayscale on an image.
@@ -37,10 +37,10 @@ public interface ImageEditor {
    * @param filename    the file reference
    * @param newFilename what the new file will be stored as
    * @throws IOException          if the program cannot read the input or write the output
-   * @throws NullPointerException if inputted file does not exist
+   * @throws IllegalArgumentException if inputted file does not exist
    */
   void redGreyscale(String filename, String newFilename) throws IOException,
-          NullPointerException;
+          IllegalArgumentException;
 
   /**
    * Preforms a green grayscale on an image.
@@ -48,10 +48,10 @@ public interface ImageEditor {
    * @param filename    the file reference
    * @param newFilename what the new file will be stored as
    * @throws IOException          if the program cannot read the input or write the output
-   * @throws NullPointerException if inputted file does not exist
+   * @throws IllegalArgumentException if inputted file does not exist
    */
   void greenGreyscale(String filename, String newFilename) throws IOException,
-          NullPointerException;
+          IllegalArgumentException;
 
   /**
    * Preforms a blue grayscale on an image.
@@ -59,10 +59,10 @@ public interface ImageEditor {
    * @param filename    the file reference
    * @param newFilename what the new file will be stored as
    * @throws IOException          if the program cannot read the input or write the output
-   * @throws NullPointerException if inputted file does not exist
+   * @throws IllegalArgumentException if inputted file does not exist
    */
   void blueGreyscale(String filename, String newFilename) throws IOException,
-          NullPointerException;
+          IllegalArgumentException;
 
   /**
    * Finds the luma of each pixel using its RGB value.
@@ -70,10 +70,10 @@ public interface ImageEditor {
    * @param filename    the file reference
    * @param newFilename what the new file will be stored as
    * @throws IOException          if the program cannot read the input or write the output
-   * @throws NullPointerException if inputted file does not exist
+   * @throws IllegalArgumentException if inputted file does not exist
    */
   void lumaGreyscale(String filename, String newFilename) throws IOException,
-          NullPointerException;
+          IllegalArgumentException;
 
   /**
    * Preforms a grayscale on an image.
@@ -81,10 +81,10 @@ public interface ImageEditor {
    * @param filename    the file reference
    * @param newFilename what the new file will be stored as
    * @throws IOException          if the program cannot read the input or write the output
-   * @throws NullPointerException if inputted file does not exist
+   * @throws IllegalArgumentException if inputted file does not exist
    */
   void intensityGreyscale(String filename, String newFilename) throws IOException,
-          NullPointerException;
+          IllegalArgumentException;
 
   /**
    * Preforms a max value grayscale on an image.
@@ -92,10 +92,10 @@ public interface ImageEditor {
    * @param filename    the file reference
    * @param newFilename what the new file will be stored as
    * @throws IOException          if the program cannot read the input or write the output
-   * @throws NullPointerException if inputted file does not exist
+   * @throws IllegalArgumentException if inputted file does not exist
    */
   void valueGreyscale(String filename, String newFilename) throws IOException,
-          NullPointerException;
+          IllegalArgumentException;
 
   /**
    * Adjusts the brightness of an image.
@@ -103,10 +103,10 @@ public interface ImageEditor {
    * @param filename    the file reference
    * @param newFilename what the new file will be stored as
    * @throws IOException          if the program cannot read the input or write the output
-   * @throws NullPointerException if inputted file does not exist
+   * @throws IllegalArgumentException if inputted file does not exist
    */
   void adjustBrightness(int increment, String filename, String newFilename) throws IOException,
-          NullPointerException;
+          IllegalArgumentException;
 
 
 
@@ -148,5 +148,5 @@ public interface ImageEditor {
           throws IOException, IllegalArgumentException;
 
   void colorTransform(float[][] colors, String filename, String newFilename)
-          throws IllegalArgumentException;
+          throws IOException,  IllegalArgumentException;
 }
