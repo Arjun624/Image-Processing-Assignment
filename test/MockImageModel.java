@@ -19,52 +19,48 @@ public class MockImageModel implements ImageEditor {
 
   @Override
   public void flipVertically(String filename, String newFilename) throws IOException {
-    this.ap.append("flipped " + filename + " vertically. Is now " + newFilename + "\n");
+    this.ap.append("flipped ").append(filename).append(" vertically. Is now ").append(newFilename).append("\n");
   }
 
   @Override
   public void flipHorizontally(String filename, String newFilename) throws IOException {
-    this.ap.append("flipped " + filename + " horizontally. Is now " + newFilename + "\n");
+    this.ap.append("flipped ").append(filename).append(" horizontally. Is now ").append(newFilename).append("\n");
   }
 
   @Override
   public void redGreyscale(String filename, String newFilename) throws IOException {
-    this.ap.append("preformed a red greyscale " + filename + ". Is now " + newFilename + "\n");
+    this.ap.append("preformed a red greyscale ").append(filename).append(". Is now ").append(newFilename).append("\n");
   }
 
   @Override
   public void greenGreyscale(String filename, String newFilename) throws IOException {
-    this.ap.append("preformed a green greyscale " + filename + ". Is now " + newFilename + "\n");
+    this.ap.append("preformed a green greyscale ").append(filename).append(". Is now ").append(newFilename).append("\n");
   }
 
   @Override
   public void blueGreyscale(String filename, String newFilename) throws IOException {
-    this.ap.append("preformed a blue greyscale " + filename + ". Is now " + newFilename + "\n");
+    this.ap.append("preformed a blue greyscale ").append(filename).append(". Is now ").append(newFilename).append("\n");
   }
 
   @Override
   public void lumaGreyscale(String filename, String newFilename) throws IOException {
-    this.ap.append("preformed a luma greyscale " + filename + ". Is now " + newFilename + "\n");
+    this.ap.append("preformed a luma greyscale ").append(filename).append(". Is now ").append(newFilename).append("\n");
   }
 
   @Override
   public void intensityGreyscale(String filename, String newFilename) throws IOException {
-    this.ap.append("preformed an intensity greyscale "
-            + filename
-            + ". Is now "
-            + newFilename
-            + "\n");
+    this.ap.append("preformed an intensity greyscale ").append(filename).append(". Is now ").append(newFilename).append("\n");
   }
 
   @Override
   public void valueGreyscale(String filename, String newFilename) throws IOException {
-    this.ap.append("preformed a value greyscale " + filename + ". Is now " + newFilename + "\n");
+    this.ap.append("preformed a value greyscale ").append(filename).append(". Is now ").append(newFilename).append("\n");
   }
 
   @Override
   public void adjustBrightness(int increment, String filename, String newFilename)
           throws IOException {
-    this.ap.append("adjusted " + filename + " by " + increment + ". Is now " + newFilename + "\n");
+    this.ap.append("adjusted ").append(filename).append(" by ").append(String.valueOf(increment)).append(". Is now ").append(newFilename).append("\n");
   }
 
 
@@ -81,7 +77,7 @@ public class MockImageModel implements ImageEditor {
 
   @Override
   public void add(String imageName, Pixel[][] arr) throws IOException {
-    this.ap.append("added " + imageName + " to hashmap\n");
+    this.ap.append("added ").append(imageName).append(" to hashmap\n");
   }
 
   @Override
@@ -95,7 +91,14 @@ public class MockImageModel implements ImageEditor {
   }
 
   @Override
-  public void sharpenImage(String fileName, String newFileName) throws IOException, IllegalArgumentException {
-    this.ap.append("sharpened " + fileName + ". Is now " + newFileName + "\n");
+  public void filterImage(String fileName, String newFileName, double[][] kernal) throws IOException, IllegalArgumentException {
+
   }
+
+  @Override
+  public void colorTransform(float[][] colors, String filename, String newFilename) throws IOException, IllegalArgumentException {
+
+  }
+
+
 }

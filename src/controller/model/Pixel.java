@@ -104,7 +104,7 @@ public class Pixel {
    * @return a new integer hashcode.
    */
   public int hashCode() {
-    return Objects.hashCode(this);
+    return Objects.hashCode(this.r + this.g + this.b + this.alpha);
   }
 
   /**

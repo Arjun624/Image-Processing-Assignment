@@ -1,8 +1,11 @@
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 
+import controller.ImageCommands;
+import controller.ImageControllerImpl;
 import controller.model.ImageModel;
 import controller.model.Pixel;
 import view.ImageDisplay;
@@ -455,5 +458,46 @@ public class TestModel {
       assertEquals(e.getMessage(), "file doesn't exist");
     }
   }
+
+  @Test
+  public void testBlur() throws IOException {
+    ImageView v = new ImageDisplay(new StringBuilder());
+    HashMap<String, Pixel[][]> testMap = new HashMap<>();
+    String file = "test";
+    Pixel[][] arr = new Pixel[2][2];
+    for (int i = 0; i < 2; i++) {
+      for (int j = 0; j < 2; j++) {
+        arr[i][j] = new Pixel(110 + i, 120-(3*j), 130);
+      }
+    }
+    testMap.put(file, arr);
+    ImageModel m1 = new ImageModel(testMap, v);
+    double[][] kernal = new double[][]{
+            { 0.0625, 0.125, 0.0625 },
+            { 0.125, 0.25, 0.125 },
+            { 0.0625, 0.125, 0.0625 },
+    };
+    m1.filterImage("test", "test-b", kernal);
+    Pixel[][] arr1 = new Pixel[2][2];
+    arr1[0][0] = new Pixel(62, 67, 73);
+    arr1[0][1] = new Pixel(62, 66, 73);
+    arr1[1][0] = new Pixel(62, 67, 73);
+    arr1[1][1] = new Pixel(62, 66, 73);
+
+
+    for (int i = 0; i < 2; i++) {
+      for (int j = 0; j < 2; j++) {
+        assertEquals(m1.images.get("test-b")[i][j], arr1[i][j]);
+      }
+    }
+
+//    try {
+//      m1.redGreyscale("yes", "no");
+//      fail("Should have thrown an exception");
+//    } catch (NullPointerException e) {
+//      assertEquals(e.getMessage(), "file doesn't exist");
+//    }
+  }
+
 
 }
