@@ -19,6 +19,7 @@ import controller.commands.AdjustBrightness;
 import controller.commands.BlueGreyscale;
 import controller.commands.Blur;
 import controller.commands.GreenGreyscale;
+import controller.commands.Greyscale;
 import controller.commands.HorizontalFlip;
 import controller.commands.IntensityGreyscale;
 import controller.commands.LoadImage;
@@ -53,7 +54,8 @@ public class ImageControllerImpl implements ImageController {
    * @param view the view
    * @param rd   the readable object to be read by the scanner
    */
-  public ImageControllerImpl(ImageView view, Readable rd, ImageEditor model) throws IllegalArgumentException {
+  public ImageControllerImpl(ImageView view, Readable rd, ImageEditor model)
+          throws IllegalArgumentException {
     if (view == null || rd == null || model == null) {
       throw new IllegalArgumentException("View, readable, or model cannot be null");
     }
@@ -77,7 +79,7 @@ public class ImageControllerImpl implements ImageController {
     commands.put("sharpen", s -> new Sharpen(s.next(), s.next()));
     commands.put("blur", s -> new Blur(s.next(), s.next()));
     commands.put("sepia", s -> new Sepia(s.next(), s.next()));
-    commands.put("greyscale", s -> new LumaGreyscale(s.next(), s.next()));
+    commands.put("greyscale", s -> new Greyscale(s.next(), s.next()));
     commands.put("q", s -> new Quit());
 
   }
