@@ -98,7 +98,7 @@ public class TestModel {
     try {
       m1.flipVertically("yes", "no");
       fail("Should have thrown an exception");
-    } catch (NullPointerException e) {
+    } catch (IllegalArgumentException e) {
       assertEquals(e.getMessage(), "file doesn't exist");
     }
   }
@@ -133,7 +133,7 @@ public class TestModel {
     try {
       m1.flipHorizontally("yes", "no");
       fail("Should have thrown an exception");
-    } catch (NullPointerException e) {
+    } catch (IllegalArgumentException e) {
       assertEquals(e.getMessage(), "file doesn't exist");
     }
   }
@@ -168,7 +168,7 @@ public class TestModel {
     try {
       m1.redGreyscale("yes", "no");
       fail("Should have thrown an exception");
-    } catch (NullPointerException e) {
+    } catch (IllegalArgumentException e) {
       assertEquals(e.getMessage(), "file doesn't exist");
     }
   }
@@ -203,7 +203,7 @@ public class TestModel {
     try {
       m1.greenGreyscale("yes", "no");
       fail("Should have thrown an exception");
-    } catch (NullPointerException e) {
+    } catch (IllegalArgumentException e) {
       assertEquals(e.getMessage(), "file doesn't exist");
     }
   }
@@ -238,7 +238,7 @@ public class TestModel {
     try {
       m1.blueGreyscale("yes", "no");
       fail("Should have thrown an exception");
-    } catch (NullPointerException e) {
+    } catch (IllegalArgumentException e) {
       assertEquals(e.getMessage(), "file doesn't exist");
     }
   }
@@ -348,7 +348,7 @@ public class TestModel {
     try {
       m4.adjustBrightness(40, "yes", "no");
       fail("Should have thrown an exception");
-    } catch (NullPointerException e) {
+    } catch (IllegalArgumentException e) {
       assertEquals(e.getMessage(), "file doesn't exist");
     }
   }
@@ -384,7 +384,7 @@ public class TestModel {
     try {
       m1.lumaGreyscale("yes", "no");
       fail("Should have thrown an exception");
-    } catch (NullPointerException e) {
+    } catch (IllegalArgumentException e) {
       assertEquals(e.getMessage(), "file doesn't exist");
     }
   }
@@ -419,7 +419,7 @@ public class TestModel {
     try {
       m1.intensityGreyscale("yes", "no");
       fail("Should have thrown an exception");
-    } catch (NullPointerException e) {
+    } catch (IllegalArgumentException e) {
       assertEquals(e.getMessage(), "file doesn't exist");
     }
   }
@@ -454,7 +454,7 @@ public class TestModel {
     try {
       m1.valueGreyscale("yes", "no");
       fail("Should have thrown an exception");
-    } catch (NullPointerException e) {
+    } catch (IllegalArgumentException e) {
       assertEquals(e.getMessage(), "file doesn't exist");
     }
   }
@@ -491,12 +491,31 @@ public class TestModel {
       }
     }
 
-//    try {
-//      m1.redGreyscale("yes", "no");
-//      fail("Should have thrown an exception");
-//    } catch (NullPointerException e) {
-//      assertEquals(e.getMessage(), "file doesn't exist");
-//    }
+    double[][] evenKernal = new double[][]{
+            { 0.0625, 0.125},
+            { 0.125, 0.25}
+    };
+    try {
+      m1.filterImage("test", "test-b", evenKernal);
+      fail("Should have thrown an exception");
+    } catch (IllegalArgumentException e) {
+      assertEquals(e.getMessage(), "Kernal must have an odd number of rows and columns");
+    }
+
+    try {
+      m1.filterImage("test", "test-b", null);
+      fail("Should have thrown an exception");
+    } catch (IllegalArgumentException e) {
+      assertEquals(e.getMessage(), "kernal is null");
+    }
+
+    try {
+      m1.filterImage("yes", "no", kernal);
+      fail("Should have thrown an exception");
+    } catch (IllegalArgumentException e) {
+      assertEquals(e.getMessage(), "file doesn't exist");
+    }
+
   }
 
 

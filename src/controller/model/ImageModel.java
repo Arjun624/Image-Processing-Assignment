@@ -3,6 +3,7 @@ package controller.model;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.Objects;
 
 import view.ImageDisplay;
 import view.ImageView;
@@ -227,6 +228,12 @@ public class ImageModel implements ImageEditor {
 
   public void filterImage(String filename, String newFilename, double[][] kernal) throws IOException,
           IllegalArgumentException {
+    if(kernal == null) {
+      throw new IllegalArgumentException("kernal is null");
+    }
+    if (images.get(filename) == null) {
+      throw new IllegalArgumentException("file doesn't exist");
+    }
     if(kernal.length % 2 == 0 || kernal[0].length % 2 == 0) {
       throw new IllegalArgumentException("Kernal must have an odd number of rows and columns");
     }
@@ -268,6 +275,12 @@ public class ImageModel implements ImageEditor {
   @Override
   public void colorTransform(float[][] colors, String filename, String newFilename)
           throws IllegalArgumentException, IOException {
+    if(colors == null) {
+      throw new IllegalArgumentException("colors is null");
+    }
+    if (images.get(filename) == null) {
+      throw new IllegalArgumentException("file doesn't exist");
+    }
     if (colors.length != 3 || colors[0].length != 3){
       throw new IllegalArgumentException("color matrix not size 3x3!");
     }
