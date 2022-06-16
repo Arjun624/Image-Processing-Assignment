@@ -15,6 +15,12 @@ public class TestPixel {
     assertEquals(0, p.getRed());
     assertEquals(255, p.getGreen());
     assertEquals(1, p.getBlue());
+    assertEquals(255,p.getAlpha());
+    Pixel p2 = new Pixel(0, 255, 1,12);
+    assertEquals(0, p2.getRed());
+    assertEquals(255, p2.getGreen());
+    assertEquals(1, p2.getBlue());
+    assertEquals(12,p2.getAlpha());
   }
 
   @Test
