@@ -218,6 +218,9 @@ public class ImageModel implements ImageEditor {
 
   public void filterImage(String filename, String newFilename, double[][] kernal) throws IOException,
           IllegalArgumentException {
+    if(kernal.length % 2 == 0 || kernal[0].length % 2 == 0) {
+      throw new IllegalArgumentException("Kernal must have an odd number of rows and columns");
+    }
 
     int length = kernal.length;
     int width = kernal[0].length;
@@ -232,13 +235,12 @@ public class ImageModel implements ImageEditor {
       for (int col = 0; col < this.images.get(filename)[0].length; col++) {
 
         for (int kernalRow = row-(length/2); kernalRow < (row-(length/2)) + length; kernalRow++) {
-          for (int kernalCol = col-(length/2); kernalCol < (col-(length/2)) + width; kernalCol++) {
+          for (int kernalCol = col-(width/2); kernalCol < (col-(width/2)) + width; kernalCol++) {
             try{
-              newRed += images.get(filename)[kernalRow][kernalCol].getRed()*kernal[kernalRow-(row-(length/2))][kernalCol-(col-(length/2))];
-              newGreen += images.get(filename)[kernalRow][kernalCol].getGreen()*kernal[kernalRow-(row-(length/2))][kernalCol-(col-(length/2))];
-              newBlue += images.get(filename)[kernalRow][kernalCol].getBlue()*kernal[kernalRow-(row-(length/2))][kernalCol-(col-(length/2))];
+              newRed += images.get(filename)[kernalRow][kernalCol].getRed()*kernal[kernalRow-(row-(length/2))][kernalCol-(col-(width/2))];
+              newGreen += images.get(filename)[kernalRow][kernalCol].getGreen()*kernal[kernalRow-(row-(length/2))][kernalCol-(col-(width/2))];
+              newBlue += images.get(filename)[kernalRow][kernalCol].getBlue()*kernal[kernalRow-(row-(length/2))][kernalCol-(col-(width/2))];
             } catch(ArrayIndexOutOfBoundsException ignored){}
-
           }
         }
 
@@ -250,19 +252,20 @@ public class ImageModel implements ImageEditor {
 
       }
     }
+    view.renderMessage("Image " + filename + " filtered successfully");
     images.put(newFilename, arr);
   }
 
   @Override
   public void colorTransform(float[][] colors, String filename, String newFilename)
-          throws IllegalArgumentException{
+          throws IllegalArgumentException, IOException {
     if (colors.length != 3 || colors[0].length != 3){
       throw new IllegalArgumentException("color matrix not size 3x3!");
     }
     Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
-    for (int i = 0; i < images.get(filename).length; i++) {
-      for (int j = 0; j < images.get(filename)[0].length; j++) {
-        Pixel p = images.get(filename)[i][j];
+    for (int row = 0; row < images.get(filename).length; row++) {
+      for (int col = 0; col < images.get(filename)[0].length; col++) {
+        Pixel p = images.get(filename)[row][col];
         double newRed =
                 (colors[0][0] * p.getRed()
                         + colors[0][1] * p.getGreen()
@@ -276,10 +279,11 @@ public class ImageModel implements ImageEditor {
                         + colors[2][1] * p.getGreen()
                         + colors[2][2] * p.getBlue());
 
-        arr[i][j] = new Pixel(fixRGBRange(newRed), fixRGBRange(newGreen), fixRGBRange(newBlue),p.getAlpha());
+        arr[row][col] = new Pixel(fixRGBRange(newRed), fixRGBRange(newGreen), fixRGBRange(newBlue),p.getAlpha());
       }
     }
     images.put(newFilename,arr);
+    view.renderMessage("Image " + filename + " transformed successfully");
   }
 
   @Override

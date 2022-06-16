@@ -173,6 +173,8 @@ public class ImageControllerImpl implements ImageController {
     }
     int width = b.getWidth();
     int height = b.getHeight();
+    view.renderMessage("Width of image: " + width);
+    view.renderMessage("Height of image: " + height);
     Pixel[][] arr = new Pixel[height][width];
     for (int i = 0; i < width; i++) {
       for (int j = 0; j < height; j++) {
