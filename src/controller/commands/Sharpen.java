@@ -31,12 +31,13 @@ public class Sharpen implements ImageCommands {
     };
 
     double[][] kernal2 = new double[][]{
-            {-0.125, -0.125 },
-            {-0.125, 0.25},
+            {0, -1, 0},
+            {-1, 5, -1},
+            {0, -1, 0},
     };
 
 
-      model.filterImage(fileName, newFileName, kernal);
+      model.filterImage(fileName, newFileName, kernal2);
 
   }
 }

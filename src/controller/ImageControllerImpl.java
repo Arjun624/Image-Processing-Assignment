@@ -7,6 +7,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -102,7 +104,7 @@ public class ImageControllerImpl implements ImageController {
 
   public void loadImage(String pathname, String filename) throws IOException,
           NoSuchElementException {
-    if(pathname.substring(pathname.length() -4).equalsIgnoreCase(".ppm")){
+    if(pathname.length()>=4 && pathname.substring(pathname.length() -4).equalsIgnoreCase(".ppm")){
       loadPPM(pathname, filename);
     }
     else {
@@ -184,7 +186,7 @@ public class ImageControllerImpl implements ImageController {
 
   public void saveImage(String pathname, String filename) throws IOException,
           NoSuchElementException {
-    if(pathname.substring(pathname.length() -4).equalsIgnoreCase(".ppm")){
+    if(pathname.length()>=4 && pathname.substring(pathname.length() -4).equalsIgnoreCase(".ppm")){
       savePPM(pathname, filename);
     }
     else {
@@ -246,23 +248,39 @@ public class ImageControllerImpl implements ImageController {
   }
 
   private void saveOther(String pathname, String filename) throws IOException {
-    int row = model.getMap().get(filename).length;
-    int col = model.getMap().get(filename)[0].length;
-    BufferedImage bufferedImage = new BufferedImage(col,
-            row, BufferedImage.TYPE_INT_RGB);
-    for (int i = 0; i < row; i++) {
-      for (int j = 0; j < col; j++) {
-        Color c = new Color(model.getMap().get(filename)[i][j].getRed(),
-                model.getMap().get(filename)[i][j].getGreen(),
-                model.getMap().get(filename)[i][j].getBlue(),
-                model.getMap().get(filename)[i][j].getAlpha());
-        bufferedImage.setRGB(j,i,c.getRGB());
+    if (!model.getMap().containsKey(filename)) {
+      view.renderMessage("Image " + filename + " does not exist or has not been loaded!");
+      return;
+    }
+    int length = model.getMap().get(filename).length;
+    int width = model.getMap().get(filename)[0].length;
+    BufferedImage bufferedImage = new BufferedImage(width,
+            length, BufferedImage.TYPE_INT_RGB);
+    for (int row = 0; row < length; row++) {
+      for (int col = 0; col < width; col++) {
+        Color c = new Color(model.getMap().get(filename)[row][col].getRed(),
+                model.getMap().get(filename)[row][col].getGreen(),
+                model.getMap().get(filename)[row][col].getBlue(),
+                model.getMap().get(filename)[row][col].getAlpha());
+        bufferedImage.setRGB(col,row,c.getRGB());
       }
     }
 
+
+    ArrayList<String> formats = new ArrayList<>(Arrays.asList(ImageIO.getWriterFormatNames()));
+
     File file = new File(pathname);
     String type2 = pathname.split("\\.")[1];
-    ImageIO.write(bufferedImage, type2, file);
+
+    if(formats.contains(type2)){
+      ImageIO.write(bufferedImage, type2, file);
+      view.renderMessage("Image: " + filename + "\nsaved as: " + pathname);
+    }
+    else{
+      view.renderMessage("Image type not supported");
+    }
+
+
 
   }
 }
