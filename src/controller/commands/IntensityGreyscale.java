@@ -3,7 +3,7 @@ package controller.commands;
 import java.io.IOException;
 
 import controller.ImageCommands;
-import controller.model.ImageEditor;
+import model.ImageEditor;
 import view.ImageView;
 
 /**
@@ -37,7 +37,7 @@ public class IntensityGreyscale implements ImageCommands {
 
 
     try {
-      model.intensityGreyscale(fileName, newFileName);
+      model.greyscale(fileName, newFileName, "intensity");
     } catch (IllegalArgumentException e) {
       view.renderMessage(fileName + " not loaded!");
     }

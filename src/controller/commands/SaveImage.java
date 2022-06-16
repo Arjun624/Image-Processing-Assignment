@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import controller.ImageCommands;
 import controller.ImageController;
-import controller.model.ImageEditor;
+import model.ImageEditor;
 import view.ImageView;
 
 /**

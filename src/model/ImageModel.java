@@ -1,7 +1,6 @@
-package controller.model;
+package model;
 
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -79,27 +78,10 @@ public class ImageModel implements ImageEditor {
     view.renderMessage("Image " + filename + " flipped horizontally");
   }
 
-  @Override
-  public void redGreyscale(String filename, String newFilename) throws IOException,
-          IllegalArgumentException {
-    if (images.get(filename) == null) {
-      throw new IllegalArgumentException("file doesn't exist");
-    }
 
-    Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
-    for (int row = 0; row < this.images.get(filename).length; row++) {
-      for (int col = 0; col < this.images.get(filename)[0].length; col++) {
-        int red = this.images.get(filename)[row][col].getRed();
-        arr[row][col] = new Pixel(red, red, red);
-      }
-    }
-    images.put(newFilename, arr);
-    view.renderMessage("Imaged " + filename + " changed to red greyscale");
-  }
 
   @Override
-  public void greenGreyscale(String filename, String newFilename) throws IOException,
-          IllegalArgumentException {
+  public void greyscale(String filename, String newFilename, String type) throws IOException {
     if (images.get(filename) == null) {
       throw new IllegalArgumentException("file doesn't exist");
     }
@@ -107,46 +89,34 @@ public class ImageModel implements ImageEditor {
     Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
     for (int row = 0; row < this.images.get(filename).length; row++) {
       for (int col = 0; col < this.images.get(filename)[0].length; col++) {
-        int green = this.images.get(filename)[row][col].getGreen();
-        arr[row][col] = new Pixel(green, green, green);
-      }
-    }
-    images.put(newFilename, arr);
-    view.renderMessage("image " + filename + " changed to green greyscale");
-  }
-
-  public void Agreyscale(String filename, String newFilename, Method c) throws Exception {
-    if (images.get(filename) == null) {
-      throw new IllegalArgumentException("file doesn't exist");
-    }
-
-    Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
-    for (int row = 0; row < this.images.get(filename).length; row++) {
-      for (int col = 0; col < this.images.get(filename)[0].length; col++) {
-        Pixel p = (Pixel) c.invoke(this.images.get(filename)[row][col]);
-        arr[row][col] = p;
+        arr[row][col] = getType(type, images.get(filename)[row][col]);
       }
     }
     images.put(newFilename, arr);
     view.renderMessage("image " + filename + " changed to inputted greyscale");
   }
 
-  @Override
-  public void blueGreyscale(String filename, String newFilename) throws IOException,
-          IllegalArgumentException {
-    if (images.get(filename) == null) {
-      throw new IllegalArgumentException("file doesn't exist");
+  private Pixel getType(String type, Pixel pixel) {
+    int val = -1;
+    if (type.equalsIgnoreCase("red")){
+      val = pixel.getRed();
     }
-
-    Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
-    for (int row = 0; row < this.images.get(filename).length; row++) {
-      for (int col = 0; col < this.images.get(filename)[0].length; col++) {
-        int blue = this.images.get(filename)[row][col].getBlue();
-        arr[row][col] = new Pixel(blue, blue, blue);
-      }
+    else if (type.equalsIgnoreCase("green")){
+      val = pixel.getGreen();
     }
-    images.put(newFilename, arr);
-    view.renderMessage("image " + filename + " changed to blue greyscale");
+    else if (type.equalsIgnoreCase("blue")){
+      val = pixel.getBlue();
+    }
+    else if (type.equalsIgnoreCase("luma")){
+      val = pixel.findLuma();
+    }
+    else if (type.equalsIgnoreCase("intensity")){
+      val = pixel.findIntensity();
+    }
+    else if (type.equalsIgnoreCase("value")){
+      val = pixel.findValue();
+    }
+    return new Pixel(val,val,val, pixel.getAlpha());
   }
 
   @Override
@@ -168,60 +138,6 @@ public class ImageModel implements ImageEditor {
     }
     images.put(newFilename, arr);
     view.renderMessage("Image: " + filename + " adjusted brightness by a factor of " + increment);
-  }
-
-  @Override
-  public void lumaGreyscale(String filename, String newFilename) throws IOException,
-          IllegalArgumentException {
-    if (images.get(filename) == null) {
-      throw new IllegalArgumentException("file doesn't exist");
-    }
-
-    Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
-    for (int row = 0; row < this.images.get(filename).length; row++) {
-      for (int col = 0; col < this.images.get(filename)[0].length; col++) {
-        int luma = this.images.get(filename)[row][col].findLuma();
-        arr[row][col] = new Pixel(luma, luma, luma);
-      }
-    }
-    images.put(newFilename, arr);
-    view.renderMessage("Image " + filename + " changed to luma");
-  }
-
-  @Override
-  public void intensityGreyscale(String filename, String newFilename) throws IOException,
-          IllegalArgumentException {
-    if (images.get(filename) == null) {
-      throw new IllegalArgumentException("file doesn't exist");
-    }
-
-    Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
-    for (int row = 0; row < this.images.get(filename).length; row++) {
-      for (int col = 0; col < this.images.get(filename)[0].length; col++) {
-        int intensity = this.images.get(filename)[row][col].findIntensity();
-        arr[row][col] = new Pixel(intensity, intensity, intensity);
-      }
-    }
-    images.put(newFilename, arr);
-    view.renderMessage("Image " + filename + " changed to intensity greyscale");
-  }
-
-  @Override
-  public void valueGreyscale(String filename, String newFilename) throws IOException,
-          IllegalArgumentException {
-    if (images.get(filename) == null) {
-      throw new IllegalArgumentException("file doesn't exist");
-    }
-
-    Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
-    for (int row = 0; row < this.images.get(filename).length; row++) {
-      for (int col = 0; col < this.images.get(filename)[0].length; col++) {
-        int value = this.images.get(filename)[row][col].findValue();
-        arr[row][col] = new Pixel(value, value, value);
-      }
-    }
-    images.put(newFilename, arr);
-    view.renderMessage("Image " + filename + " changed to greyscale");
   }
 
 

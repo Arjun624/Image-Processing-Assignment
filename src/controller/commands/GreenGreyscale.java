@@ -3,7 +3,7 @@ package controller.commands;
 import java.io.IOException;
 
 import controller.ImageCommands;
-import controller.model.ImageEditor;
+import model.ImageEditor;
 import view.ImageView;
 
 /**
@@ -35,7 +35,7 @@ public class GreenGreyscale implements ImageCommands {
   @Override
   public void execute(ImageEditor model, ImageView view) throws IOException {
     try {
-      model.greenGreyscale(fileName, newFileName);
+      model.greyscale(fileName, newFileName, "green");
     } catch (IllegalArgumentException e) {
       view.renderMessage(fileName + " not loaded!");
     }

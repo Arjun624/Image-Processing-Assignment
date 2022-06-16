@@ -6,8 +6,8 @@ import java.util.HashMap;
 
 import controller.ImageCommands;
 import controller.ImageControllerImpl;
-import controller.model.ImageModel;
-import controller.model.Pixel;
+import model.ImageModel;
+import model.Pixel;
 import view.ImageDisplay;
 import view.ImageView;
 
@@ -151,7 +151,7 @@ public class TestModel {
     }
     testMap.put(file, arr);
     ImageModel m1 = new ImageModel(testMap, v);
-    m1.redGreyscale("test", "test-r");
+    m1.greyscale("test", "test-r", "red");
     Pixel[][] arr1 = new Pixel[3][3];
     for (int i = 0; i < 3; i++) {
       for (int j = 0; j < 3; j++) {
@@ -166,7 +166,7 @@ public class TestModel {
     }
 
     try {
-      m1.redGreyscale("yes", "no");
+      m1.greyscale("yes", "no","red");
       fail("Should have thrown an exception");
     } catch (IllegalArgumentException e) {
       assertEquals(e.getMessage(), "file doesn't exist");
@@ -186,7 +186,7 @@ public class TestModel {
     }
     testMap.put(file, arr);
     ImageModel m1 = new ImageModel(testMap, v);
-    m1.greenGreyscale("test", "test-g");
+    m1.greyscale("test", "test-g", "green");
     Pixel[][] arr1 = new Pixel[3][3];
     for (int i = 0; i < 3; i++) {
       for (int j = 0; j < 3; j++) {
@@ -201,7 +201,7 @@ public class TestModel {
     }
 
     try {
-      m1.greenGreyscale("yes", "no");
+      m1.greyscale("yes", "no", "green");
       fail("Should have thrown an exception");
     } catch (IllegalArgumentException e) {
       assertEquals(e.getMessage(), "file doesn't exist");
@@ -221,7 +221,7 @@ public class TestModel {
     }
     testMap.put(file, arr);
     ImageModel m1 = new ImageModel(testMap, v);
-    m1.blueGreyscale("test", "test-b");
+    m1.greyscale("test", "test-b","blue");
     Pixel[][] arr1 = new Pixel[3][3];
     for (int i = 0; i < 3; i++) {
       for (int j = 0; j < 3; j++) {
@@ -236,7 +236,7 @@ public class TestModel {
     }
 
     try {
-      m1.blueGreyscale("yes", "no");
+      m1.greyscale("yes", "no", "blue");
       fail("Should have thrown an exception");
     } catch (IllegalArgumentException e) {
       assertEquals(e.getMessage(), "file doesn't exist");
@@ -366,7 +366,7 @@ public class TestModel {
     }
     testMap.put(file, arr);
     ImageModel m1 = new ImageModel(testMap, v);
-    m1.lumaGreyscale("test", "test-lg");
+    m1.greyscale("test", "test-lg","luma");
     Pixel[][] arr1 = new Pixel[3][3];
     for (int i = 0; i < 3; i++) {
       for (int j = 0; j < 3; j++) {
@@ -382,7 +382,7 @@ public class TestModel {
     }
 
     try {
-      m1.lumaGreyscale("yes", "no");
+      m1.greyscale("yes", "no", "luma");
       fail("Should have thrown an exception");
     } catch (IllegalArgumentException e) {
       assertEquals(e.getMessage(), "file doesn't exist");
@@ -402,7 +402,7 @@ public class TestModel {
     }
     testMap.put(file, arr);
     ImageModel m1 = new ImageModel(testMap, v);
-    m1.intensityGreyscale("test", "test-ig");
+    m1.greyscale("test", "test-ig","intensity");
     Pixel[][] arr1 = new Pixel[3][3];
     for (int i = 0; i < 3; i++) {
       for (int j = 0; j < 3; j++) {
@@ -417,7 +417,7 @@ public class TestModel {
       }
     }
     try {
-      m1.intensityGreyscale("yes", "no");
+      m1.greyscale("yes", "no","intensity");
       fail("Should have thrown an exception");
     } catch (IllegalArgumentException e) {
       assertEquals(e.getMessage(), "file doesn't exist");
@@ -437,7 +437,7 @@ public class TestModel {
     }
     testMap.put(file, arr);
     ImageModel m1 = new ImageModel(testMap, v);
-    m1.valueGreyscale("test", "test-vg");
+    m1.greyscale("test", "test-vg","value");
     Pixel[][] arr1 = new Pixel[3][3];
     for (int i = 0; i < 3; i++) {
       for (int j = 0; j < 3; j++) {
@@ -452,7 +452,7 @@ public class TestModel {
     }
 
     try {
-      m1.valueGreyscale("yes", "no");
+      m1.greyscale("yes", "no","value");
       fail("Should have thrown an exception");
     } catch (IllegalArgumentException e) {
       assertEquals(e.getMessage(), "file doesn't exist");
@@ -519,4 +519,8 @@ public class TestModel {
   }
 
 
+  @Test
+  public void testInvalidGreyscale(){
+
+  }
 }

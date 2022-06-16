@@ -33,8 +33,8 @@ import controller.commands.Sepia;
 import controller.commands.Sharpen;
 import controller.commands.ValueGreyscale;
 import controller.commands.VerticalFlip;
-import controller.model.ImageEditor;
-import controller.model.Pixel;
+import model.ImageEditor;
+import model.Pixel;
 import view.ImageView;
 
 /**

@@ -1,6 +1,6 @@
 import org.junit.Test;
 
-import controller.model.Pixel;
+import model.Pixel;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;

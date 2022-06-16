@@ -1,8 +1,8 @@
 import java.io.IOException;
 import java.util.HashMap;
 
-import controller.model.ImageEditor;
-import controller.model.Pixel;
+import model.ImageEditor;
+import model.Pixel;
 
 /**
  * A mock {@code ImageModel} used strictly for testing.
@@ -19,48 +19,24 @@ public class MockImageModel implements ImageEditor {
 
   @Override
   public void flipVertically(String filename, String newFilename) throws IOException {
-    this.ap.append("flipped ").append(filename).append(" vertically. Is now ").append(newFilename).append("\n");
+    this.ap.append("flipped " + filename + " vertically. Is now " + newFilename + "\n");
   }
 
   @Override
   public void flipHorizontally(String filename, String newFilename) throws IOException {
-    this.ap.append("flipped ").append(filename).append(" horizontally. Is now ").append(newFilename).append("\n");
-  }
-
-  @Override
-  public void redGreyscale(String filename, String newFilename) throws IOException {
-    this.ap.append("preformed a red greyscale ").append(filename).append(". Is now ").append(newFilename).append("\n");
-  }
-
-  @Override
-  public void greenGreyscale(String filename, String newFilename) throws IOException {
-    this.ap.append("preformed a green greyscale ").append(filename).append(". Is now ").append(newFilename).append("\n");
-  }
-
-  @Override
-  public void blueGreyscale(String filename, String newFilename) throws IOException {
-    this.ap.append("preformed a blue greyscale ").append(filename).append(". Is now ").append(newFilename).append("\n");
-  }
-
-  @Override
-  public void lumaGreyscale(String filename, String newFilename) throws IOException {
-    this.ap.append("preformed a luma greyscale ").append(filename).append(". Is now ").append(newFilename).append("\n");
-  }
-
-  @Override
-  public void intensityGreyscale(String filename, String newFilename) throws IOException {
-    this.ap.append("preformed an intensity greyscale ").append(filename).append(". Is now ").append(newFilename).append("\n");
-  }
-
-  @Override
-  public void valueGreyscale(String filename, String newFilename) throws IOException {
-    this.ap.append("preformed a value greyscale ").append(filename).append(". Is now ").append(newFilename).append("\n");
+    this.ap.append("flipped " + filename + " horizontally. Is now " + newFilename + "\n");
   }
 
   @Override
   public void adjustBrightness(int increment, String filename, String newFilename)
           throws IOException {
-    this.ap.append("adjusted ").append(filename).append(" by ").append(String.valueOf(increment)).append(". Is now ").append(newFilename).append("\n");
+    this.ap.append("adjusted " + filename + " by " + increment + ". Is now " + newFilename + "\n");
+  }
+
+  @Override
+  public void greyscale(String filename, String newFilename, String type) throws IOException {
+    this.ap.append("preformed a greyscale of type " + type + " on " + filename +
+            ". Is now " + newFilename + "\n");
   }
 
 
@@ -77,7 +53,7 @@ public class MockImageModel implements ImageEditor {
 
   @Override
   public void add(String imageName, Pixel[][] arr) throws IOException {
-    this.ap.append("added ").append(imageName).append(" to hashmap\n");
+    this.ap.append("added " + imageName + " to hashmap\n");
   }
 
   @Override
@@ -91,14 +67,15 @@ public class MockImageModel implements ImageEditor {
   }
 
   @Override
-  public void filterImage(String fileName, String newFileName, double[][] kernal) throws IOException, IllegalArgumentException {
-
+  public void filterImage(String fileName, String newFileName, double[][] kernal)
+          throws IOException, IllegalArgumentException {
+    this.ap.append("filtered " + fileName + ". Is now " + newFileName + "\n");
   }
 
   @Override
-  public void colorTransform(float[][] colors, String filename, String newFilename) throws IOException, IllegalArgumentException {
-
+  public void colorTransform(float[][] colors, String filename, String newFilename)
+          throws IOException, IllegalArgumentException {
+    this.ap.append("transformed " + filename + ". Is now " + newFilename + "\n");
   }
-
 
 }

@@ -2,7 +2,7 @@ package controller;
 
 import java.io.IOException;
 
-import controller.model.ImageEditor;
+import model.ImageEditor;
 import view.ImageView;
 
 /**
