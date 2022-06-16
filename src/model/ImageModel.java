@@ -336,6 +336,7 @@ public class ImageModel implements ImageEditor {
         arr[i][j] = new Pixel(r,g,b,p.getAlpha());
       }
     }
+    images.put(newFilename,arr);
   }
 
   @Override

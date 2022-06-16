@@ -28,13 +28,14 @@ public class ImageProgram {
           InputStreamReader in = new FileReader(args[i + 1]);
           controller = new ImageControllerImpl(view, in, model);
           controller.start();
+          return;
         }
       }
-    } else {
-      InputStreamReader in = new InputStreamReader(System.in);
-      view.displayWelcomeMessage();
-      controller = new ImageControllerImpl(view, in, model);
-      controller.start();
     }
+    InputStreamReader in = new InputStreamReader(System.in);
+    view.displayWelcomeMessage();
+    controller = new ImageControllerImpl(view, in, model);
+    controller.start();
+
   }
 }
