@@ -261,16 +261,8 @@ public class ImageControllerImpl implements ImageController {
     }
 
     File file = new File(pathname);
-    String type = pathname.substring(pathname.length() -4);
-    if(type.equalsIgnoreCase(".png")){
-      ImageIO.write(bufferedImage, "png", file);
-    }
-    if(type.equalsIgnoreCase(".bmp")){
-      ImageIO.write(bufferedImage, "bmp", file);
-    }
-    else {
-      ImageIO.write(bufferedImage, "jpg", file);
-    }
+    String type2 = pathname.split("\\.")[1];
+    ImageIO.write(bufferedImage, type2, file);
 
   }
 }
