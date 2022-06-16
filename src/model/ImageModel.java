@@ -78,10 +78,9 @@ public class ImageModel implements ImageEditor {
     view.renderMessage("Image " + filename + " flipped horizontally");
   }
 
-
-
   @Override
-  public void greyscale(String filename, String newFilename, String type) throws IOException {
+  public void greyscale(String filename, String newFilename, String type) throws IOException,
+          IllegalArgumentException {
     if (images.get(filename) == null) {
       throw new IllegalArgumentException("file doesn't exist");
     }
@@ -93,30 +92,25 @@ public class ImageModel implements ImageEditor {
       }
     }
     images.put(newFilename, arr);
-    view.renderMessage("image " + filename + " changed to inputted greyscale");
+    view.renderMessage("image " + filename + " changed to " + type + " greyscale");
   }
 
   private Pixel getType(String type, Pixel pixel) {
     int val = -1;
-    if (type.equalsIgnoreCase("red")){
+    if (type.equalsIgnoreCase("red")) {
       val = pixel.getRed();
-    }
-    else if (type.equalsIgnoreCase("green")){
+    } else if (type.equalsIgnoreCase("green")) {
       val = pixel.getGreen();
-    }
-    else if (type.equalsIgnoreCase("blue")){
+    } else if (type.equalsIgnoreCase("blue")) {
       val = pixel.getBlue();
-    }
-    else if (type.equalsIgnoreCase("luma")){
+    } else if (type.equalsIgnoreCase("luma")) {
       val = pixel.findLuma();
-    }
-    else if (type.equalsIgnoreCase("intensity")){
+    } else if (type.equalsIgnoreCase("intensity")) {
       val = pixel.findIntensity();
-    }
-    else if (type.equalsIgnoreCase("value")){
+    } else if (type.equalsIgnoreCase("value")) {
       val = pixel.findValue();
     }
-    return new Pixel(val,val,val, pixel.getAlpha());
+    return new Pixel(val, val, val, pixel.getAlpha());
   }
 
   @Override
@@ -140,20 +134,18 @@ public class ImageModel implements ImageEditor {
     view.renderMessage("Image: " + filename + " adjusted brightness by a factor of " + increment);
   }
 
-
-
+  @Override
   public void filterImage(String filename, String newFilename, double[][] kernal) throws IOException,
           IllegalArgumentException {
-    if(kernal == null) {
+    if (kernal == null) {
       throw new IllegalArgumentException("kernal is null");
     }
     if (images.get(filename) == null) {
       throw new IllegalArgumentException("file doesn't exist");
     }
-    if(kernal.length % 2 == 0 || kernal[0].length % 2 == 0) {
+    if (kernal.length % 2 == 0 || kernal[0].length % 2 == 0) {
       throw new IllegalArgumentException("Kernal must have an odd number of rows and columns");
     }
-
     int length = kernal.length;
     int width = kernal[0].length;
 
@@ -166,13 +158,14 @@ public class ImageModel implements ImageEditor {
     for (int row = 0; row < this.images.get(filename).length; row++) {
       for (int col = 0; col < this.images.get(filename)[0].length; col++) {
 
-        for (int kernalRow = row-(length/2); kernalRow < (row-(length/2)) + length; kernalRow++) {
-          for (int kernalCol = col-(width/2); kernalCol < (col-(width/2)) + width; kernalCol++) {
-            try{
-              newRed += images.get(filename)[kernalRow][kernalCol].getRed()*kernal[kernalRow-(row-(length/2))][kernalCol-(col-(width/2))];
-              newGreen += images.get(filename)[kernalRow][kernalCol].getGreen()*kernal[kernalRow-(row-(length/2))][kernalCol-(col-(width/2))];
-              newBlue += images.get(filename)[kernalRow][kernalCol].getBlue()*kernal[kernalRow-(row-(length/2))][kernalCol-(col-(width/2))];
-            } catch(ArrayIndexOutOfBoundsException ignored){}
+        for (int kernalRow = row - (length / 2); kernalRow < (row - (length / 2)) + length; kernalRow++) {
+          for (int kernalCol = col - (width / 2); kernalCol < (col - (width / 2)) + width; kernalCol++) {
+            try {
+              newRed += images.get(filename)[kernalRow][kernalCol].getRed() * kernal[kernalRow - (row - (length / 2))][kernalCol - (col - (width / 2))];
+              newGreen += images.get(filename)[kernalRow][kernalCol].getGreen() * kernal[kernalRow - (row - (length / 2))][kernalCol - (col - (width / 2))];
+              newBlue += images.get(filename)[kernalRow][kernalCol].getBlue() * kernal[kernalRow - (row - (length / 2))][kernalCol - (col - (width / 2))];
+            } catch (ArrayIndexOutOfBoundsException ignored) {
+            }
           }
         }
 
@@ -191,13 +184,13 @@ public class ImageModel implements ImageEditor {
   @Override
   public void colorTransform(float[][] colors, String filename, String newFilename)
           throws IllegalArgumentException, IOException {
-    if(colors == null) {
+    if (colors == null) {
       throw new IllegalArgumentException("colors is null");
     }
     if (images.get(filename) == null) {
       throw new IllegalArgumentException("file doesn't exist");
     }
-    if (colors.length != 3 || colors[0].length != 3){
+    if (colors.length != 3 || colors[0].length != 3) {
       throw new IllegalArgumentException("color matrix not size 3x3!");
     }
     Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
@@ -212,15 +205,15 @@ public class ImageModel implements ImageEditor {
                 (colors[1][0] * p.getRed()
                         + colors[1][1] * p.getGreen()
                         + colors[1][2] * p.getBlue());
-        double newBlue=
+        double newBlue =
                 (colors[2][0] * p.getRed()
                         + colors[2][1] * p.getGreen()
                         + colors[2][2] * p.getBlue());
 
-        arr[row][col] = new Pixel(fixRGBRange(newRed), fixRGBRange(newGreen), fixRGBRange(newBlue),p.getAlpha());
+        arr[row][col] = new Pixel(fixRGBRange(newRed), fixRGBRange(newGreen), fixRGBRange(newBlue), p.getAlpha());
       }
     }
-    images.put(newFilename,arr);
+    images.put(newFilename, arr);
     view.renderMessage("Image " + filename + " transformed successfully");
   }
 
@@ -236,10 +229,11 @@ public class ImageModel implements ImageEditor {
 
   @Override
   public void add(String imageName, Pixel[][] arr) {
-    images.put(imageName,arr);
+    images.put(imageName, arr);
   }
 
-  public HashMap<String,Pixel[][]> getMap(){
+  @Override
+  public HashMap<String, Pixel[][]> getMap() {
     return this.images;
   }
 
@@ -256,17 +250,16 @@ public class ImageModel implements ImageEditor {
 
   }
 
-  private int fixRGBRange(double value){
-    if(value > 255){
+  private int fixRGBRange(double value) {
+    if (value > 255) {
       return 255;
     }
-    if(value < 0){
+    if (value < 0) {
       return 0;
     }
 
     return (int) Math.round(value);
   }
-
 
 
 }

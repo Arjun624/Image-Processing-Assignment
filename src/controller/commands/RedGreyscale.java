@@ -36,9 +36,9 @@ public class RedGreyscale implements ImageCommands {
   public void execute(ImageEditor model, ImageView view) throws IOException {
 
     try {
-      model.greyscale(fileName, newFileName,"red");
+      model.greyscale(fileName, newFileName, "red");
     } catch (IllegalArgumentException e) {
-      view.renderMessage(fileName + " not loaded!");
+      view.renderMessage(fileName + " " + e.getMessage());
     }
   }
 }

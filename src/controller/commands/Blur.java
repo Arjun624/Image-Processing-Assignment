@@ -15,6 +15,7 @@ public class Blur implements ImageCommands {
     this.fileName = fileName;
     this.newFileName = newFileName;
   }
+
   /**
    * Executes the specific action of the class.
    *
@@ -25,20 +26,20 @@ public class Blur implements ImageCommands {
   @Override
   public void execute(ImageEditor model, ImageView view) throws IOException {
     double[][] kernal = new double[][]{
-            { 0.0625, 0.125, 0.0625 },
-            { 0.125, 0.25, 0.125 },
-            { 0.0625, 0.125, 0.0625 },
+            {0.0625, 0.125, 0.0625},
+            {0.125, 0.25, 0.125},
+            {0.0625, 0.125, 0.0625},
     };
 
     double[][] kernal2 = new double[][]{
-            { 0.0625, 0.125, 0.0625 },
-            { 0.125, 0.25, 0.125 },
-            { 0.25, 1, 0.25 },
-            { 0.125, 0.25, 0.125 },
-            { 0.0625, 0.125, 0.0625 },
+            {0.0625, 0.125, 0.0625},
+            {0.125, 0.25, 0.125},
+            {0.25, 1, 0.25},
+            {0.125, 0.25, 0.125},
+            {0.0625, 0.125, 0.0625},
     };
 
-    double [][] kernal3 = new double[][]{
+    double[][] kernal3 = new double[][]{
             {0.0625, 0.25, 0, 0.25, 0.0625},
             {0.25, 1, 0, 1, 0.25},
             {0, 0, 0, 0, 0},
@@ -49,13 +50,9 @@ public class Blur implements ImageCommands {
     try {
       model.filterImage(fileName, newFileName, kernal);
     } catch (IllegalArgumentException e) {
-      view.renderMessage(fileName + " not loaded!");
+      view.renderMessage(fileName + " " + e.getMessage());
     }
   }
-
-
-
-
 
 
 }

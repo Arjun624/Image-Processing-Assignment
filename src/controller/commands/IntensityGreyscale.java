@@ -39,7 +39,7 @@ public class IntensityGreyscale implements ImageCommands {
     try {
       model.greyscale(fileName, newFileName, "intensity");
     } catch (IllegalArgumentException e) {
-      view.renderMessage(fileName + " not loaded!");
+      view.renderMessage(fileName + " " + e.getMessage());
     }
   }
 }

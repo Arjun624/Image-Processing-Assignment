@@ -92,7 +92,8 @@ public class ImageControllerImpl implements ImageController {
 
     while (!model.getStatus()) {
       view.renderMessage("Enter a command: ");
-      Function<Scanner, ImageCommands> givenCommand = commands.getOrDefault(s.next(), null);
+      Function<Scanner, ImageCommands> givenCommand = commands.getOrDefault(s.next(),
+              null);
       if (givenCommand == null) {
         view.renderMessage("Invalid command!");
       } else {
@@ -102,12 +103,12 @@ public class ImageControllerImpl implements ImageController {
 
   }
 
+  @Override
   public void loadImage(String pathname, String filename) throws IOException,
           NoSuchElementException {
-    if(pathname.length()>=4 && pathname.substring(pathname.length() -4).equalsIgnoreCase(".ppm")){
+    if (pathname.length() >= 4 && pathname.substring(pathname.length() - 4).equalsIgnoreCase(".ppm")) {
       loadPPM(pathname, filename);
-    }
-    else {
+    } else {
       loadOther(pathname, filename);
     }
 
@@ -167,8 +168,7 @@ public class ImageControllerImpl implements ImageController {
     BufferedImage b;
     try {
       b = ImageIO.read(new File(pathname));
-    }
-    catch (IOException e) {
+    } catch (IOException e) {
       throw new NoSuchElementException("File " + pathname + " not found!");
     }
     int width = b.getWidth();
@@ -178,20 +178,22 @@ public class ImageControllerImpl implements ImageController {
     Pixel[][] arr = new Pixel[height][width];
     for (int i = 0; i < width; i++) {
       for (int j = 0; j < height; j++) {
-        Color c = new Color(b.getRGB(i,j));
+        Color c = new Color(b.getRGB(i, j));
         arr[j][i] = new Pixel(c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha());
       }
     }
-    model.add(filename,arr);
+    model.add(filename, arr);
     view.renderMessage("Image: " + pathname + "\nloaded as: " + filename);
   }
 
+  @Override
   public void saveImage(String pathname, String filename) throws IOException,
           NoSuchElementException {
-    if(pathname.length()>=4 && pathname.substring(pathname.length() -4).equalsIgnoreCase(".ppm")){
+    if (pathname.length() >= 4 &&
+            pathname.substring(pathname.length() - 4)
+                    .equalsIgnoreCase(".ppm")) {
       savePPM(pathname, filename);
-    }
-    else {
+    } else {
       saveOther(pathname, filename);
     }
 
@@ -264,7 +266,7 @@ public class ImageControllerImpl implements ImageController {
                 model.getMap().get(filename)[row][col].getGreen(),
                 model.getMap().get(filename)[row][col].getBlue(),
                 model.getMap().get(filename)[row][col].getAlpha());
-        bufferedImage.setRGB(col,row,c.getRGB());
+        bufferedImage.setRGB(col, row, c.getRGB());
       }
     }
 
@@ -274,14 +276,12 @@ public class ImageControllerImpl implements ImageController {
     File file = new File(pathname);
     String type2 = pathname.split("\\.")[1];
 
-    if(formats.contains(type2)){
+    if (formats.contains(type2)) {
       ImageIO.write(bufferedImage, type2, file);
       view.renderMessage("Image: " + filename + "\nsaved as: " + pathname);
-    }
-    else{
+    } else {
       view.renderMessage("Image type not supported");
     }
-
 
 
   }

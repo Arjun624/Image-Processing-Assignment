@@ -37,7 +37,7 @@ public class GreenGreyscale implements ImageCommands {
     try {
       model.greyscale(fileName, newFileName, "green");
     } catch (IllegalArgumentException e) {
-      view.renderMessage(fileName + " not loaded!");
+      view.renderMessage(fileName + " " + e.getMessage());
     }
   }
 }
