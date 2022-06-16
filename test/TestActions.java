@@ -9,15 +9,13 @@ import controller.commands.BlueGreyscale;
 import controller.commands.GreenGreyscale;
 import controller.commands.HorizontalFlip;
 import controller.commands.IntensityGreyscale;
-import controller.commands.LoadImage;
 import controller.commands.LumaGreyscale;
 import controller.commands.Quit;
 import controller.commands.RedGreyscale;
-import controller.commands.SaveImage;
 import controller.commands.ValueGreyscale;
 import controller.commands.VerticalFlip;
-import model.ImageEditor;
-import model.ImageModel;
+import controller.model.ImageEditor;
+import controller.model.ImageModel;
 import view.ImageDisplay;
 import view.ImageView;
 

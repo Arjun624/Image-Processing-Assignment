@@ -1,15 +1,8 @@
-package model;
+package controller.model;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.lang.reflect.Method;
 import java.util.HashMap;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
 
 import view.ImageDisplay;
 import view.ImageView;
@@ -119,6 +112,22 @@ public class ImageModel implements ImageEditor {
     }
     images.put(newFilename, arr);
     view.renderMessage("image " + filename + " changed to green greyscale");
+  }
+
+  public void Agreyscale(String filename, String newFilename, Method c) throws Exception {
+    if (images.get(filename) == null) {
+      throw new IllegalArgumentException("file doesn't exist");
+    }
+
+    Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
+    for (int row = 0; row < this.images.get(filename).length; row++) {
+      for (int col = 0; col < this.images.get(filename)[0].length; col++) {
+        Pixel p = (Pixel) c.invoke(this.images.get(filename)[row][col]);
+        arr[row][col] = p;
+      }
+    }
+    images.put(newFilename, arr);
+    view.renderMessage("image " + filename + " changed to inputted greyscale");
   }
 
   @Override

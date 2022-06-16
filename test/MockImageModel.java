@@ -1,8 +1,8 @@
 import java.io.IOException;
 import java.util.HashMap;
 
-import model.ImageEditor;
-import model.Pixel;
+import controller.model.ImageEditor;
+import controller.model.Pixel;
 
 /**
  * A mock {@code ImageModel} used strictly for testing.

@@ -1,14 +1,10 @@
 import org.junit.Test;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
 
-import model.ImageModel;
-import model.Pixel;
+import controller.model.ImageModel;
+import controller.model.Pixel;
 import view.ImageDisplay;
 import view.ImageView;
 

@@ -4,7 +4,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import model.ImageModel;
+import controller.model.ImageModel;
 import view.ImageDisplay;
 import view.ImageView;
 

@@ -17,9 +17,9 @@ import javax.imageio.ImageIO;
 
 import controller.ImageController;
 import controller.ImageControllerImpl;
-import model.ImageEditor;
-import model.ImageModel;
-import model.Pixel;
+import controller.model.ImageEditor;
+import controller.model.ImageModel;
+import controller.model.Pixel;
 import view.ImageDisplay;
 import view.ImageView;
 

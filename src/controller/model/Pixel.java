@@ -1,4 +1,4 @@
-package model;
+package controller.model;
 
 import java.util.Objects;
 
@@ -60,6 +60,10 @@ public class Pixel {
   protected int findValue() {
     return Math.max(Math.max(this.r, this.g), this.b);
   }
+  protected Pixel findValue(Pixel p) {
+    int max = Math.max(Math.max(p.getRed(), p.getGreen()), p.getBlue());
+    return new Pixel(max,max,max,p.getAlpha());
+  }
 
   /**
    * Finds the intensity of a pixel.
@@ -109,6 +113,10 @@ public class Pixel {
    */
   public int getRed() {
     return r;
+  }
+  public Pixel getRed(Pixel p) {
+    int red = p.getRed();
+    return new Pixel(red,red,red,p.getAlpha());
   }
 
   /**

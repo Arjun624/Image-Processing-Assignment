@@ -5,7 +5,7 @@ import java.util.NoSuchElementException;
 
 import controller.ImageCommands;
 import controller.ImageController;
-import model.ImageEditor;
+import controller.model.ImageEditor;
 import view.ImageView;
 
 /**

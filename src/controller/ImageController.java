@@ -3,8 +3,6 @@ package controller;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 
-import model.ImageEditor;
-
 /**
  * Interface for a controller that can take user input to edit an Image.
  */

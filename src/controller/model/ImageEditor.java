@@ -1,8 +1,7 @@
-package model;
+package controller.model;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.NoSuchElementException;
 
 /**
  * Represents all the actions that can be performed on an image.
