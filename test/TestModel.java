@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 import controller.ImageCommands;
 import controller.ImageControllerImpl;
+import model.ImageEditor;
 import model.ImageModel;
 import model.Pixel;
 import view.ImageDisplay;
@@ -520,7 +521,23 @@ public class TestModel {
 
 
   @Test
-  public void testInvalidGreyscale(){
+  public void testInvalidGreyscale() throws IOException {
+    ImageView v = new ImageDisplay(new StringBuilder());
+    HashMap<String, Pixel[][]> testMap = new HashMap<>();
+    String file = "test";
+    Pixel[][] arr = new Pixel[3][3];
+    for (int i = 0; i < 3; i++) {
+      for (int j = 0; j < 3; j++) {
+        arr[i][j] = new Pixel(110, 120, 130 + i + j);
+      }
+    }
+    testMap.put(file, arr);
+    ImageModel m1 = new ImageModel(testMap, v);
+    try {
+      m1.greyscale("test", "test-b","blue");
+    } catch (IllegalArgumentException e){
+      assertEquals(e.getMessage(), "color invalid");
+    }
 
   }
 }
