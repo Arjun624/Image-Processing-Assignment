@@ -144,4 +144,6 @@ public interface ImageEditor {
     int findTotalValue(String filename);
 
   void sharpenImage(String fileName, String newFileName) throws IOException, IllegalArgumentException;
+
+  void blurImage(String fileName, String newFileName, double[][] kernal) throws IOException, IllegalArgumentException;
 }

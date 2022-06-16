@@ -293,6 +293,77 @@ public class ImageModel implements ImageEditor {
 
   }
 
+  public void blurImage(String filename, String newFilename, double[][] kernal) throws IOException,
+          IllegalArgumentException {
+
+    int length = kernal.length;
+    int width = kernal[0].length;
+    List<Double> newRs = new ArrayList<Double>();
+    List<Double> newGs = new ArrayList<Double>();
+    List<Double> newBs = new ArrayList<Double>();
+
+    Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
+    for (int row = 0; row < this.images.get(filename).length; row++) {
+      for (int col = 0; col < this.images.get(filename)[0].length; col++) {
+
+        for (int kernalRow = row-(length/2); kernalRow < (row-(length/2)) + length; kernalRow++) {
+          for (int kernalCol = col-(length/2); kernalCol < (col-(length/2)) + width; kernalCol++) {
+            try{
+              newRs.add(images.get(filename)[kernalRow][kernalCol].getRed()*kernal[kernalRow-(row-(length/2))][kernalCol-(col-(length/2))]);
+              newGs.add(images.get(filename)[kernalRow][kernalCol].getGreen()*kernal[kernalRow-(row-(length/2))][kernalCol-(col-(length/2))]);
+              newBs.add(images.get(filename)[kernalRow][kernalCol].getBlue()*kernal[kernalRow-(row-(length/2))][kernalCol-(col-(length/2))]);
+            } catch(ArrayIndexOutOfBoundsException e){
+              continue;
+            }
+
+          }
+        }
+
+        int rSum = newRs.stream()
+                .mapToInt(Double::intValue)
+                .sum();
+
+        int gSum = newGs.stream()
+                .mapToInt(Double::intValue)
+                .sum();
+
+        int bSum = newBs.stream()
+                .mapToInt(Double::intValue)
+                .sum();
+
+
+        if(rSum > 255){
+          rSum = 255;
+        }
+        if(gSum > 255){
+          gSum = 255;
+        }
+        if(bSum > 255){
+          bSum = 255;
+        }
+        if(rSum < 0){
+          rSum = 0;
+        }
+        if(gSum < 0){
+          gSum = 0;
+        }
+        if(bSum < 0){
+          bSum = 0;
+        }
+
+        arr[row][col] = new Pixel(rSum, gSum, bSum);
+        newRs.clear();
+        newGs.clear();
+        newBs.clear();
+
+
+      }
+    }
+    images.put(newFilename, arr);
+  }
+
+
+
 
 
   protected void getRightTotalRGB(int row, int col, String filename, List<Integer> r, List<Integer> g, List<Integer> b) {

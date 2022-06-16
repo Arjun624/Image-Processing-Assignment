@@ -21,9 +21,22 @@ public class Sharpen implements ImageCommands {
 
   @Override
   public void execute(ImageEditor model, ImageView view) throws IOException {
+    double[][] kernal = new double[][]{
+            { 0.0625, 0.125, 0.0625 },
+            { 0.125, 0.25, 0.125 },
+            { 0.0625, 0.125, 0.0625 },
+    };
+
+    double[][] kernal2 = new double[][]{
+            {-0.125, -0.125, -0.125, -0.125, -0.125},
+            {-0.125, 0.25, 0.25, 0.25, -0.125},
+            {-0.125, 0.25, 1, 0.25, -0.125},
+            {-0.125, 0.25, 0.25, 0.25, -0.125},
+            {-0.125, -0.125, -0.125, -0.125, -0.125},
+    };
 
 
-      model.sharpenImage(fileName, newFileName);
+      model.blurImage(fileName, newFileName, kernal);
 
   }
 }
