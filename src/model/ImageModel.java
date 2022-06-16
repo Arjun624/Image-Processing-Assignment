@@ -274,17 +274,38 @@ public class ImageModel implements ImageEditor {
     images.put(newFilename, arr);
   }
 
-
-
-
-
-
   @Override
-  public void sepia(String filename, String newFilename){
+  public void colorTransform(float[][] colors, String filename, String newFilename)
+          throws IllegalArgumentException{
+    if (colors.length != 3 || colors[0].length != 3){
+      throw new IllegalArgumentException("color matrix not size 3x3!");
+    }
     Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
     for (int i = 0; i < images.get(filename).length; i++) {
       for (int j = 0; j < images.get(filename)[0].length; j++) {
-        arr[i][j] = images.get(filename)[i][j].getSepia();
+        Pixel p = images.get(filename)[i][j];
+        int r = (int)
+                (colors[0][0] * p.getRed()
+                        + colors[0][1] * p.getGreen()
+                        + colors[0][2] * p.getBlue());
+        int g = (int)
+                (colors[1][0] * p.getRed()
+                        + colors[1][1] * p.getGreen()
+                        + colors[1][2] * p.getBlue());
+        int b = (int)
+                (colors[2][0] * p.getRed()
+                        + colors[2][1] * p.getGreen()
+                        + colors[2][2] * p.getBlue());
+        if(r > 255){
+          r = 255;
+        }
+        if(g > 255){
+          g = 255;
+        }
+        if(b > 255){
+          b = 255;
+        }
+        arr[i][j] = new Pixel(r,g,b,p.getAlpha());
       }
     }
     images.put(newFilename,arr);

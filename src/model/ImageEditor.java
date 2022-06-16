@@ -109,7 +109,7 @@ public interface ImageEditor {
           NullPointerException;
 
 
-  void sepia(String filename, String newFilename);
+
   /**
    * Returns whether the program should be quit.
    *
@@ -144,5 +144,9 @@ public interface ImageEditor {
     int findTotalValue(String filename);
 
 
-  void filterImage(String fileName, String newFileName, double[][] kernal) throws IOException, IllegalArgumentException;
+  void filterImage(String fileName, String newFileName, double[][] kernal)
+          throws IOException, IllegalArgumentException;
+
+  void colorTransform(float[][] colors, String filename, String newFilename)
+          throws IllegalArgumentException;
 }
