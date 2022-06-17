@@ -205,6 +205,7 @@ public class ImageControllerImpl implements ImageController {
     try{
       if (!model.getMap().containsKey(filename)) {
         view.renderMessage("Image " + filename + " does not exist or has not been loaded!");
+        return;
       }
     }catch(NullPointerException e){
       throw new IllegalArgumentException("Invalid image name: " + filename);
@@ -256,13 +257,11 @@ public class ImageControllerImpl implements ImageController {
 
   private void saveOther(String pathname, String filename) throws IOException {
 
-    try{
       if (!model.getMap().containsKey(filename)) {
         view.renderMessage("Image " + filename + " does not exist or has not been loaded!");
+        return;
       }
-    }catch(NullPointerException e){
-      throw new IllegalArgumentException("Invalid image name: " + filename);
-    }
+
     int length = model.getMap().get(filename).length;
     int width = model.getMap().get(filename)[0].length;
     BufferedImage bufferedImage = new BufferedImage(width,

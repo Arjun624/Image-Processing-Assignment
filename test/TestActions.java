@@ -9,7 +9,9 @@ import controller.ImageController;
 import controller.ImageControllerImpl;
 import controller.commands.AdjustBrightness;
 import controller.commands.BlueGreyscale;
+import controller.commands.Blur;
 import controller.commands.GreenGreyscale;
+import controller.commands.Greyscale;
 import controller.commands.HorizontalFlip;
 import controller.commands.IntensityGreyscale;
 import controller.commands.LoadImage;
@@ -17,6 +19,8 @@ import controller.commands.LumaGreyscale;
 import controller.commands.Quit;
 import controller.commands.RedGreyscale;
 import controller.commands.SaveImage;
+import controller.commands.Sepia;
+import controller.commands.Sharpen;
 import controller.commands.ValueGreyscale;
 import controller.commands.VerticalFlip;
 import model.ImageEditor;
@@ -158,13 +162,59 @@ public class TestActions {
 
     l.execute(m2, v);
     assertEquals("arjun does not exist!\n", ap2.toString());
+    //mock controller test
   }
 
   @Test
   public void testSaveImage() throws IOException {
-    ImageController c = new ImageControllerImpl(v,new InputStreamReader(System.in),m);
+    ImageController c = new ImageControllerImpl(v,new InputStreamReader(System.in),m2);
     SaveImage s = new SaveImage("arjun", "test", c);
     s.execute(m2, v);
-    assertEquals("\n", ap2.toString());
+    assertEquals("Image test does not exist or has not been loaded!\n", ap2.toString());
+    //mock controller test
+  }
+
+  @Test
+  public void testBlur() throws IOException {
+    Blur b = new Blur("arjun", "test");
+    b.execute(m, v);
+    assertEquals("filtered arjun. Is now test\n",
+            ap.toString());
+
+    b.execute(m2, v);
+    assertEquals("arjun file doesn't exist\n", ap2.toString());
+  }
+
+  @Test
+  public void testSharpen() throws IOException {
+    Sharpen sh = new Sharpen("arjun", "test");
+    sh.execute(m, v);
+    assertEquals("filtered arjun. Is now test\n",
+            ap.toString());
+
+    sh.execute(m2, v);
+    assertEquals("arjun file doesn't exist\n", ap2.toString());
+  }
+
+  @Test
+  public void testSepia() throws IOException {
+    Sepia se = new Sepia("arjun", "test");
+    se.execute(m, v);
+    assertEquals("transformed arjun. Is now test\n",
+            ap.toString());
+
+    se.execute(m2, v);
+    assertEquals("arjun file doesn't exist\n", ap2.toString());
+  }
+
+  @Test
+  public void testGreyscale() throws IOException {
+    Greyscale greyscale = new Greyscale("arjun", "test");
+    greyscale.execute(m, v);
+    assertEquals("transformed arjun. Is now test\n",
+            ap.toString());
+
+    greyscale.execute(m2, v);
+    assertEquals("arjun file doesn't exist\n", ap2.toString());
   }
 }

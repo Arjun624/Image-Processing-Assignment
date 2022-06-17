@@ -355,6 +355,5 @@ public class TestController {
         assertEquals(m.images.get("test")[i][j], arr[i][j]);
       }
     }
-
   }
 }

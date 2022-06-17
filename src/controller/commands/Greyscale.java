@@ -42,7 +42,7 @@ public class Greyscale implements ImageCommands {
     try {
       model.colorTransform(colors, fileName, newFileName);
     } catch (IllegalArgumentException e) {
-      view.renderMessage(e.getMessage());
+      view.renderMessage(fileName + " " + e.getMessage());
     }
   }
 }

@@ -39,7 +39,7 @@ public class Sharpen implements ImageCommands {
     try {
       model.filterImage(fileName, newFileName, kernal);
     } catch (IllegalArgumentException e) {
-      view.renderMessage(fileName + " not loaded!");
+      view.renderMessage(fileName + " " + e.getMessage());
     }
 
 
