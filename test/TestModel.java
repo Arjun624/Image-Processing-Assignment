@@ -554,8 +554,8 @@ public class TestModel {
     }
 
     double[][] evenKernal = new double[][]{
-            { 0.0625, 0.125},
-            { 0.125, 0.25}
+            {0.0625, 0.125},
+            {0.125, 0.25}
     };
     try {
       m1.filterImage("test", "test-b", evenKernal);
