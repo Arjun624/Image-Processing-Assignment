@@ -1,3 +1,4 @@
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -9,7 +10,9 @@ import controller.ImageController;
 import controller.ImageControllerImpl;
 import controller.commands.AdjustBrightness;
 import controller.commands.BlueGreyscale;
+import controller.commands.Blur;
 import controller.commands.GreenGreyscale;
+import controller.commands.Greyscale;
 import controller.commands.HorizontalFlip;
 import controller.commands.IntensityGreyscale;
 import controller.commands.LoadImage;
@@ -17,6 +20,8 @@ import controller.commands.LumaGreyscale;
 import controller.commands.Quit;
 import controller.commands.RedGreyscale;
 import controller.commands.SaveImage;
+import controller.commands.Sepia;
+import controller.commands.Sharpen;
 import controller.commands.ValueGreyscale;
 import controller.commands.VerticalFlip;
 import model.ImageEditor;
@@ -25,6 +30,7 @@ import view.ImageDisplay;
 import view.ImageView;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * Test Each action class in the controller.
@@ -148,9 +154,20 @@ public class TestActions {
     Quit q = new Quit();
     q.execute(m, v);
     assertEquals("program quit", ap.toString());
-
   }
 
+  @Test
+  public void mockControllerInitialization() throws IOException {
+    Appendable ap = new StringBuilder("hello");
+    ImageController m = new MockController(ap);
+    assertEquals(ap.toString(),"hello");
+    m.saveImage("y","y");
+    try {
+      new MockController(null);
+    } catch (NullPointerException e){
+      assertNull(e.getMessage());
+    }
+  }
   @Test
   public void testLoadImage() throws IOException {
     ImageController c = new ImageControllerImpl(v,new InputStreamReader(System.in),m);
@@ -158,13 +175,67 @@ public class TestActions {
 
     l.execute(m2, v);
     assertEquals("arjun does not exist!\n", ap2.toString());
+
+    Appendable test = new StringBuilder();
+    ImageController mock = new MockController(test);
+    mock.loadImage("arjun", "test");
+    assertEquals("loaded arjun as test", test.toString());
   }
 
   @Test
   public void testSaveImage() throws IOException {
-    ImageController c = new ImageControllerImpl(v,new InputStreamReader(System.in),m);
+    ImageController c = new ImageControllerImpl(v,new InputStreamReader(System.in),m2);
     SaveImage s = new SaveImage("arjun", "test", c);
     s.execute(m2, v);
-    assertEquals("\n", ap2.toString());
+    assertEquals("Image test does not exist or has not been loaded!\n", ap2.toString());
+
+    Appendable test = new StringBuilder();
+    ImageController mock = new MockController(test);
+    mock.saveImage("arjun", "test");
+    assertEquals("saved test as arjun", test.toString());
+  }
+
+  @Test
+  public void testBlur() throws IOException {
+    Blur b = new Blur("arjun", "test");
+    b.execute(m, v);
+    assertEquals("filtered arjun. Is now test\n",
+            ap.toString());
+
+    b.execute(m2, v);
+    assertEquals("arjun file doesn't exist\n", ap2.toString());
+  }
+
+  @Test
+  public void testSharpen() throws IOException {
+    Sharpen sh = new Sharpen("arjun", "test");
+    sh.execute(m, v);
+    assertEquals("filtered arjun. Is now test\n",
+            ap.toString());
+
+    sh.execute(m2, v);
+    assertEquals("arjun file doesn't exist\n", ap2.toString());
+  }
+
+  @Test
+  public void testSepia() throws IOException {
+    Sepia se = new Sepia("arjun", "test");
+    se.execute(m, v);
+    assertEquals("transformed arjun. Is now test\n",
+            ap.toString());
+
+    se.execute(m2, v);
+    assertEquals("arjun file doesn't exist\n", ap2.toString());
+  }
+
+  @Test
+  public void testGreyscale() throws IOException {
+    Greyscale greyscale = new Greyscale("arjun", "test");
+    greyscale.execute(m, v);
+    assertEquals("transformed arjun. Is now test\n",
+            ap.toString());
+
+    greyscale.execute(m2, v);
+    assertEquals("arjun file doesn't exist\n", ap2.toString());
   }
 }

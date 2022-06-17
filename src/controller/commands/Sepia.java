@@ -45,7 +45,7 @@ public class Sepia implements ImageCommands {
     try {
       model.colorTransform(colors,fileName, newFileName);
     } catch (IllegalArgumentException e) {
-      view.renderMessage(fileName + " not loaded!");
+      view.renderMessage(fileName + " " + e.getMessage());
     }
   }
 }
