@@ -202,8 +202,11 @@ public class ImageControllerImpl implements ImageController {
   private void savePPM(String pathname, String filename) throws IOException {
 
     StringBuilder sb = new StringBuilder();
-    if (!model.getMap().containsKey(filename)) {
-      view.renderMessage("Image " + filename + " does not exist or has not been loaded!");
+    try{
+      if (!model.getMap().containsKey(filename)) {
+        view.renderMessage("Image " + filename + " does not exist or has not been loaded!");
+      }
+    }catch(NullPointerException e){
       throw new IllegalArgumentException("Invalid image name: " + filename);
     }
     try {
@@ -252,8 +255,12 @@ public class ImageControllerImpl implements ImageController {
   }
 
   private void saveOther(String pathname, String filename) throws IOException {
-    if (!model.getMap().containsKey(filename)) {
-      view.renderMessage("Image " + filename + " does not exist or has not been loaded!");
+
+    try{
+      if (!model.getMap().containsKey(filename)) {
+        view.renderMessage("Image " + filename + " does not exist or has not been loaded!");
+      }
+    }catch(NullPointerException e){
       throw new IllegalArgumentException("Invalid image name: " + filename);
     }
     int length = model.getMap().get(filename).length;
