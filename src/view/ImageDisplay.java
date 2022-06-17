@@ -6,7 +6,7 @@ import java.io.IOException;
  * Represents a way to display messages to the user.
  */
 public class ImageDisplay implements ImageView {
-  Appendable ap;
+  private final Appendable ap;
 
   /**
    * Constructs a {@code ImageDisplay} where the user sets the appendable object.

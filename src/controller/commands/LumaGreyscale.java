@@ -35,9 +35,9 @@ public class LumaGreyscale implements ImageCommands {
   public void execute(ImageEditor model, ImageView view) throws IOException {
 
     try {
-      model.greyscale(fileName, newFileName,"luma");
+      model.greyscale(fileName, newFileName, "luma");
     } catch (IllegalArgumentException e) {
-      view.renderMessage(fileName + " not loaded!");
+      view.renderMessage(fileName + " " + e.getMessage());
     }
   }
 }

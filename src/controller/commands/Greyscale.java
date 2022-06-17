@@ -12,6 +12,7 @@ import view.ImageView;
 public class Greyscale implements ImageCommands {
   private final String fileName;
   private final String newFileName;
+
   /**
    * Constructs a {@code Greyscale} that preforms a greyscale on the filename.
    *
@@ -39,9 +40,9 @@ public class Greyscale implements ImageCommands {
       colors[i][2] = (float) 0.0722;
     }
     try {
-      model.colorTransform(colors,fileName, newFileName);
+      model.colorTransform(colors, fileName, newFileName);
     } catch (IllegalArgumentException e) {
-      view.renderMessage(fileName + " not loaded!");
+      view.renderMessage(e.getMessage());
     }
   }
 }

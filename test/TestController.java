@@ -344,11 +344,11 @@ public class TestController {
       }
     }
 
-//    for (int i = 0; i < height; i++) {
-//      for (int j = 0; j < width; j++) {
-//        assertEquals(m.images.get("test")[i][j], arr[i][j]);
-//      }
-//    }
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width; j++) {
+        assertEquals(m.images.get("test")[i][j], arr[i][j]);
+      }
+    }
 
   }
 }

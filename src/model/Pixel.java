@@ -13,7 +13,7 @@ public class Pixel {
   private final int alpha;
 
   /**
-   * Constructs a new Pixel by its position and color on the image.
+   * Constructs a new Pixel by its color on the image.
    *
    * @param r the red value
    * @param g the green value
@@ -33,11 +33,12 @@ public class Pixel {
   }
 
   /**
-   * Constructs a new Pixel by its position and color on the image.
+   * Constructs a new Pixel by its color and transparency on the image.
    *
-   * @param r the red value
-   * @param g the green value
-   * @param b the blue value
+   * @param r     the red value
+   * @param g     the green value
+   * @param b     the blue value
+   * @param alpha the alpha value
    * @throws IllegalArgumentException if color values are out of bounds
    */
   public Pixel(int r, int g, int b, int alpha) throws IllegalArgumentException {
@@ -105,6 +106,7 @@ public class Pixel {
 
   /**
    * Gets the red value of the pixel.
+   *
    * @return an integer representing the red value
    */
   public int getRed() {
@@ -113,6 +115,7 @@ public class Pixel {
 
   /**
    * Gets the green value of the pixel.
+   *
    * @return an integer representing the green value
    */
   public int getGreen() {
@@ -121,6 +124,7 @@ public class Pixel {
 
   /**
    * Gets the blue value of the pixel.
+   *
    * @return an integer representing the blue value
    */
   public int getBlue() {
@@ -129,6 +133,7 @@ public class Pixel {
 
   /**
    * Gets the alpha value of the pixel.
+   *
    * @return an integer representing the alpha value
    */
   public int getAlpha() {
