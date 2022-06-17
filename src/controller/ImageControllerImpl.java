@@ -272,11 +272,10 @@ public class ImageControllerImpl implements ImageController {
 
 
     ArrayList<String> formats = new ArrayList<>(Arrays.asList(ImageIO.getWriterFormatNames()));
-
-    File file = new File(pathname);
     String type2 = pathname.split("\\.")[1];
 
     if (formats.contains(type2)) {
+      File file = new File(pathname);
       ImageIO.write(bufferedImage, type2, file);
       view.renderMessage("Image: " + filename + "\nsaved as: " + pathname);
     } else {

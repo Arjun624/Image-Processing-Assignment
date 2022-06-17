@@ -219,10 +219,10 @@ public class TestController {
     }
 
     try {
-      c.loadImage("noam", "ood");
+      c.loadImage("noam.ppm", "ood");
       fail("should have thrown an exception");
     } catch (NoSuchElementException e) {
-      assertEquals(e.getMessage(), "File noam not found!");
+      assertEquals(e.getMessage(), "File noam.ppm not found!");
     }
   }
 
@@ -256,6 +256,12 @@ public class TestController {
       for (int j = 0; j < width; j++) {
         assertEquals(m.images.get("test")[i][j], arr[i][j]);
       }
+    }
+
+    try {
+      c.loadImage("fake.png","test");
+    } catch (NoSuchElementException e) {
+      assertEquals(e.getMessage(), "File fake.png not found!");
     }
   }
   @Test

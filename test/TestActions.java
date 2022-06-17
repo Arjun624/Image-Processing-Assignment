@@ -2,16 +2,21 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 
+import controller.ImageController;
+import controller.ImageControllerImpl;
 import controller.commands.AdjustBrightness;
 import controller.commands.BlueGreyscale;
 import controller.commands.GreenGreyscale;
 import controller.commands.HorizontalFlip;
 import controller.commands.IntensityGreyscale;
+import controller.commands.LoadImage;
 import controller.commands.LumaGreyscale;
 import controller.commands.Quit;
 import controller.commands.RedGreyscale;
+import controller.commands.SaveImage;
 import controller.commands.ValueGreyscale;
 import controller.commands.VerticalFlip;
 import model.ImageEditor;
@@ -78,7 +83,8 @@ public class TestActions {
   public void testRedGreyscale() throws IOException {
     RedGreyscale rg = new RedGreyscale("arjun", "test");
     rg.execute(m, v);
-    assertEquals("preformed a red greyscale arjun. Is now test\n", ap.toString());
+    assertEquals("preformed a greyscale of type red on arjun. Is now test\n",
+            ap.toString());
 
     rg.execute(m2, v);
     assertEquals("arjun file doesn't exist\n", ap2.toString());
@@ -88,7 +94,8 @@ public class TestActions {
   public void testLumaGreyscale() throws IOException {
     LumaGreyscale lg = new LumaGreyscale("arjun", "test");
     lg.execute(m, v);
-    assertEquals("preformed a luma greyscale arjun. Is now test\n", ap.toString());
+    assertEquals("preformed a greyscale of type luma on arjun. Is now test\n",
+            ap.toString());
 
     lg.execute(m2, v);
     assertEquals("arjun file doesn't exist\n", ap2.toString());
@@ -98,7 +105,8 @@ public class TestActions {
   public void testIntensityGreyscale() throws IOException {
     IntensityGreyscale ig = new IntensityGreyscale("arjun", "test");
     ig.execute(m, v);
-    assertEquals("preformed an intensity greyscale arjun. Is now test\n", ap.toString());
+    assertEquals("preformed a greyscale of type intensity on arjun. Is now test\n",
+            ap.toString());
 
     ig.execute(m2, v);
     assertEquals("arjun file doesn't exist\n", ap2.toString());
@@ -108,7 +116,8 @@ public class TestActions {
   public void testValueGreyscale() throws IOException {
     ValueGreyscale vg = new ValueGreyscale("arjun", "test");
     vg.execute(m, v);
-    assertEquals("preformed a value greyscale arjun. Is now test\n", ap.toString());
+    assertEquals("preformed a greyscale of type value on arjun. Is now test\n",
+            ap.toString());
 
     vg.execute(m2, v);
     assertEquals("arjun file doesn't exist\n", ap2.toString());
@@ -144,18 +153,18 @@ public class TestActions {
 
   @Test
   public void testLoadImage() throws IOException {
-//    LoadImage l = new LoadImage("arjun", "test");
-//    l.execute(m, v);
-//    assertEquals("loaded arjun as test\n", ap.toString());
-//
-//    l.execute(m2, v);
-//    assertEquals("arjun does not exist!\n", ap2.toString());
+    ImageController c = new ImageControllerImpl(v,new InputStreamReader(System.in),m);
+    LoadImage l = new LoadImage("arjun", "test",c);
+
+    l.execute(m2, v);
+    assertEquals("arjun does not exist!\n", ap2.toString());
   }
 
   @Test
   public void testSaveImage() throws IOException {
-//    SaveImage s = new SaveImage("arjun", "test");
-//    s.execute(m, v);
-//    assertEquals("saved test as arjun\n", ap.toString());
+    ImageController c = new ImageControllerImpl(v,new InputStreamReader(System.in),m);
+    SaveImage s = new SaveImage("arjun", "test", c);
+    s.execute(m2, v);
+    assertEquals("\n", ap2.toString());
   }
 }
