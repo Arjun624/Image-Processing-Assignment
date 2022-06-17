@@ -135,45 +135,45 @@ public class ImageModel implements ImageEditor {
   }
 
   @Override
-  public void filterImage(String filename, String newFilename, double[][] kernal) throws IOException,
+  public void filterImage(String filename, String newFilename, double[][] kernel) throws IOException,
           IllegalArgumentException {
-    if (kernal == null) {
-      throw new IllegalArgumentException("kernal is null");
+    if (kernel == null) {
+      throw new IllegalArgumentException("kernel is null");
     }
     if (images.get(filename) == null) {
       throw new IllegalArgumentException("file doesn't exist");
     }
-    if (kernal.length % 2 == 0 || kernal[0].length % 2 == 0) {
-      throw new IllegalArgumentException("Kernal must have an odd number of rows and columns");
+    if (kernel.length % 2 == 0 || kernel[0].length % 2 == 0) {
+      throw new IllegalArgumentException("Kernel must have an odd number of rows and columns");
     }
-    int length = kernal.length;
-    int width = kernal[0].length;
+    int length = kernel.length;
+    int width = kernel[0].length;
 
-    double newRed = 0;
-    double newGreen = 0;
-    double newBlue = 0;
+    double redCount = 0;
+    double greenCount = 0;
+    double blueCount = 0;
 
 
     Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
     for (int row = 0; row < this.images.get(filename).length; row++) {
       for (int col = 0; col < this.images.get(filename)[0].length; col++) {
 
-        for (int kernalRow = row - (length / 2); kernalRow < (row - (length / 2)) + length; kernalRow++) {
-          for (int kernalCol = col - (width / 2); kernalCol < (col - (width / 2)) + width; kernalCol++) {
+        for (int kernelRow = row - (length / 2); kernelRow < (row - (length / 2)) + length; kernelRow++) {
+          for (int kernelCol = col - (width / 2); kernelCol < (col - (width / 2)) + width; kernelCol++) {
             try {
-              newRed += images.get(filename)[kernalRow][kernalCol].getRed() * kernal[kernalRow - (row - (length / 2))][kernalCol - (col - (width / 2))];
-              newGreen += images.get(filename)[kernalRow][kernalCol].getGreen() * kernal[kernalRow - (row - (length / 2))][kernalCol - (col - (width / 2))];
-              newBlue += images.get(filename)[kernalRow][kernalCol].getBlue() * kernal[kernalRow - (row - (length / 2))][kernalCol - (col - (width / 2))];
+              redCount += images.get(filename)[kernelRow][kernelCol].getRed() * kernel[kernelRow - (row - (length / 2))][kernelCol - (col - (width / 2))];
+              greenCount += images.get(filename)[kernelRow][kernelCol].getGreen() * kernel[kernelRow - (row - (length / 2))][kernelCol - (col - (width / 2))];
+              blueCount += images.get(filename)[kernelRow][kernelCol].getBlue() * kernel[kernelRow - (row - (length / 2))][kernelCol - (col - (width / 2))];
             } catch (ArrayIndexOutOfBoundsException ignored) {
             }
           }
         }
 
-        arr[row][col] = new Pixel(fixRGBRange(newRed), fixRGBRange(newGreen), fixRGBRange(newBlue));
+        arr[row][col] = new Pixel(fixRGBRange(redCount), fixRGBRange(greenCount), fixRGBRange(blueCount));
 
-        newRed = 0;
-        newGreen = 0;
-        newBlue = 0;
+        redCount = 0;
+        greenCount = 0;
+        blueCount = 0;
 
       }
     }

@@ -561,14 +561,14 @@ public class TestModel {
       m1.filterImage("test", "test-b", evenKernal);
       fail("Should have thrown an exception");
     } catch (IllegalArgumentException e) {
-      assertEquals(e.getMessage(), "Kernal must have an odd number of rows and columns");
+      assertEquals(e.getMessage(), "Kernel must have an odd number of rows and columns");
     }
 
     try {
       m1.filterImage("test", "test-b", null);
       fail("Should have thrown an exception");
     } catch (IllegalArgumentException e) {
-      assertEquals(e.getMessage(), "kernal is null");
+      assertEquals(e.getMessage(), "kernel is null");
     }
 
     try {
