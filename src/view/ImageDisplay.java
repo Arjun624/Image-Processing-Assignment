@@ -41,6 +41,10 @@ public class ImageDisplay implements ImageView {
     this.renderMessage("(9) 'luma' <filename> <new filename>");
     this.renderMessage("(10) 'intensity' <filename> <new filename>");
     this.renderMessage("(11) 'value' <filename> <new filename>");
-    this.renderMessage("(12) 'q' to quit");
+    this.renderMessage("(12) 'sharpen' <filename> <new filename>");
+    this.renderMessage("(13) 'blur' <filename> <new filename>");
+    this.renderMessage("(14) 'sepia' <filename> <new filename>");
+    this.renderMessage("(15) 'greyscale' <filename> <new filename>");
+    this.renderMessage("(16) 'q' to quit");
   }
 }

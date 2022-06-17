@@ -518,6 +518,67 @@ public class TestModel {
 
   }
 
+  @Test
+  public void testSharpen() throws IOException {
+    ImageView v = new ImageDisplay(new StringBuilder());
+    HashMap<String, Pixel[][]> testMap = new HashMap<>();
+    String file = "test";
+    Pixel[][] arr = new Pixel[2][2];
+    for (int i = 0; i < 2; i++) {
+      for (int j = 0; j < 2; j++) {
+        arr[i][j] = new Pixel(50 + i, 200-(5*j), 99);
+      }
+    }
+    testMap.put(file, arr);
+    ImageModel m1 = new ImageModel(testMap, v);
+    double[][] kernal = new double[][]{
+            {-0.125, -0.125, -0.125, -0.125, -0.125},
+            {-0.125, 0.25, 0.25, 0.25, -0.125},
+            {-0.125, 0.25, 1, 0.25, -0.125},
+            {-0.125, 0.25, 0.25, 0.25, -0.125},
+            {-0.125, -0.125, -0.125, -0.125, -0.125},
+    };
+    m1.filterImage("test", "test-s", kernal);
+    Pixel[][] arr1 = new Pixel[2][2];
+    arr1[0][0] = new Pixel(88, 255, 173);
+    arr1[0][1] = new Pixel(88, 255, 173);
+    arr1[1][0] = new Pixel(89, 255, 173);
+    arr1[1][1] = new Pixel(89, 255, 173);
+
+
+    for (int i = 0; i < 2; i++) {
+      for (int j = 0; j < 2; j++) {
+        assertEquals(m1.images.get("test-s")[i][j], arr1[i][j]);
+      }
+    }
+
+    double[][] evenKernal = new double[][]{
+            { 0.0625, 0.125},
+            { 0.125, 0.25}
+    };
+    try {
+      m1.filterImage("test", "test-b", evenKernal);
+      fail("Should have thrown an exception");
+    } catch (IllegalArgumentException e) {
+      assertEquals(e.getMessage(), "Kernal must have an odd number of rows and columns");
+    }
+
+    try {
+      m1.filterImage("test", "test-b", null);
+      fail("Should have thrown an exception");
+    } catch (IllegalArgumentException e) {
+      assertEquals(e.getMessage(), "kernal is null");
+    }
+
+    try {
+      m1.filterImage("yes", "no", kernal);
+      fail("Should have thrown an exception");
+    } catch (IllegalArgumentException e) {
+      assertEquals(e.getMessage(), "file doesn't exist");
+    }
+
+  }
+
 
   @Test
   public void testInvalidGreyscale(){

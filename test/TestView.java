@@ -60,7 +60,11 @@ public class TestView {
             out.toString().split("\n")[11]);
     assertEquals("(11) 'value' <filename> <new filename>",
             out.toString().split("\n")[12]);
-    assertEquals("(12) 'q' to quit", out.toString().split("\n")[13]);
+    assertEquals("(12) 'sharpen' <filename> <new filename>", out.toString().split("\n")[13]);
+    assertEquals("(13) 'blur' <filename> <new filename>", out.toString().split("\n")[14]);
+    assertEquals("(14) 'sepia' <filename> <new filename>", out.toString().split("\n")[15]);
+    assertEquals("(15) 'greyscale' <filename> <new filename>", out.toString().split("\n")[16]);
+    assertEquals("(16) 'q' to quit", out.toString().split("\n")[17]);
 
   }
 }
