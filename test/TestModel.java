@@ -167,7 +167,7 @@ public class TestModel {
     }
 
     try {
-      m1.greyscale("yes", "no","red");
+      m1.greyscale("yes", "no", "red");
       fail("Should have thrown an exception");
     } catch (IllegalArgumentException e) {
       assertEquals(e.getMessage(), "file doesn't exist");
@@ -222,7 +222,7 @@ public class TestModel {
     }
     testMap.put(file, arr);
     ImageModel m1 = new ImageModel(testMap, v);
-    m1.greyscale("test", "test-b","blue");
+    m1.greyscale("test", "test-b", "blue");
     Pixel[][] arr1 = new Pixel[3][3];
     for (int i = 0; i < 3; i++) {
       for (int j = 0; j < 3; j++) {
@@ -367,7 +367,7 @@ public class TestModel {
     }
     testMap.put(file, arr);
     ImageModel m1 = new ImageModel(testMap, v);
-    m1.greyscale("test", "test-lg","luma");
+    m1.greyscale("test", "test-lg", "luma");
     Pixel[][] arr1 = new Pixel[3][3];
     for (int i = 0; i < 3; i++) {
       for (int j = 0; j < 3; j++) {
@@ -403,7 +403,7 @@ public class TestModel {
     }
     testMap.put(file, arr);
     ImageModel m1 = new ImageModel(testMap, v);
-    m1.greyscale("test", "test-ig","intensity");
+    m1.greyscale("test", "test-ig", "intensity");
     Pixel[][] arr1 = new Pixel[3][3];
     for (int i = 0; i < 3; i++) {
       for (int j = 0; j < 3; j++) {
@@ -418,7 +418,7 @@ public class TestModel {
       }
     }
     try {
-      m1.greyscale("yes", "no","intensity");
+      m1.greyscale("yes", "no", "intensity");
       fail("Should have thrown an exception");
     } catch (IllegalArgumentException e) {
       assertEquals(e.getMessage(), "file doesn't exist");
@@ -438,7 +438,7 @@ public class TestModel {
     }
     testMap.put(file, arr);
     ImageModel m1 = new ImageModel(testMap, v);
-    m1.greyscale("test", "test-vg","value");
+    m1.greyscale("test", "test-vg", "value");
     Pixel[][] arr1 = new Pixel[3][3];
     for (int i = 0; i < 3; i++) {
       for (int j = 0; j < 3; j++) {
@@ -453,7 +453,7 @@ public class TestModel {
     }
 
     try {
-      m1.greyscale("yes", "no","value");
+      m1.greyscale("yes", "no", "value");
       fail("Should have thrown an exception");
     } catch (IllegalArgumentException e) {
       assertEquals(e.getMessage(), "file doesn't exist");
@@ -468,15 +468,15 @@ public class TestModel {
     Pixel[][] arr = new Pixel[2][2];
     for (int i = 0; i < 2; i++) {
       for (int j = 0; j < 2; j++) {
-        arr[i][j] = new Pixel(110 + i, 120-(3*j), 130);
+        arr[i][j] = new Pixel(110 + i, 120 - (3 * j), 130);
       }
     }
     testMap.put(file, arr);
     ImageModel m1 = new ImageModel(testMap, v);
     double[][] kernal = new double[][]{
-            { 0.0625, 0.125, 0.0625 },
-            { 0.125, 0.25, 0.125 },
-            { 0.0625, 0.125, 0.0625 },
+            {0.0625, 0.125, 0.0625},
+            {0.125, 0.25, 0.125},
+            {0.0625, 0.125, 0.0625},
     };
     m1.filterImage("test", "test-b", kernal);
     Pixel[][] arr1 = new Pixel[2][2];
@@ -493,8 +493,8 @@ public class TestModel {
     }
 
     double[][] evenKernal = new double[][]{
-            { 0.0625, 0.125},
-            { 0.125, 0.25}
+            {0.0625, 0.125},
+            {0.125, 0.25}
     };
     try {
       m1.filterImage("test", "test-b", evenKernal);
@@ -534,10 +534,40 @@ public class TestModel {
     testMap.put(file, arr);
     ImageModel m1 = new ImageModel(testMap, v);
     try {
-      m1.greyscale("test", "test-b","blue");
-    } catch (IllegalArgumentException e){
+      m1.greyscale("test", "test-b", "blue");
+    } catch (IllegalArgumentException e) {
       assertEquals(e.getMessage(), "color invalid");
     }
 
+  }
+
+  @Test
+  public void testColorTransform() throws IOException {
+    ImageView v = new ImageDisplay(new StringBuilder());
+    HashMap<String, Pixel[][]> testMap = new HashMap<>();
+    String file = "test";
+    Pixel[][] arr = new Pixel[3][3];
+    for (int i = 0; i < 3; i++) {
+      for (int j = 0; j < 3; j++) {
+        arr[i][j] = new Pixel(100, 100, 100);
+      }
+    }
+    testMap.put(file, arr);
+    ImageModel m1 = new ImageModel(testMap, v);
+    float[][] colors = new float[][]{{(float) 0.5, (float) 0.5, (float) 0.5},
+            {(float) 0.5, (float) 0.5, (float) 0.5},
+            {(float) 0.5, (float) 0.5, (float) 0.5}};
+    m1.colorTransform(colors, "test", "test-ct");
+    Pixel[][] arr2 = new Pixel[3][3];
+    for (int i = 0; i < 3; i++) {
+      for (int j = 0; j < 3; j++) {
+        arr2[i][j] = new Pixel(150, 150, 150);
+      }
+    }
+    for (int i = 0; i < 3; i++) {
+      for (int j = 0; j < 3; j++) {
+        assertEquals(m1.images.get("test-ct")[i][j], arr2[i][j]);
+      }
+    }
   }
 }
