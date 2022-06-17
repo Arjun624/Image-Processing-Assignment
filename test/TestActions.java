@@ -1,3 +1,4 @@
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -29,6 +30,7 @@ import view.ImageDisplay;
 import view.ImageView;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * Test Each action class in the controller.
@@ -152,9 +154,20 @@ public class TestActions {
     Quit q = new Quit();
     q.execute(m, v);
     assertEquals("program quit", ap.toString());
-
   }
 
+  @Test
+  public void mockControllerInitialization() throws IOException {
+    Appendable ap = new StringBuilder("hello");
+    ImageController m = new MockController(ap);
+    assertEquals(ap.toString(),"hello");
+    m.saveImage("y","y");
+    try {
+      new MockController(null);
+    } catch (NullPointerException e){
+      assertNull(e.getMessage());
+    }
+  }
   @Test
   public void testLoadImage() throws IOException {
     ImageController c = new ImageControllerImpl(v,new InputStreamReader(System.in),m);
@@ -162,7 +175,11 @@ public class TestActions {
 
     l.execute(m2, v);
     assertEquals("arjun does not exist!\n", ap2.toString());
-    //mock controller test
+
+    Appendable test = new StringBuilder();
+    ImageController mock = new MockController(test);
+    mock.loadImage("arjun", "test");
+    assertEquals("loaded arjun as test", test.toString());
   }
 
   @Test
@@ -171,7 +188,11 @@ public class TestActions {
     SaveImage s = new SaveImage("arjun", "test", c);
     s.execute(m2, v);
     assertEquals("Image test does not exist or has not been loaded!\n", ap2.toString());
-    //mock controller test
+
+    Appendable test = new StringBuilder();
+    ImageController mock = new MockController(test);
+    mock.saveImage("arjun", "test");
+    assertEquals("saved test as arjun", test.toString());
   }
 
   @Test
