@@ -56,20 +56,22 @@ public class TestActions {
   public void testBlueGreyscale() throws IOException {
     BlueGreyscale bg = new BlueGreyscale("arjun", "test");
     bg.execute(m, v);
-    assertEquals("preformed a blue greyscale arjun. Is now test\n", ap.toString());
+    assertEquals("preformed a greyscale of type blue on arjun. Is now test\n",
+            ap.toString());
 
     bg.execute(m2, v);
-    assertEquals("arjun not loaded!\n", ap2.toString());
+    assertEquals("arjun file doesn't exist\n", ap2.toString());
   }
 
   @Test
   public void testGreenGreyscale() throws IOException {
     GreenGreyscale gg = new GreenGreyscale("arjun", "test");
     gg.execute(m, v);
-    assertEquals("preformed a green greyscale arjun. Is now test\n", ap.toString());
+    assertEquals("preformed a greyscale of type green on arjun. Is now test\n",
+            ap.toString());
 
     gg.execute(m2, v);
-    assertEquals("arjun not loaded!\n", ap2.toString());
+    assertEquals("arjun file doesn't exist\n", ap2.toString());
   }
 
   @Test
@@ -79,7 +81,7 @@ public class TestActions {
     assertEquals("preformed a red greyscale arjun. Is now test\n", ap.toString());
 
     rg.execute(m2, v);
-    assertEquals("arjun not loaded!\n", ap2.toString());
+    assertEquals("arjun file doesn't exist\n", ap2.toString());
   }
 
   @Test
@@ -89,7 +91,7 @@ public class TestActions {
     assertEquals("preformed a luma greyscale arjun. Is now test\n", ap.toString());
 
     lg.execute(m2, v);
-    assertEquals("arjun not loaded!\n", ap2.toString());
+    assertEquals("arjun file doesn't exist\n", ap2.toString());
   }
 
   @Test
@@ -99,7 +101,7 @@ public class TestActions {
     assertEquals("preformed an intensity greyscale arjun. Is now test\n", ap.toString());
 
     ig.execute(m2, v);
-    assertEquals("arjun not loaded!\n", ap2.toString());
+    assertEquals("arjun file doesn't exist\n", ap2.toString());
   }
 
   @Test
@@ -109,7 +111,7 @@ public class TestActions {
     assertEquals("preformed a value greyscale arjun. Is now test\n", ap.toString());
 
     vg.execute(m2, v);
-    assertEquals("arjun not loaded!\n", ap2.toString());
+    assertEquals("arjun file doesn't exist\n", ap2.toString());
   }
 
   @Test

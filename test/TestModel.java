@@ -630,5 +630,19 @@ public class TestModel {
         assertEquals(m1.images.get("test-ct")[i][j], arr2[i][j]);
       }
     }
+
+    try {
+      m1.colorTransform(null, "test", "test-ct");
+      fail("Should have thrown exception");
+    } catch (IllegalArgumentException e){
+      assertEquals(e.getMessage(), "colors is null");
+    }
+    float[][] failure = new float[2][2];
+    try {
+      m1.colorTransform(failure, "test", "test-ct");
+      fail("Should have thrown exception");
+    } catch (IllegalArgumentException e){
+      assertEquals(e.getMessage(), "color matrix not size 3x3!");
+    }
   }
 }
