@@ -1,14 +1,30 @@
-load res/colors.ppm test
+load res/test.ppm test
 vertical-flip test test-vf
-horizontal-flip test tests-hf
+horizontal-flip test test-hf
 greyscale-red test test-rg
-greyscale-blue test test-bg
 greyscale-green test test-gg
+greyscale-blue test test-bg
 luma test test-lg
 intensity test test-ig
 value test test-vg
-adjust-brightness 10 test test-ab
-save res/vertical.ppm test-vf
-save res/blue-greyscale.ppm test-bg
-save res/brightened.ppm test-ab
+adjust-brightness 30 test test-abb
+adjust-brightness -30 test test-abd
+sharpen test test-sh
+blur test test-bl
+sepia test test-sp
+greyscale test test-gs
+save res/vertical.png test-vf
+save res/horizontal.png test-hf
+save res/red-greyscale.png test-rg
+save res/green-greyscale.png test-gg
+save res/blue-greyscale.png test-bg
+save res/luma-greyscale.png test-lg
+save res/intensity-greyscale.png test-ig
+save res/value-greyscale.png test-vg
+save res/brightened.png test-abb
+save res/dimmed.png test-abd
+save res/sharpened.png test-sh
+save res/blurred.png test-bl
+save res/sepia.png test-sp
+save res/greyscale.png test-gs
 q
