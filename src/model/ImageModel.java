@@ -134,8 +134,8 @@ public class ImageModel implements ImageEditor {
   }
 
   @Override
-  public void filterImage(String filename, String newFilename, double[][] kernel) throws IOException,
-          IllegalArgumentException {
+  public void filterImage(String filename, String newFilename, double[][] kernel)
+          throws IOException, IllegalArgumentException {
     if (kernel == null) {
       throw new IllegalArgumentException("kernel is null");
     }

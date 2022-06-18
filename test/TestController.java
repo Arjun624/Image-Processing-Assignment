@@ -1,7 +1,7 @@
 import org.junit.Before;
 import org.junit.Test;
 
-import java.awt.*;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -90,27 +90,24 @@ public class TestController {
 
   @Test
   public void testValidInput() throws IOException {
-    Readable r = new StringReader("load " +
-            "res/test.ppm " +
-            "test " +
-            "adjust-brightness 10 test test-ab " +
-            "vertical-flip test test-vf " +
-            "horizontal-flip test test-hf " +
-            "greyscale-red test test-rg " +
-            "greyscale-green test test-gg " +
-            "greyscale-blue test test-bg " +
-            "luma test test-l " +
-            "intensity test test-i  " +
-            "value test test-v  q");
+    Readable r = new StringReader("load "
+            + "res/test.ppm "
+            + "test "
+            + "adjust-brightness 10 test test-ab "
+            + "vertical-flip test test-vf "
+            + "horizontal-flip test test-hf "
+            + "greyscale-red test test-rg "
+            + "greyscale-green test test-gg "
+            + "greyscale-blue test test-bg "
+            + "luma test test-l "
+            + "intensity test test-i  "
+            + "value test test-v  q");
     ImageController c = new ImageControllerImpl(v, r, m);
     c.start();
     assertEquals("added test to hashmap", ap.toString().split("\n")[0]);
-    assertEquals("adjusted test by 10. Is now test-ab",
-            ap.toString().split("\n")[1]);
-    assertEquals("flipped test vertically. Is now test-vf",
-            ap.toString().split("\n")[2]);
-    assertEquals("flipped test horizontally. Is now test-hf",
-            ap.toString().split("\n")[3]);
+    assertEquals("adjusted test by 10. Is now test-ab", ap.toString().split("\n")[1]);
+    assertEquals("flipped test vertically. Is now test-vf", ap.toString().split("\n")[2]);
+    assertEquals("flipped test horizontally. Is now test-hf", ap.toString().split("\n")[3]);
     assertEquals("preformed a greyscale of type red on test. Is now test-rg",
             ap.toString().split("\n")[4]);
     assertEquals("preformed a greyscale of type red on test. Is now test-rg",
@@ -125,8 +122,7 @@ public class TestController {
             ap.toString().split("\n")[8]);
     assertEquals("preformed a greyscale of type value on test. Is now test-v",
             ap.toString().split("\n")[9]);
-    assertEquals("program quit",
-            ap.toString().split("\n")[10]);
+    assertEquals("program quit", ap.toString().split("\n")[10]);
   }
 
   @Test
@@ -134,10 +130,10 @@ public class TestController {
     Readable r = new StringReader("hello q");
     ImageController c = new ImageControllerImpl(v, r, m);
     c.start();
-    assertEquals("Enter a command: \n" +
-            "Invalid command!\n" +
-            "Enter a command: \n" +
-            "Thanks!\n", apView.toString());
+    assertEquals("Enter a command: \n"
+            + "Invalid command!\n"
+            + "Enter a command: \n"
+            + "Thanks!\n", apView.toString());
 
     Appendable ap2 = new StringBuilder();
     ImageView vModel = new ImageDisplay(ap2);
@@ -151,9 +147,7 @@ public class TestController {
     Appendable ap3 = new StringBuilder();
     ImageView vModel2 = new ImageDisplay(ap3);
     ImageEditor m3 = new ImageModel(new HashMap<>(), vModel2);
-    Readable r3 = new StringReader("load " +
-            "res/doesNotExist.ppm " +
-            "test max hello test-max q");
+    Readable r3 = new StringReader("load " + "res/doesNotExist.ppm " + "test max hello test-max q");
     Appendable apView3 = new StringBuilder();
     ImageView v3 = new ImageDisplay(apView3);
     ImageController c3 = new ImageControllerImpl(v3, r3, m3);

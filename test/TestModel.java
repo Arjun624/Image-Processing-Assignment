@@ -469,11 +469,8 @@ public class TestModel {
     }
     testMap.put(file, arr);
     ImageModel m1 = new ImageModel(testMap, v);
-    double[][] kernal = new double[][]{
-            {0.0625, 0.125, 0.0625},
-            {0.125, 0.25, 0.125},
-            {0.0625, 0.125, 0.0625},
-    };
+    double[][] kernal = new double[][]{{0.0625, 0.125, 0.0625}, {0.125, 0.25, 0.125}, {0.0625,
+            0.125, 0.0625},};
     m1.filterImage("test", "test-b", kernal);
     Pixel[][] arr1 = new Pixel[2][2];
     arr1[0][0] = new Pixel(62, 67, 73);
@@ -488,22 +485,19 @@ public class TestModel {
       }
     }
 
-    double[][] evenKernal = new double[][]{
-            {0.0625, 0.125},
-            {0.125, 0.25}
-    };
+    double[][] evenKernal = new double[][]{{0.0625, 0.125}, {0.125, 0.25}};
     try {
       m1.filterImage("test", "test-b", evenKernal);
       fail("Should have thrown an exception");
     } catch (IllegalArgumentException e) {
-      assertEquals(e.getMessage(), "Kernal must have an odd number of rows and columns");
+      assertEquals(e.getMessage(), "Kernel must have an odd number of rows and columns");
     }
 
     try {
       m1.filterImage("test", "test-b", null);
       fail("Should have thrown an exception");
     } catch (IllegalArgumentException e) {
-      assertEquals(e.getMessage(), "kernal is null");
+      assertEquals(e.getMessage(), "kernel is null");
     }
 
     try {
@@ -528,13 +522,9 @@ public class TestModel {
     }
     testMap.put(file, arr);
     ImageModel m1 = new ImageModel(testMap, v);
-    double[][] kernal = new double[][]{
-            {-0.125, -0.125, -0.125, -0.125, -0.125},
-            {-0.125, 0.25, 0.25, 0.25, -0.125},
-            {-0.125, 0.25, 1, 0.25, -0.125},
-            {-0.125, 0.25, 0.25, 0.25, -0.125},
-            {-0.125, -0.125, -0.125, -0.125, -0.125},
-    };
+    double[][] kernal = new double[][]{{-0.125, -0.125, -0.125, -0.125, -0.125}, {-0.125, 0.25,
+            0.25, 0.25, -0.125}, {-0.125, 0.25, 1, 0.25, -0.125}, {-0.125, 0.25, 0.25, 0.25,
+            -0.125}, {-0.125, -0.125, -0.125, -0.125, -0.125},};
     m1.filterImage("test", "test-s", kernal);
     Pixel[][] arr1 = new Pixel[2][2];
     arr1[0][0] = new Pixel(88, 255, 173);
@@ -549,10 +539,7 @@ public class TestModel {
       }
     }
 
-    double[][] evenKernal = new double[][]{
-            {0.0625, 0.125},
-            {0.125, 0.25}
-    };
+    double[][] evenKernal = new double[][]{{0.0625, 0.125}, {0.125, 0.25}};
     try {
       m1.filterImage("test", "test-b", evenKernal);
       fail("Should have thrown an exception");
@@ -611,9 +598,8 @@ public class TestModel {
     }
     testMap.put(file, arr);
     ImageModel m1 = new ImageModel(testMap, v);
-    float[][] colors = new float[][]{{(float) 0.5, (float) 0.5, (float) 0.5},
-            {(float) 0.5, (float) 0.5, (float) 0.5},
-            {(float) 0.5, (float) 0.5, (float) 0.5}};
+    float[][] colors = new float[][]{{(float) 0.5, (float) 0.5, (float) 0.5}, {(float) 0.5,
+            (float) 0.5, (float) 0.5}, {(float) 0.5, (float) 0.5, (float) 0.5}};
     m1.colorTransform(colors, "test", "test-ct");
     Pixel[][] arr2 = new Pixel[3][3];
     for (int i = 0; i < 3; i++) {
