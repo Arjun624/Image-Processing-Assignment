@@ -63,14 +63,14 @@ public class TestController {
     }
 
     try {
-      new ImageControllerImpl(v, null,m);
+      new ImageControllerImpl(v, null, m);
       fail("Should have thrown an exception");
     } catch (IllegalArgumentException e) {
       assertEquals(e.getMessage(), "View, readable, or model cannot be null");
     }
 
     try {
-      new ImageControllerImpl(v, new StringReader(""),null);
+      new ImageControllerImpl(v, new StringReader(""), null);
       fail("Should have thrown an exception");
     } catch (IllegalArgumentException e) {
       assertEquals(e.getMessage(), "View, readable, or model cannot be null");
@@ -90,9 +90,9 @@ public class TestController {
   @Test
   public void testValidInput() throws IOException {
     Readable r = new StringReader("load " +
-            "/Users/noamgreenstein/Documents/OOD/Image-Processing-Assignment/images/Koala.ppm " +
+            "res/test.ppm " +
             "test " +
-            " adjust-brightness 10 test test-ab " +
+            "adjust-brightness 10 test test-ab " +
             "vertical-flip test test-vf " +
             "horizontal-flip test test-hf " +
             "greyscale-red test test-rg " +
@@ -100,38 +100,38 @@ public class TestController {
             "greyscale-blue test test-bg " +
             "luma test test-l " +
             "intensity test test-i  " +
-            "max test test-m  q");
-    ImageController c = new ImageControllerImpl(v, r,m);
+            "value test test-v  q");
+    ImageController c = new ImageControllerImpl(v, r, m);
     c.start();
-    assertEquals("loaded " +
-            "/Users/noamgreenstein/Documents/OOD/Image-Processing-Assignment/images/Koala.ppm" +
-            " as test", ap.toString().split("\n")[0]);
+    assertEquals("added test to hashmap", ap.toString().split("\n")[0]);
     assertEquals("adjusted test by 10. Is now test-ab",
             ap.toString().split("\n")[1]);
     assertEquals("flipped test vertically. Is now test-vf",
             ap.toString().split("\n")[2]);
     assertEquals("flipped test horizontally. Is now test-hf",
             ap.toString().split("\n")[3]);
-    assertEquals("preformed a red greyscale test. Is now test-rg",
+    assertEquals("preformed a greyscale of type red on test. Is now test-rg",
             ap.toString().split("\n")[4]);
-    assertEquals("preformed a red greyscale test. Is now test-rg",
+    assertEquals("preformed a greyscale of type red on test. Is now test-rg",
             ap.toString().split("\n")[4]);
-    assertEquals("preformed a green greyscale test. Is now test-gg",
+    assertEquals("preformed a greyscale of type green on test. Is now test-gg",
             ap.toString().split("\n")[5]);
-    assertEquals("preformed a blue greyscale test. Is now test-bg",
+    assertEquals("preformed a greyscale of type blue on test. Is now test-bg",
             ap.toString().split("\n")[6]);
-    assertEquals("preformed a luma greyscale test. Is now test-l",
+    assertEquals("preformed a greyscale of type luma on test. Is now test-l",
             ap.toString().split("\n")[7]);
-    assertEquals("preformed an intensity greyscale test. Is now test-i",
+    assertEquals("preformed a greyscale of type intensity on test. Is now test-i",
             ap.toString().split("\n")[8]);
-    assertEquals("program quit",
+    assertEquals("preformed a greyscale of type value on test. Is now test-v",
             ap.toString().split("\n")[9]);
+    assertEquals("program quit",
+            ap.toString().split("\n")[10]);
   }
 
   @Test
   public void testInvalidInput() throws IOException {
     Readable r = new StringReader("hello q");
-    ImageController c = new ImageControllerImpl(v, r,m);
+    ImageController c = new ImageControllerImpl(v, r, m);
     c.start();
     assertEquals("Enter a command: \n" +
             "Invalid command!\n" +
@@ -144,18 +144,18 @@ public class TestController {
     Readable r2 = new StringReader("load hello1 test q");
     Appendable apView2 = new StringBuilder();
     ImageView v2 = new ImageDisplay(apView2);
-    ImageController c2 = new ImageControllerImpl(v2, r2,m2);
+    ImageController c2 = new ImageControllerImpl(v2, r2, m2);
     c2.start();
 
     Appendable ap3 = new StringBuilder();
     ImageView vModel2 = new ImageDisplay(ap3);
     ImageEditor m3 = new ImageModel(new HashMap<>(), vModel2);
     Readable r3 = new StringReader("load " +
-            "/Users/noamgreenstein/Documents/OOD/Image-Processing-Assignment/images/Test.ppm " +
+            "res/doesNotExist.ppm " +
             "test max hello test-max q");
     Appendable apView3 = new StringBuilder();
     ImageView v3 = new ImageDisplay(apView3);
-    ImageController c3 = new ImageControllerImpl(v3, r3,m3);
+    ImageController c3 = new ImageControllerImpl(v3, r3, m3);
     c3.start();
     assertEquals("Enter a command: ", apView3.toString().split("\n")[2]);
 
@@ -166,16 +166,14 @@ public class TestController {
   public void testLoadPPM() throws IOException {
     ImageModel m = new ImageModel();
     ImageView view = new ImageDisplay(new StringBuilder());
-    ImageController c = new ImageControllerImpl(view,new InputStreamReader(System.in),m);
-    c.loadImage("/Users/noamgreenstein/Documents/OOD" +
-            "/Image-Processing-Assignment/res/colors.ppm", "test");
+    ImageController c = new ImageControllerImpl(view, new InputStreamReader(System.in), m);
+    c.loadImage("res/test.ppm", "test");
 
 
     Scanner sc;
 
     try {
-      sc = new Scanner(new FileInputStream("/Users/noamgreenstein/Documents/OOD" +
-              "/Image-Processing-Assignment/res/colors.ppm"));
+      sc = new Scanner(new FileInputStream("res/colors.ppm"));
     } catch (FileNotFoundException e) {
       return;
     }
@@ -230,16 +228,13 @@ public class TestController {
   public void testLoadOther() throws IOException {
     ImageModel m = new ImageModel();
     ImageView view = new ImageDisplay(new StringBuilder());
-    ImageController c = new ImageControllerImpl(view,new InputStreamReader(System.in),m);
-    c.loadImage("/Users/noamgreenstein/Documents/OOD" +
-            "/Image-Processing-Assignment/res/ClassDiagram.png", "test");
+    ImageController c = new ImageControllerImpl(view, new InputStreamReader(System.in), m);
+    c.loadImage("res/ClassDiagram.png", "test");
 
     BufferedImage b;
     try {
-      b = ImageIO.read(new File("/Users/noamgreenstein/Documents/OOD" +
-              "/Image-Processing-Assignment/res/ClassDiagram.png"));
-    }
-    catch (IOException e) {
+      b = ImageIO.read(new File("res/ClassDiagram.png"));
+    } catch (IOException e) {
       throw new NoSuchElementException();
     }
     int width = b.getWidth();
@@ -247,7 +242,7 @@ public class TestController {
     Pixel[][] arr = new Pixel[height][width];
     for (int i = 0; i < width; i++) {
       for (int j = 0; j < height; j++) {
-        Color co = new Color(b.getRGB(i,j));
+        Color co = new Color(b.getRGB(i, j));
         arr[j][i] = new Pixel(co.getRed(), co.getGreen(), co.getBlue(), co.getAlpha());
       }
     }
@@ -259,26 +254,24 @@ public class TestController {
     }
 
     try {
-      c.loadImage("fake.png","test");
+      c.loadImage("fake.png", "test");
     } catch (NoSuchElementException e) {
       assertEquals(e.getMessage(), "File fake.png not found!");
     }
   }
+
   @Test
   public void testSavePPM() throws IOException {
     ImageModel m = new ImageModel();
     ImageView view = new ImageDisplay(new StringBuilder());
-    ImageController c = new ImageControllerImpl(view,new InputStreamReader(System.in),m);
-    c.loadImage("/Users/noamgreenstein/Documents/OOD" +
-            "/Image-Processing-Assignment/res/colors.ppm", "test");
-    c.saveImage("/Users/noamgreenstein/Documents/OOD" +
-            "/Image-Processing-Assignment/res/SaveTest.ppm", "test");
+    ImageController c = new ImageControllerImpl(view, new InputStreamReader(System.in), m);
+    c.loadImage("res/test.ppm", "test");
+    c.saveImage("res/SaveTest.ppm", "test");
 
     Scanner sc;
 
     try {
-      sc = new Scanner(new FileInputStream("/Users/noamgreenstein/Documents/OOD" +
-              "/Image-Processing-Assignment/res/SaveTest.ppm"));
+      sc = new Scanner(new FileInputStream("res/SaveTest.ppm"));
     } catch (FileNotFoundException e) {
       return;
     }
@@ -326,18 +319,14 @@ public class TestController {
   public void testSaveOther() throws IOException {
     ImageModel m = new ImageModel();
     ImageView view = new ImageDisplay(new StringBuilder());
-    ImageController c = new ImageControllerImpl(view,new InputStreamReader(System.in),m);
-    c.loadImage("/Users/noamgreenstein/Documents/OOD" +
-            "/Image-Processing-Assignment/res/ClassDiagram.png", "test");
-    c.saveImage("/Users/noamgreenstein/Documents/OOD" +
-            "/Image-Processing-Assignment/res/SaveTest.png", "test");
+    ImageController c = new ImageControllerImpl(view, new InputStreamReader(System.in), m);
+    c.loadImage("res/ClassDiagram.png", "test");
+    c.saveImage("res/ClassDiagram.png", "test");
 
     BufferedImage b;
     try {
-      b = ImageIO.read(new File("/Users/noamgreenstein/Documents/OOD" +
-              "/Image-Processing-Assignment/res/SaveTest.png"));
-    }
-    catch (IOException e) {
+      b = ImageIO.read(new File("res/ClassDiagram.png"));
+    } catch (IOException e) {
       throw new NoSuchElementException();
     }
     int width = b.getWidth();
@@ -345,7 +334,7 @@ public class TestController {
     Pixel[][] arr = new Pixel[height][width];
     for (int i = 0; i < width; i++) {
       for (int j = 0; j < height; j++) {
-        Color co = new Color(b.getRGB(i,j));
+        Color co = new Color(b.getRGB(i, j));
         arr[j][i] = new Pixel(co.getRed(), co.getGreen(), co.getBlue(), co.getAlpha());
       }
     }

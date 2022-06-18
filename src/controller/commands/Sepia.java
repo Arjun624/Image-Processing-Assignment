@@ -12,6 +12,7 @@ import view.ImageView;
 public class Sepia implements ImageCommands {
   private final String fileName;
   private final String newFileName;
+
   /**
    * Constructs a {@code Sepia} that preforms a sepia greyscale on the filename.
    *
@@ -43,7 +44,7 @@ public class Sepia implements ImageCommands {
     colors[2][1] = (float) 0.534;
     colors[2][2] = (float) 0.131;
     try {
-      model.colorTransform(colors,fileName, newFileName);
+      model.colorTransform(colors, fileName, newFileName);
     } catch (IllegalArgumentException e) {
       view.renderMessage(fileName + " " + e.getMessage());
     }

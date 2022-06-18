@@ -6,6 +6,9 @@ import controller.ImageCommands;
 import model.ImageEditor;
 import view.ImageView;
 
+/**
+ * Represents an object that can preform a blur command on an image.
+ */
 public class Blur implements ImageCommands {
 
   private final String fileName;
