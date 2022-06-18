@@ -101,7 +101,15 @@ This program is an application that allows a user to load a file, preform some b
 
 *If you try to save an image that already exists, the program will **OVERWRITE** the old image with the new image.*
 
+## NEW DESIGN IMPLEMENTATIONS:
+
+- We added the save and load methods to the controller, rather than the model since the controller deals with all input and output.
+- We also abstracted some similar greyscale methods into a singular method, removing duplicate code.
+  - The grayscale methods are now abstracted into a single method, which takes in a string representing the color of the image (red, green, blue, intensity, value, luma).
+- The program also able to support more file types, including .jpg, .png, and .bmp.
+
 ## IMAGE CITATION:
 
-We created our own 3x3 .ppm image for testing purposes.
+Image was found on: [https://www.teahub.io/viewwp/JhRxob_battlefield-1-wallpaper-for-phone/] (Battlefield 1 Wallpaper for Phone)
+
 

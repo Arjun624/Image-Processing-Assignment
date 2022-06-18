@@ -129,7 +129,7 @@ Valid inputs:
 -<filename> is the name of the image that you want to create a greyscale image of.
 -<new filename> is the name of the new image that was created as a greyscale image.
 
-    Example: 'value ex greyscaleEx'
+    Example: 'greyscale ex greyscaleEx'
     -Creates a greyscale image of the image ex, and names the image as greyscaleEx.
 
 (16) '**q**' to quit

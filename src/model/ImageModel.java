@@ -2,7 +2,6 @@ package model;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Objects;
 
 import view.ImageDisplay;
 import view.ImageView;
@@ -158,18 +157,25 @@ public class ImageModel implements ImageEditor {
     for (int row = 0; row < this.images.get(filename).length; row++) {
       for (int col = 0; col < this.images.get(filename)[0].length; col++) {
 
-        for (int kernelRow = row - (length / 2); kernelRow < (row - (length / 2)) + length; kernelRow++) {
-          for (int kernelCol = col - (width / 2); kernelCol < (col - (width / 2)) + width; kernelCol++) {
+        for (int kernelRow = row - (length / 2); kernelRow
+                < (row - (length / 2)) + length; kernelRow++) {
+          for (int kernelCol = col - (width / 2); kernelCol
+                  < (col - (width / 2)) + width; kernelCol++) {
             try {
-              redCount += images.get(filename)[kernelRow][kernelCol].getRed() * kernel[kernelRow - (row - (length / 2))][kernelCol - (col - (width / 2))];
-              greenCount += images.get(filename)[kernelRow][kernelCol].getGreen() * kernel[kernelRow - (row - (length / 2))][kernelCol - (col - (width / 2))];
-              blueCount += images.get(filename)[kernelRow][kernelCol].getBlue() * kernel[kernelRow - (row - (length / 2))][kernelCol - (col - (width / 2))];
+              redCount += images.get(filename)[kernelRow][kernelCol].getRed() * kernel[kernelRow - (
+                      row
+                              - (length / 2))][kernelCol - (col - (width / 2))];
+              greenCount += images.get(filename)[kernelRow][kernelCol].getGreen() * kernel[kernelRow
+                      - (row - (length / 2))][kernelCol - (col - (width / 2))];
+              blueCount += images.get(filename)[kernelRow][kernelCol].getBlue() * kernel[kernelRow
+                      - (row - (length / 2))][kernelCol - (col - (width / 2))];
             } catch (ArrayIndexOutOfBoundsException ignored) {
             }
           }
         }
 
-        arr[row][col] = new Pixel(fixRGBRange(redCount), fixRGBRange(greenCount), fixRGBRange(blueCount));
+        arr[row][col] = new Pixel(fixRGBRange(redCount), fixRGBRange(greenCount),
+                fixRGBRange(blueCount));
 
         redCount = 0;
         greenCount = 0;
@@ -210,7 +216,8 @@ public class ImageModel implements ImageEditor {
                         + colors[2][1] * p.getGreen()
                         + colors[2][2] * p.getBlue());
 
-        arr[row][col] = new Pixel(fixRGBRange(newRed), fixRGBRange(newGreen), fixRGBRange(newBlue), p.getAlpha());
+        arr[row][col] = new Pixel(fixRGBRange(newRed), fixRGBRange(newGreen),
+                fixRGBRange(newBlue), p.getAlpha());
       }
     }
     images.put(newFilename, arr);

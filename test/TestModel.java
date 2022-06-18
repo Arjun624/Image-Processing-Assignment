@@ -1,12 +1,8 @@
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashMap;
 
-import controller.ImageCommands;
-import controller.ImageControllerImpl;
-import model.ImageEditor;
 import model.ImageModel;
 import model.Pixel;
 import view.ImageDisplay;
@@ -527,7 +523,7 @@ public class TestModel {
     Pixel[][] arr = new Pixel[2][2];
     for (int i = 0; i < 2; i++) {
       for (int j = 0; j < 2; j++) {
-        arr[i][j] = new Pixel(50 + i, 200-(5*j), 99);
+        arr[i][j] = new Pixel(50 + i, 200 - (5 * j), 99);
       }
     }
     testMap.put(file, arr);
@@ -634,14 +630,14 @@ public class TestModel {
     try {
       m1.colorTransform(null, "test", "test-ct");
       fail("Should have thrown exception");
-    } catch (IllegalArgumentException e){
+    } catch (IllegalArgumentException e) {
       assertEquals(e.getMessage(), "colors is null");
     }
     float[][] failure = new float[2][2];
     try {
       m1.colorTransform(failure, "test", "test-ct");
       fail("Should have thrown exception");
-    } catch (IllegalArgumentException e){
+    } catch (IllegalArgumentException e) {
       assertEquals(e.getMessage(), "color matrix not size 3x3!");
     }
   }
