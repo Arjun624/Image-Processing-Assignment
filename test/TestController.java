@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringReader;
@@ -344,5 +345,31 @@ public class TestController {
         assertEquals(m.images.get("test")[i][j], arr[i][j]);
       }
     }
+  }
+
+  @Test
+  public void testScript() throws IOException {
+    Appendable ap = new StringBuilder();
+    ImageView view = new ImageDisplay(new StringBuilder());
+    ImageEditor model = new MockImageModel(ap);
+    InputStreamReader in = new FileReader("res/testScript.txt");
+    ImageControllerImpl controller = new ImageControllerImpl(view, in, model);
+    controller.start();
+    assertEquals("added test to hashmap\n" +
+            "flipped test vertically. Is now test-vf\n" +
+            "flipped test horizontally. Is now test-hf\n" +
+            "preformed a greyscale of type red on test. Is now test-rg\n" +
+            "preformed a greyscale of type green on test. Is now test-gg\n" +
+            "preformed a greyscale of type blue on test. Is now test-bg\n" +
+            "preformed a greyscale of type luma on test. Is now test-lg\n" +
+            "preformed a greyscale of type intensity on test. Is now test-ig\n" +
+            "preformed a greyscale of type value on test. Is now test-vg\n" +
+            "adjusted test by 30. Is now test-abb\n" +
+            "adjusted test by -30. Is now test-abd\n" +
+            "filtered test. Is now test-sh\n" +
+            "filtered test. Is now test-bl\n" +
+            "transformed test. Is now test-sp\n" +
+            "transformed test. Is now test-gs\n" +
+            "program quit",ap.toString());
   }
 }

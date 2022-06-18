@@ -1,0 +1,17 @@
+load res/battlefield.jpg test 
+vertical-flip test test-vf
+horizontal-flip test test-hf
+greyscale-red test test-rg
+greyscale-green test test-gg
+greyscale-blue test test-bg
+luma test test-lg
+intensity test test-ig
+value test test-vg
+adjust-brightness 30 test test-abb
+adjust-brightness -30 test test-abd
+sharpen test test-sh
+blur test test-bl
+sepia test test-sp
+greyscale test test-gs
+q
+
