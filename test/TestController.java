@@ -311,16 +311,47 @@ public class TestController {
   }
 
   @Test
-  public void testSaveOther() throws IOException {
+  public void testSaveOtherPNG() throws IOException {
     ImageModel m = new ImageModel();
     ImageView view = new ImageDisplay(new StringBuilder());
     ImageController c = new ImageControllerImpl(view, new InputStreamReader(System.in), m);
     c.loadImage("res/ClassDiagram.png", "test");
-    c.saveImage("res/ClassDiagram.png", "test");
+    c.saveImage("res/testClassDiagram.png", "test");
 
     BufferedImage b;
     try {
-      b = ImageIO.read(new File("res/ClassDiagram.png"));
+      b = ImageIO.read(new File("res/testClassDiagram.png"));
+    } catch (IOException e) {
+      throw new NoSuchElementException();
+    }
+    int width = b.getWidth();
+    int height = b.getHeight();
+    Pixel[][] arr = new Pixel[height][width];
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
+        Color co = new Color(b.getRGB(i, j));
+        arr[j][i] = new Pixel(co.getRed(), co.getGreen(), co.getBlue(), co.getAlpha());
+      }
+    }
+
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width; j++) {
+        assertEquals(m.images.get("test")[i][j], arr[i][j]);
+      }
+    }
+  }
+
+  @Test
+  public void testSaveOtherBMP() throws IOException {
+    ImageModel m = new ImageModel();
+    ImageView view = new ImageDisplay(new StringBuilder());
+    ImageController c = new ImageControllerImpl(view, new InputStreamReader(System.in), m);
+    c.loadImage("res/battlefield-red-greyscale.bmp", "test");
+    c.saveImage("res/testBMP.bmp", "test");
+
+    BufferedImage b;
+    try {
+      b = ImageIO.read(new File("res/testBMP.bmp"));
     } catch (IOException e) {
       throw new NoSuchElementException();
     }

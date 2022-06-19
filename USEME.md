@@ -2,7 +2,8 @@
 
 ## RUNNING THE PROGRAM AND VALID INPUT:
 - To run the program, go to the ImageProgram class and run the main method.
-- No command line arguments are required to run the program.
+- No command line arguments are required to run the program, although the user can input a file name as a command line argument and the program will run the commands in that file.
+- If no command line arguments are provided, the program will prompt the user for input.
 
 **ALL INPUTS ARE CASE SENSITIVE**
 
@@ -161,5 +162,14 @@ Refer to the full script found in the Script.txt file located in the res directo
 
 
     Example: "-file res/Script.txt" as a command line argument
+
+## JAR INSTRUCTIONS:
+
+**The jar file is located in the res directory.**
+- Navigate to the res directory in your terminal to run the jar. 
+- Use the command **"java -jar ImageProcessing.jar -file Script.txt"**
+    - This command will run the jar file and run the script file.
+    - The script file must be located in the same directory as the jar file.
+    - The lake.jpg file also be located in the same directory as the jar file.
 
 

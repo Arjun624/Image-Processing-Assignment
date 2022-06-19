@@ -25,10 +25,16 @@ public class ImageProgram {
     if (args.length > 0) {
       for (int i = 0; i < args.length - 1; i++) {
         if (args[i].contains("-file")) {
-          InputStreamReader in = new FileReader(args[i + 1]);
-          controller = new ImageControllerImpl(view, in, model);
-          controller.start();
-          return;
+          try{
+            InputStreamReader in = new FileReader(args[i + 1]);
+            controller = new ImageControllerImpl(view, in, model);
+            controller.start();
+            return;
+          } catch (IOException e) {
+            view.renderMessage("Error: Cannot read file, please check arguments.");
+            return;
+          }
+
         }
       }
     }

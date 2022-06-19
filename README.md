@@ -37,7 +37,7 @@ This program is an application that allows a user to load a file, preform some b
 **MVC Design:**
 - We used a model, view, and controller design to create the application.
 - MODEL:
-  - The model is the ImageModel class, which is responsible for loading the image, and performing the operations on the image.
+  - The model is the ImageModel class, which is responsible for performing the operations on the image.
   - The model implements the ImageEditor interface, which contains the methods responsible for performing the operations on the image.
   - We use a hashmap to store the images, with the key being the string name of the image and the value being a 2D array of pixels repressing the image.
 - VIEW:
@@ -65,10 +65,10 @@ This program is an application that allows a user to load a file, preform some b
 - **ImageCommands:** This interface contains the methods responsible for executing the editing operation on the image based on the user input.
 
 ## CLASSES:
-- **ImageModel:** This class is responsible for loading the image, saving the image, and performing the operations on the image.
+- **ImageModel:** This class is responsible for performing the operations on the image.
 - **Pixel:** This class represents a singular pixel which is used to create a 2D array of pixels. A pixel is represented by a red, green, and blue value.
 - **ImageDisplay:** This class is responsible for displaying helpful information to the user during the program.
-- **ImageControllerImpl:** This class is responsible for handling the user input and connecting the model and view to successfully run the program.
+- **ImageControllerImpl:** This class is responsible for loading the image, saving the image, and handling the user input and connecting the model and view to successfully run the program.
 - **ImageProgram:** This is the main class of the program, which contains the main method.
 
 #### ACTION COMMAND CLASSES
@@ -110,6 +110,7 @@ This program is an application that allows a user to load a file, preform some b
 
 ## IMAGE CITATION:
 
-Image was found on: [https://www.teahub.io/viewwp/JhRxob_battlefield-1-wallpaper-for-phone/] (Battlefield 1 Wallpaper for Phone)
+Image was found on: [https://www.teahub.io/viewwp/JhRxob_battlefield-1-wallpaper-for-phone/] 
+(Battlefield 1 Wallpaper for Phone)
 
 
