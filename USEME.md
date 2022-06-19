@@ -159,6 +159,7 @@ Refer to the full script found in the Script.txt file located in the res directo
 
 **RUNNING THE SCRIPT:**
 - To automatically run the script file, input the file path of the script file as a command line argument. You must type "-file" as the first argument.
+- **"Script.txt"** is the file name of the script file.
 
 
     Example: "-file res/Script.txt" as a command line argument

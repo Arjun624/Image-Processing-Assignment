@@ -190,8 +190,8 @@ public class ImageControllerImpl implements ImageController {
   @Override
   public void saveImage(String pathname, String filename) throws IOException,
           NoSuchElementException {
-    if (pathname.length() >= 4 &&
-            pathname.substring(pathname.length() - 4)
+    if (pathname.length() >= 4
+            && pathname.substring(pathname.length() - 4)
                     .equalsIgnoreCase(".ppm")) {
       savePPM(pathname, filename);
     } else {

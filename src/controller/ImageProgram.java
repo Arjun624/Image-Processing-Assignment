@@ -25,7 +25,7 @@ public class ImageProgram {
     if (args.length > 0) {
       for (int i = 0; i < args.length - 1; i++) {
         if (args[i].contains("-file")) {
-          try{
+          try {
             InputStreamReader in = new FileReader(args[i + 1]);
             controller = new ImageControllerImpl(view, in, model);
             controller.start();
