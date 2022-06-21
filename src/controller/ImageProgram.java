@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import model.ImageModel;
+import view.GUIView;
 import view.ImageDisplay;
 import view.ImageView;
 
@@ -43,6 +44,9 @@ public class ImageProgram {
 //    controller = new ImageControllerImpl(view, in, model);
 //    controller.start();
 //
-    ImageProcessingGUI gui = new ImageProcessingGUI();
+
+    GUIView view = new GUIView();
+    ImageModel model = new ImageModel();
+    ImageProcessingGUI gui = new ImageProcessingGUI(model, view);
   }
 }

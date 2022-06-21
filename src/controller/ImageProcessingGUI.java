@@ -30,44 +30,36 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
   private String filename;
 
   ArrayList<String> edits;
-  private JPanel picturePanel = new JPanel();//Instantiate new JPanels
+  private JPanel picturePanel = new JPanel();
   private JPanel flipCommands = new JPanel();
   private JPanel filterCommands = new JPanel();
   private JPanel colorCommands = new JPanel();
-
+  private JPanel brightnessCommands = new JPanel();
   private JPanel loadAndSave = new JPanel();
-  private JLabel specificGreyscaleCommands = new JLabel(); //Instantiate new TextArea where the question text will be scored
-  //private JScrollPane questionScrollPane = new JScrollPane(specificGreyscaleCommands);// Turns the textArea into a scrollPane that has a scroll bar
-  private JButton loadButton = new JButton("Load Image"); //Instantiating new JButtons and sets the text of the buttons
-  private JButton saveButton = new JButton("Save Image"); //Instantiating new JButtons and sets the text of the buttons
-  private JButton helpButton = new JButton("Help!"); //Instantiating new JButtons and sets the text of the buttons
-
-  private JButton editImageButton = new JButton("Edit Image"); //Instantiating new JButtons and sets the text of the buttons
+  private JLabel specificGreyscaleCommands = new JLabel();
+  private JButton loadButton = new JButton("Load Image");
+  private JButton saveButton = new JButton("Save Image");
+  private JButton helpButton = new JButton("Help!");
+  private JButton editImageButton = new JButton("Edit Image");
   private JButton chooseGreyscaleButton = new JButton("Choose Greyscale");
   private JButton chooseColorButton = new JButton("Choose Color Combination");
   private JButton chooseFilterButton = new JButton("Choose Filter");
   private JButton chooseFlipButton = new JButton("Choose Orientation or Size");
+  private JButton adjustBrightnessButton = new JButton("Select Brightness Increment");
+  private JLabel incrementLabel = new JLabel("Increment: N/A");
   private JLabel chosenFlip = new JLabel("\tNone selected");
   private JLabel chosenColor = new JLabel("\tNone selected");
   private JLabel chosenGreyScale = new JLabel("\tNone selected");
   private JLabel chosenFilter = new JLabel("\tNone selected");
-
   private JPanel allCommands = new JPanel();
-
-
-  String[] greyScale = {"NONE", "RED", "GREEN", "BLUE", "LUMA",
-          "VALUE", "INTENSITY"};
-  final JComboBox<String> dropDownGreyscale = new JComboBox<String>(greyScale);
-
-  String[] colorCombinations = {"NONE", "SEPIA", "GREYSCALE"};
-  final JComboBox<String> dropDownColorCombinations = new JComboBox<String>(colorCombinations);
-
-  String[] filters = {"NONE", "BLUR", "SHARPEN"};
-  final JComboBox<String> dropDownFilters = new JComboBox<String>(filters);
-
-  String[] orientationAndSize = {"NONE", "VERTICAL FLIP", "HORIZONTAL FLIP"};
-  final JComboBox<String> dropOrientationAndSize = new JComboBox<String>(orientationAndSize);
-
+  String[] greyScale = new String[]{"NONE", "RED", "GREEN", "BLUE", "LUMA", "VALUE", "INTENSITY"};
+  final JComboBox<String> dropDownGreyscale;
+  String[] colorCombinations;
+  final JComboBox<String> dropDownColorCombinations;
+  String[] filters;
+  final JComboBox<String> dropDownFilters;
+  String[] orientationAndSize;
+  final JComboBox<String> dropOrientationAndSize;
 
   public ImageProcessingGUI(ImageEditor model, GUIView view) throws IOException {
     this.model = model;
@@ -76,117 +68,97 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
     this.filename = "test";
     loadPic();
     edits = new ArrayList<>();
+    this.dropDownGreyscale = new JComboBox(this.greyScale);
+    this.colorCombinations = new String[]{"NONE", "SEPIA", "GREYSCALE"};
+    this.dropDownColorCombinations = new JComboBox(this.colorCombinations);
+    this.filters = new String[]{"NONE", "BLUR", "SHARPEN"};
+    this.dropDownFilters = new JComboBox(this.filters);
+    this.orientationAndSize = new String[]{"NONE", "VERTICAL FLIP", "HORIZONTAL FLIP"};
+    this.dropOrientationAndSize = new JComboBox(this.orientationAndSize);
     setDefaultLookAndFeelDecorated(true);
-    this.setTitle("ImageProcessing"); //Sets the characteristics of the JFrame
-    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    this.setSize(500, 500);
+    this.setTitle("ImageProcessing");
+    this.setDefaultCloseOperation(3);
+    this.setSize(400, 400);
     this.setResizable(false);
-
-    Container c = this.getContentPane(); //Obtains the object where everything is stored on the frame
-    BoxLayout bl = new BoxLayout(c, BoxLayout.LINE_AXIS); //Instantiating a borderLayout
-    c.setLayout(bl); //Changing the frame layout to a borderLayout
-    flipCommands.setLayout(new GridLayout(3, 1)); //Sets layouts of 3 panels as a gridLayout
-    filterCommands.setLayout(new GridLayout(3, 1));
-    colorCommands.setLayout(new GridLayout(3, 1));
-    loadAndSave.setLayout(new GridLayout(3, 1));
-    specificGreyscaleCommands.setLayout(new GridLayout(3, 1));
-    allCommands.setLayout(new GridLayout(10, 1));
-
-    JLabel colorLabel = new JLabel("Color Commands:");
-    JLabel filterLabel = new JLabel("Filter Image:");
-    JLabel flipLabel = new JLabel("Flip Image:");//Instantiating new JLabels and sets the text of the labels
-    JLabel specificGreyscaleLabel = new JLabel("Specific Greyscale Options:");//Instantiating new JLabels and sets the text of the labels
-
-
-    allCommands.add(loadAndSave);
-    allCommands.add(colorLabel);
-    allCommands.add(colorCommands);
-    allCommands.add(flipLabel);
-    allCommands.add(flipCommands);
-    allCommands.add(filterLabel);
-    allCommands.add(filterCommands);
-    allCommands.add(specificGreyscaleLabel);
-    allCommands.add(specificGreyscaleCommands);
-    allCommands.add(editImageButton);
-
-
-    c.add(allCommands);
-    c.add(picturePanel, BorderLayout.NORTH); //Adds everything to the frame
-
-
-    instantiateButtons(); //Calls the button method
-
-    this.pack(); //Makes everything fit on the frame
-    this.setVisible(true); //Makes the frame visible
+    Container c = this.getContentPane();
+    BoxLayout bl = new BoxLayout(c, 0);
+    c.setLayout(bl);
+    this.flipCommands.setLayout(new GridLayout(3, 1));
+    this.flipCommands.setBorder(BorderFactory.createTitledBorder("Change Orientation or Size"));
+    this.filterCommands.setLayout(new GridLayout(3, 1));
+    this.filterCommands.setBorder(BorderFactory.createTitledBorder("Filter Image"));
+    this.colorCommands.setLayout(new GridLayout(3, 1));
+    this.colorCommands.setBorder(BorderFactory.createTitledBorder("Choose Color Combination"));
+    this.loadAndSave.setLayout(new GridLayout(3, 1));
+    this.brightnessCommands.setLayout(new GridLayout(2, 1));
+    this.brightnessCommands.setBorder(BorderFactory.createTitledBorder("Adjust Brightness"));
+    this.specificGreyscaleCommands.setLayout(new GridLayout(3, 1));
+    this.specificGreyscaleCommands.setBorder(BorderFactory.createTitledBorder("Choose Greyscale"));
+    this.allCommands.setLayout(new GridLayout(7, 1));
+    this.allCommands.add(this.loadAndSave);
+    this.allCommands.add(this.colorCommands);
+    this.allCommands.add(this.flipCommands);
+    this.allCommands.add(this.filterCommands);
+    this.allCommands.add(this.brightnessCommands);
+    this.allCommands.add(this.specificGreyscaleCommands);
+    this.allCommands.add(this.editImageButton);
+    c.add(this.allCommands);
+    c.add(this.picturePanel, "North");
+    this.instantiateButtons();
+    this.pack();
+    this.setVisible(true);
 
   }
 
   public void instantiateButtons() {
-
-    loadButton.addActionListener((ActionListener) this); //Adds the action Listener and Action Command for each button
-    loadButton.setActionCommand("Load");
-
-    saveButton.addActionListener((ActionListener) this);
-    saveButton.setActionCommand("Save");
-
-    chooseFilterButton.addActionListener((ActionListener) this);
-    chooseFilterButton.setActionCommand("Picked Filter");
-
-    chooseColorButton.addActionListener((ActionListener) this);
-    chooseColorButton.setActionCommand("Picked Color");
-
-    chooseGreyscaleButton.addActionListener((ActionListener) this);
-    chooseGreyscaleButton.setActionCommand("Picked Greyscale");
-
-    chooseFlipButton.addActionListener((ActionListener) this);
-    chooseFlipButton.setActionCommand("Picked Flip");
-
-    editImageButton.addActionListener((ActionListener) this);
-    editImageButton.setActionCommand("Edit");
-
-    helpButton.addActionListener((ActionListener) this);
-    helpButton.setActionCommand("Help");
-
-
-    dropDownGreyscale.setMaximumSize(dropDownGreyscale.getPreferredSize()); // added code
-    dropDownGreyscale.setAlignmentX(Component.CENTER_ALIGNMENT);// added code
-    System.out.println(dropDownGreyscale.getItemAt(dropDownGreyscale.getSelectedIndex()));
-
-
-    dropDownColorCombinations.setMaximumSize(dropDownColorCombinations.getPreferredSize()); // added code
-    dropDownColorCombinations.setAlignmentX(Component.CENTER_ALIGNMENT);// added code
-    System.out.println(dropDownColorCombinations.getItemAt(dropDownColorCombinations.getSelectedIndex()));
-
-
-    dropDownFilters.setMaximumSize(dropDownFilters.getPreferredSize()); // added code
-    dropDownFilters.setAlignmentX(Component.CENTER_ALIGNMENT);// added code
-    System.out.println(dropDownFilters.getItemAt(dropDownFilters.getSelectedIndex()));
-
-
-    dropOrientationAndSize.setMaximumSize(dropOrientationAndSize.getPreferredSize()); // added code
-    dropOrientationAndSize.setAlignmentX(Component.CENTER_ALIGNMENT);// added code
-    System.out.println(dropOrientationAndSize.getItemAt(dropOrientationAndSize.getSelectedIndex()));
-
-
-    loadAndSave.add(helpButton);
-    loadAndSave.add(loadButton); //Adds all the buttons to the frame
-    loadAndSave.add(saveButton);
-
-    filterCommands.add(dropDownFilters);
-    filterCommands.add(chooseFilterButton);
-    filterCommands.add(chosenFilter);
-    colorCommands.add(dropDownColorCombinations);
-    colorCommands.add(chooseColorButton);
-    colorCommands.add(chosenColor);
-    flipCommands.add(dropOrientationAndSize);
-    flipCommands.add(chooseFlipButton);
-    flipCommands.add(chosenFlip);
-    specificGreyscaleCommands.add(dropDownGreyscale);
-    specificGreyscaleCommands.add(chooseGreyscaleButton);
-    specificGreyscaleCommands.add(chosenGreyScale);
-
-    picturePanel.add(new JLabel(new ImageIcon("res/battlefield.jpg")));//Adds the image to frame
-
+    this.loadButton.addActionListener(this);
+    this.loadButton.setActionCommand("Load");
+    this.saveButton.addActionListener(this);
+    this.saveButton.setActionCommand("Save");
+    this.chooseFilterButton.addActionListener(this);
+    this.chooseFilterButton.setActionCommand("Picked Filter");
+    this.chooseColorButton.addActionListener(this);
+    this.chooseColorButton.setActionCommand("Picked Color");
+    this.chooseGreyscaleButton.addActionListener(this);
+    this.chooseGreyscaleButton.setActionCommand("Picked Greyscale");
+    this.chooseFlipButton.addActionListener(this);
+    this.chooseFlipButton.setActionCommand("Picked Flip");
+    this.editImageButton.addActionListener(this);
+    this.editImageButton.setActionCommand("Edit");
+    this.helpButton.addActionListener(this);
+    this.helpButton.setActionCommand("Help");
+    this.adjustBrightnessButton.addActionListener(this);
+    this.adjustBrightnessButton.setActionCommand("Brightness");
+    this.dropDownGreyscale.setMaximumSize(this.dropDownGreyscale.getPreferredSize());
+    this.dropDownGreyscale.setAlignmentX(0.5F);
+    System.out.println((String)this.dropDownGreyscale.getItemAt(this.dropDownGreyscale.getSelectedIndex()));
+    this.dropDownColorCombinations.setMaximumSize(this.dropDownColorCombinations.getPreferredSize());
+    this.dropDownColorCombinations.setAlignmentX(0.5F);
+    System.out.println((String)this.dropDownColorCombinations.getItemAt(this.dropDownColorCombinations.getSelectedIndex()));
+    this.dropDownFilters.setMaximumSize(this.dropDownFilters.getPreferredSize());
+    this.dropDownFilters.setAlignmentX(0.5F);
+    System.out.println((String)this.dropDownFilters.getItemAt(this.dropDownFilters.getSelectedIndex()));
+    this.dropOrientationAndSize.setMaximumSize(this.dropOrientationAndSize.getPreferredSize());
+    this.dropOrientationAndSize.setAlignmentX(0.5F);
+    System.out.println((String)this.dropOrientationAndSize.getItemAt(this.dropOrientationAndSize.getSelectedIndex()));
+    this.loadAndSave.add(this.helpButton);
+    this.loadAndSave.add(this.loadButton);
+    this.loadAndSave.add(this.saveButton);
+    this.filterCommands.add(this.dropDownFilters);
+    this.filterCommands.add(this.chooseFilterButton);
+    this.filterCommands.add(this.chosenFilter);
+    this.colorCommands.add(this.dropDownColorCombinations);
+    this.colorCommands.add(this.chooseColorButton);
+    this.colorCommands.add(this.chosenColor);
+    this.flipCommands.add(this.dropOrientationAndSize);
+    this.flipCommands.add(this.chooseFlipButton);
+    this.flipCommands.add(this.chosenFlip);
+    this.brightnessCommands.add(this.adjustBrightnessButton);
+    this.brightnessCommands.add(this.incrementLabel);
+    this.specificGreyscaleCommands.add(this.dropDownGreyscale);
+    this.specificGreyscaleCommands.add(this.chooseGreyscaleButton);
+    this.specificGreyscaleCommands.add(this.chosenGreyScale);
+    this.picturePanel.add(new JLabel(new ImageIcon("res/battlefield.jpg")));
 
 //    buttonA.setEnabled(false); //Disables the buttons
 //    buttonB.setEnabled(false);
@@ -220,6 +192,16 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
         editImage();
       } catch (IOException ex) {
         throw new RuntimeException(ex);
+      }
+    }
+    if (game.equals("Brightness")) {
+      String increment = JOptionPane.showInputDialog(new JFrame(), "Enter an increment. Positive to increase brightness and negative to decrease brightness");
+
+      try {
+        Integer.parseInt(increment);
+        this.incrementLabel.setText(increment);
+      } catch (Exception var5) {
+        this.incrementLabel.setText("Invalid Increment, Please try again.");
       }
     }
 
