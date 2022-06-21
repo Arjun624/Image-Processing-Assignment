@@ -26,7 +26,6 @@ import view.ImageDisplay;
 public class ImageProcessingGUI extends JFrame implements ActionListener {
   private ImageEditor model;
   private GUIView view;
-
   private int compNum;
   private String filename;
 
@@ -326,4 +325,22 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
     compNum += 1;
     picturePanel.add(new JLabel(image));
   }
+
+  public void getHistogram(String filename){
+    Pixel[][] pixels = model.getMap().get(filename);
+    int[] red = new int[256];
+    int[] green = new int[256];
+    int[] blue = new int[256];
+    int[] intensity = new int[256];
+    for (int i = 0; i < pixels.length; i++) {
+      for (int j = 0; j < pixels[0].length; j++) {
+        int pixelIntensity = (pixels[i][j].getRed() + pixels[i][j].getGreen() + pixels[i][j].getBlue())/3;
+        red[pixels[i][j].getRed()] += 1;
+        green[pixels[i][j].getGreen()] += 1;
+        blue[pixels[i][j].getBlue()] += 1;
+        intensity[pixelIntensity] += 1;
+      }
+    }
+  }
+
 }
