@@ -3,10 +3,34 @@ package controller;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
+import controller.commands.Blur;
+import controller.commands.Greyscale;
+import controller.commands.HorizontalFlip;
+import controller.commands.Sepia;
+import controller.commands.Sharpen;
+import controller.commands.VerticalFlip;
+import model.ImageEditor;
+import model.Pixel;
+import view.GUIView;
+import view.ImageDisplay;
+
 public class ImageProcessingGUI extends JFrame implements ActionListener {
+  private ImageEditor model;
+  private GUIView view;
+
+  private int compNum;
+  private String filename;
+
+  ArrayList<String> edits;
   private JPanel picturePanel = new JPanel();//Instantiate new JPanels
   private JPanel flipCommands = new JPanel();
   private JPanel filterCommands = new JPanel();
@@ -32,22 +56,27 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
   private JPanel allCommands = new JPanel();
 
 
-  String[] greyScale = { "NONE", "RED", "GREEN", "BLUE", "LUMA",
-          "VALUE", "INTENSITY" };
+  String[] greyScale = {"NONE", "RED", "GREEN", "BLUE", "LUMA",
+          "VALUE", "INTENSITY"};
   final JComboBox<String> dropDownGreyscale = new JComboBox<String>(greyScale);
 
-  String[] colorCombinations = { "NONE", "SEPIA", "GREYSCALE" };
+  String[] colorCombinations = {"NONE", "SEPIA", "GREYSCALE"};
   final JComboBox<String> dropDownColorCombinations = new JComboBox<String>(colorCombinations);
 
-  String[] filters = { "NONE", "BLUR", "SHARPEN" };
+  String[] filters = {"NONE", "BLUR", "SHARPEN"};
   final JComboBox<String> dropDownFilters = new JComboBox<String>(filters);
 
-  String[] orientationAndSize = { "NONE", "VERTICAL FLIP", "HORIZONTAL FLIP" };
+  String[] orientationAndSize = {"NONE", "VERTICAL FLIP", "HORIZONTAL FLIP"};
   final JComboBox<String> dropOrientationAndSize = new JComboBox<String>(orientationAndSize);
 
 
-
-  public ImageProcessingGUI() {
+  public ImageProcessingGUI(ImageEditor model, GUIView view) throws IOException {
+    this.model = model;
+    this.view = view;
+    this.compNum = 0;
+    this.filename = "test";
+    loadPic();
+    edits = new ArrayList<>();
     setDefaultLookAndFeelDecorated(true);
     this.setTitle("ImageProcessing"); //Sets the characteristics of the JFrame
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -82,11 +111,8 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
     allCommands.add(editImageButton);
 
 
-
     c.add(allCommands);
     c.add(picturePanel, BorderLayout.NORTH); //Adds everything to the frame
-
-
 
 
     instantiateButtons(); //Calls the button method
@@ -123,14 +149,6 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
     helpButton.setActionCommand("Help");
 
 
-
-
-
-
-
-
-
-
     dropDownGreyscale.setMaximumSize(dropDownGreyscale.getPreferredSize()); // added code
     dropDownGreyscale.setAlignmentX(Component.CENTER_ALIGNMENT);// added code
     System.out.println(dropDownGreyscale.getItemAt(dropDownGreyscale.getSelectedIndex()));
@@ -149,7 +167,6 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
     dropOrientationAndSize.setMaximumSize(dropOrientationAndSize.getPreferredSize()); // added code
     dropOrientationAndSize.setAlignmentX(Component.CENTER_ALIGNMENT);// added code
     System.out.println(dropOrientationAndSize.getItemAt(dropOrientationAndSize.getSelectedIndex()));
-
 
 
     loadAndSave.add(helpButton);
@@ -178,7 +195,6 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
 //    buttonD.setEnabled(false);
 
 
-
   }
 
 
@@ -186,21 +202,130 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
     Object game = e.getActionCommand();
     if (game.equals("Picked Filter")) {
       this.changeLabelText(dropDownFilters, chosenFilter);
+      addEdit(chosenFilter);
     }
     if (game.equals("Picked Color")) {
       this.changeLabelText(dropDownColorCombinations, chosenColor);
+      addEdit(chosenColor);
     }
     if (game.equals("Picked Greyscale")) {
       this.changeLabelText(dropDownGreyscale, chosenGreyScale);
+      addEdit(chosenGreyScale);
     }
     if (game.equals("Picked Flip")) {
       this.changeLabelText(dropOrientationAndSize, chosenFlip);
+      addEdit(chosenFlip);
+    }
+    if (game.equals("Edit")) {
+      try {
+        editImage();
+      } catch (IOException ex) {
+        throw new RuntimeException(ex);
+      }
     }
 
 
   }
 
-  private void changeLabelText(JComboBox<String> dropDown, JLabel label){
+  private void changeLabelText(JComboBox<String> dropDown, JLabel label) {
     label.setText("\tSelected: " + dropDown.getItemAt(dropDown.getSelectedIndex()));
+  }
+
+  public void loadPic() throws IOException {
+    BufferedImage b;
+    try {
+      b = ImageIO.read(new File("res/battlefield.jpg"));
+    } catch (IOException e) {
+      throw new NoSuchElementException();
+    }
+    int width = b.getWidth();
+    int height = b.getHeight();
+    Pixel[][] arr = new Pixel[height][width];
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
+        Color c = new Color(b.getRGB(i, j));
+        arr[j][i] = new Pixel(c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha());
+      }
+    }
+    model.add(filename, arr);
+  }
+
+  public void editImage() throws IOException {
+    for (int i = 0; i < edits.size(); i++) {
+      edit(edits.get(i));
+    }
+  }
+
+  public void addEdit(JLabel command) {
+    if (!command.toString().equalsIgnoreCase("NONE")) {
+      edits.add(command.getText().substring(11));
+    }
+    for (int i = 0; i < edits.size(); i++) {
+      System.out.println(edits.get(i));
+    }
+  }
+
+  public void edit(String command) throws IOException {
+    String newFilename;
+    switch (command) {
+      case ("VERTICAL FLIP"):
+        newFilename = filename + "-vf";
+        new VerticalFlip(filename, newFilename).execute(model, new ImageDisplay(System.out));
+        filename = newFilename;
+        replaceImage(filename);
+        break;
+      case ("HORIZONTAL FLIP"):
+        newFilename = filename + "-hf";
+        new HorizontalFlip(filename, newFilename).execute(model, new ImageDisplay(System.out));
+        filename = newFilename;
+        replaceImage(filename);
+        break;
+      case ("SEPIA"):
+        newFilename = filename + "-sep";
+        new Sepia(filename, newFilename).execute(model, new ImageDisplay(System.out));
+        filename = newFilename;
+        replaceImage(filename);
+        break;
+      case ("GREYSCALE"):
+        newFilename = filename + "-vf";
+        new Greyscale(filename, newFilename).execute(model, new ImageDisplay(System.out));
+        filename = newFilename;
+        replaceImage(filename);
+        break;
+      case ("BLUR"):
+        newFilename = filename + "-bl";
+        new Blur(filename, newFilename).execute(model, new ImageDisplay(System.out));
+        filename = newFilename;
+        replaceImage(filename);
+        break;
+      case ("SHARPEN"):
+        newFilename = filename + "-sh";
+        new Sharpen(filename, newFilename).execute(model, new ImageDisplay(System.out));
+        filename = newFilename;
+        replaceImage(filename);
+        break;
+      default:
+        break;
+    }
+  }
+
+  public void replaceImage(String filename) {
+    int length = model.getMap().get(filename).length;
+    int width = model.getMap().get(filename)[0].length;
+    BufferedImage bufferedImage = new BufferedImage(width,
+            length, BufferedImage.TYPE_INT_RGB);
+    for (int row = 0; row < length; row++) {
+      for (int col = 0; col < width; col++) {
+        Color c = new Color(model.getMap().get(filename)[row][col].getRed(),
+                model.getMap().get(filename)[row][col].getGreen(),
+                model.getMap().get(filename)[row][col].getBlue(),
+                model.getMap().get(filename)[row][col].getAlpha());
+        bufferedImage.setRGB(col, row, c.getRGB());
+      }
+    }
+    ImageIcon image = new ImageIcon(bufferedImage);
+    picturePanel.getComponent(compNum).setVisible(false);
+    compNum += 1;
+    picturePanel.add(new JLabel(image));
   }
 }

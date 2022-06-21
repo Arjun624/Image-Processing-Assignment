@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import model.ImageModel;
+import view.GUIView;
 import view.ImageDisplay;
 import view.ImageView;
 
@@ -21,7 +22,7 @@ public class ImageProgram {
   public static void main(String[] args) throws IOException {
 //    ImageControllerImpl controller;
 //    ImageView view = new ImageDisplay(System.out);
-//    ImageModel model = new ImageModel();
+      ImageModel model = new ImageModel();
 //    if (args.length > 0) {
 //      for (int i = 0; i < args.length - 1; i++) {
 //        if (args[i].contains("-file")) {
@@ -43,6 +44,6 @@ public class ImageProgram {
 //    controller = new ImageControllerImpl(view, in, model);
 //    controller.start();
 //
-    ImageProcessingGUI gui = new ImageProcessingGUI();
+    ImageProcessingGUI gui = new ImageProcessingGUI(model, new GUIView());
   }
 }
