@@ -38,10 +38,10 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
     Container c = this.getContentPane(); //Obtains the object where everything is stored on the frame
     BoxLayout bl = new BoxLayout(c, BoxLayout.LINE_AXIS); //Instantiating a borderLayout
     c.setLayout(bl); //Changing the frame layout to a borderLayout
-    flipCommands.setLayout(new GridLayout(1, 2)); //Sets layouts of 3 panels as a gridLayout
-    filterCommands.setLayout(new GridLayout(1, 2));
-    colorCommands.setLayout(new GridLayout(1, 2));
-    loadAndSave.setLayout(new GridLayout(1, 2));
+    flipCommands.setLayout(new GridLayout(2, 1)); //Sets layouts of 3 panels as a gridLayout
+    filterCommands.setLayout(new GridLayout(2, 1));
+    colorCommands.setLayout(new GridLayout(2, 1));
+    loadAndSave.setLayout(new GridLayout(2, 1));
     allCommands.setLayout(new GridLayout(10, 1));
     JLabel colorLabel = new JLabel("Color Commands:");
     JLabel filterLabel = new JLabel("Filter Image:");
@@ -138,78 +138,10 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
 
   public void actionPerformed(ActionEvent e) {
     Object game = e.getActionCommand();
-    if (game.equals("Start")) {
-//      startbutton.setEnabled(false); //Disables the start button
-//      buttonA.setEnabled(true); //Enables the answer choice buttons
-//      buttonB.setEnabled(true);
-//      buttonC.setEnabled(true);
-//      buttonD.setEnabled(true);
-//
-//      questionArea.setText(questions.getGame().get(questionCount).getQuestion()); //Adds the question to the text Area
-//      buttonA.setText(questions.getGame().get(questionCount).getChoiceA()); //Sets the answer choices as the text of the buttons
-//      buttonB.setText(questions.getGame().get(questionCount).getChoiceB());
-//      buttonC.setText(questions.getGame().get(questionCount).getChoiceC());
-//      buttonD.setText(questions.getGame().get(questionCount).getChoiceD());
-
-
-//    }
-//
-//    if (game.equals("A")) {
-//      findUpdateCorrectAnswer(questions.getGame().get(questionCount).getChoiceA()); //Calls the  findUpdateCorrectAnswer method
-//
-//    }
-//    if (game.equals("B")) {
-//
-//      findUpdateCorrectAnswer(questions.getGame().get(questionCount).getChoiceB()); //Calls the  findUpdateCorrectAnswer method
-//
-//    }
-//    if (game.equals("C")) {
-//
-//      findUpdateCorrectAnswer(questions.getGame().get(questionCount).getChoiceC()); //Calls the  findUpdateCorrectAnswer method
-//
-//    }
-//    if (game.equals("D")) {
-//      findUpdateCorrectAnswer(questions.getGame().get(questionCount).getChoiceD()); //Calls the  findUpdateCorrectAnswer method
-//    }
-//    if (game.equals("Quit")) {
-//      this.dispose(); //Closes the frame
-//    }
-
+    if (game.equals("vFlip")) {
+System.out.println("Click");
     }
 
-//  private void findUpdateCorrectAnswer(String aChoice) {
-//    buttonA.setEnabled(false); //disables all the buttons
-//    buttonB.setEnabled(false);
-//    buttonC.setEnabled(false);
-//    buttonD.setEnabled(false);
-//    if (aChoice.equals(questions.getGame().get(questionCount).getCorrectAns())) //Checks if the choice picked is the correct answer
-//    {
-//      if (questionCount == 0) {
-//        startbutton.setText("Next Question"); //Changes start button the a next question button
-//        startbutton.setEnabled(true); //Enables the start button
-//
-//
-//      }
-//
-//      startbutton.setEnabled(true); //Enables the start button
-//
-//      if (moneyWon == 0.0) { //Changes the value of moneyWon
-//        moneyWon = 1000.00;
-//        questionArea.setText("Correct! You have won $" + moneyWon); //changes the text of the textArea
-//      } else if (moneyWon == 512000.00) {
-//        questionArea.setText("CONGRATULATIONS!! \n YOU JUST WON A \nMILLION DOLLARS!"); //changes the text of the textArea
-//        startbutton.setEnabled(false);
-//      } else {
-//        moneyWon = moneyWon * 2;
-//        questionArea.setText("Correct! You have won $" + moneyWon); //changes the text of the textArea
-//      }
-//      questionCount++; //Increments the question count
-//    } else {
-//      questionArea.setText("Sorry! Wrong Answer. \nTotal money won: $" + moneyWon + " \n The correct answer was: " + questions.getGame().get(questionCount).getCorrectAns()); //changes the text of the textArea
-//      startbutton.setText("Game Over"); //Changes the start button text to "game over"
-//
-//
-//    }
-//  }
+
   }
 }
