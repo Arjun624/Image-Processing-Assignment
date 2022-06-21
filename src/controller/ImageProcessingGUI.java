@@ -12,6 +12,8 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
   private JPanel filterCommands = new JPanel();
   private JPanel colorCommands = new JPanel();
 
+  private JPanel brightnessCommands = new JPanel();
+
   private JPanel loadAndSave = new JPanel();
   private JLabel specificGreyscaleCommands = new JLabel(); //Instantiate new TextArea where the question text will be scored
   //private JScrollPane questionScrollPane = new JScrollPane(specificGreyscaleCommands);// Turns the textArea into a scrollPane that has a scroll bar
@@ -24,10 +26,16 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
   private JButton chooseColorButton = new JButton("Choose Color Combination");
   private JButton chooseFilterButton = new JButton("Choose Filter");
   private JButton chooseFlipButton = new JButton("Choose Orientation or Size");
+
+  private JButton adjustBrightnessButton = new JButton("Select Brightness Increment");
+
+  private JLabel incrementLabel = new JLabel("Increment: N/A");
   private JLabel chosenFlip = new JLabel("\tNone selected");
   private JLabel chosenColor = new JLabel("\tNone selected");
   private JLabel chosenGreyScale = new JLabel("\tNone selected");
   private JLabel chosenFilter = new JLabel("\tNone selected");
+
+
 
   private JPanel allCommands = new JPanel();
 
@@ -51,33 +59,33 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
     setDefaultLookAndFeelDecorated(true);
     this.setTitle("ImageProcessing"); //Sets the characteristics of the JFrame
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    this.setSize(500, 500);
+    this.setSize(400, 400);
     this.setResizable(false);
 
     Container c = this.getContentPane(); //Obtains the object where everything is stored on the frame
-    BoxLayout bl = new BoxLayout(c, BoxLayout.LINE_AXIS); //Instantiating a borderLayout
+    BoxLayout bl = new BoxLayout(c, BoxLayout.X_AXIS); //Instantiating a borderLayout
     c.setLayout(bl); //Changing the frame layout to a borderLayout
     flipCommands.setLayout(new GridLayout(3, 1)); //Sets layouts of 3 panels as a gridLayout
+    flipCommands.setBorder(BorderFactory.createTitledBorder("Change Orientation or Size")); //Sets layouts of 3 panels as a gridLayout
     filterCommands.setLayout(new GridLayout(3, 1));
+    filterCommands.setBorder(BorderFactory.createTitledBorder("Filter Image")); //Sets layouts of 3 panels as a gridLayout
     colorCommands.setLayout(new GridLayout(3, 1));
+    colorCommands.setBorder(BorderFactory.createTitledBorder("Choose Color Combination")); //Sets layouts of 3 panels as a gridLayout
     loadAndSave.setLayout(new GridLayout(3, 1));
+    brightnessCommands.setLayout(new GridLayout(2, 1));
+    brightnessCommands.setBorder(BorderFactory.createTitledBorder("Adjust Brightness")); //Sets layouts of 3 panels as a gridLayout
     specificGreyscaleCommands.setLayout(new GridLayout(3, 1));
-    allCommands.setLayout(new GridLayout(10, 1));
+    specificGreyscaleCommands.setBorder(BorderFactory.createTitledBorder("Choose Greyscale")); //Sets layouts of 3 panels as a gridLayout
+    allCommands.setLayout(new GridLayout(7, 1));
 
-    JLabel colorLabel = new JLabel("Color Commands:");
-    JLabel filterLabel = new JLabel("Filter Image:");
-    JLabel flipLabel = new JLabel("Flip Image:");//Instantiating new JLabels and sets the text of the labels
-    JLabel specificGreyscaleLabel = new JLabel("Specific Greyscale Options:");//Instantiating new JLabels and sets the text of the labels
+
 
 
     allCommands.add(loadAndSave);
-    allCommands.add(colorLabel);
     allCommands.add(colorCommands);
-    allCommands.add(flipLabel);
     allCommands.add(flipCommands);
-    allCommands.add(filterLabel);
     allCommands.add(filterCommands);
-    allCommands.add(specificGreyscaleLabel);
+    allCommands.add(brightnessCommands);
     allCommands.add(specificGreyscaleCommands);
     allCommands.add(editImageButton);
 
@@ -122,6 +130,9 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
     helpButton.addActionListener((ActionListener) this);
     helpButton.setActionCommand("Help");
 
+    adjustBrightnessButton.addActionListener((ActionListener) this);
+    adjustBrightnessButton.setActionCommand("Brightness");
+
 
 
 
@@ -165,6 +176,8 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
     flipCommands.add(dropOrientationAndSize);
     flipCommands.add(chooseFlipButton);
     flipCommands.add(chosenFlip);
+    brightnessCommands.add(adjustBrightnessButton);
+    brightnessCommands.add(incrementLabel);
     specificGreyscaleCommands.add(dropDownGreyscale);
     specificGreyscaleCommands.add(chooseGreyscaleButton);
     specificGreyscaleCommands.add(chosenGreyScale);
@@ -195,6 +208,16 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
     }
     if (game.equals("Picked Flip")) {
       this.changeLabelText(dropOrientationAndSize, chosenFlip);
+    }
+    if(game.equals("Brightness")){
+      String increment = JOptionPane.showInputDialog(new JFrame(), "Enter an increment. Positive to increase brightness and negative to decrease brightness");
+      try{
+        Integer.parseInt(increment);
+        incrementLabel.setText(increment);
+      } catch(Exception exception){
+        incrementLabel.setText("Invalid Increment, Please try again.");
+
+      }
     }
 
 
