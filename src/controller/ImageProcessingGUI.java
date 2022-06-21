@@ -30,28 +30,23 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
   private String filename;
 
   ArrayList<String> edits;
-  private JPanel picturePanel = new JPanel();
-  private JPanel flipCommands = new JPanel();
-  private JPanel filterCommands = new JPanel();
-  private JPanel colorCommands = new JPanel();
-  private JPanel brightnessCommands = new JPanel();
-  private JPanel loadAndSave = new JPanel();
-  private JLabel specificGreyscaleCommands = new JLabel();
-  private JButton loadButton = new JButton("Load Image");
-  private JButton saveButton = new JButton("Save Image");
-  private JButton helpButton = new JButton("Help!");
+  private JPanel picturePanel;
+  private JPanel flipCommands ;
+  private JPanel filterCommands ;
+  private JPanel colorCommands ;
+  private JPanel brightnessCommands ;
+  private JPanel specificGreyscaleCommands ;
+  private JPanel allCommands ;
+
+  private JLabel incrementLabel ;
+  private JLabel chosenFlip ;
+  private JLabel chosenColor ;
+  private JLabel chosenGreyScale;
+  private JLabel chosenFilter;
   private JButton editImageButton = new JButton("Edit Image");
-  private JButton chooseGreyscaleButton = new JButton("Choose Greyscale");
-  private JButton chooseColorButton = new JButton("Choose Color Combination");
-  private JButton chooseFilterButton = new JButton("Choose Filter");
-  private JButton chooseFlipButton = new JButton("Choose Orientation or Size");
-  private JButton adjustBrightnessButton = new JButton("Select Brightness Increment");
-  private JLabel incrementLabel = new JLabel("Increment: N/A");
-  private JLabel chosenFlip = new JLabel("\tNone selected");
-  private JLabel chosenColor = new JLabel("\tNone selected");
-  private JLabel chosenGreyScale = new JLabel("\tNone selected");
-  private JLabel chosenFilter = new JLabel("\tNone selected");
-  private JPanel allCommands = new JPanel();
+
+
+  private JMenuBar menuBar = new JMenuBar();
   String[] greyScale = new String[]{"NONE", "RED", "GREEN", "BLUE", "LUMA", "VALUE", "INTENSITY"};
   final JComboBox<String> dropDownGreyscale;
   String[] colorCombinations;
@@ -62,6 +57,8 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
   final JComboBox<String> dropOrientationAndSize;
 
   public ImageProcessingGUI(ImageEditor model, GUIView view) throws IOException {
+    instantiateLabels();
+    instantiatePanels();
     this.model = model;
     this.view = view;
     this.compNum = 0;
@@ -78,7 +75,7 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
     setDefaultLookAndFeelDecorated(true);
     this.setTitle("ImageProcessing");
     this.setDefaultCloseOperation(3);
-    this.setSize(400, 400);
+    this.setSize(950, 950);
     this.setResizable(false);
     Container c = this.getContentPane();
     BoxLayout bl = new BoxLayout(c, 0);
@@ -89,13 +86,12 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
     this.filterCommands.setBorder(BorderFactory.createTitledBorder("Filter Image"));
     this.colorCommands.setLayout(new GridLayout(3, 1));
     this.colorCommands.setBorder(BorderFactory.createTitledBorder("Choose Color Combination"));
-    this.loadAndSave.setLayout(new GridLayout(3, 1));
     this.brightnessCommands.setLayout(new GridLayout(2, 1));
     this.brightnessCommands.setBorder(BorderFactory.createTitledBorder("Adjust Brightness"));
     this.specificGreyscaleCommands.setLayout(new GridLayout(3, 1));
     this.specificGreyscaleCommands.setBorder(BorderFactory.createTitledBorder("Choose Greyscale"));
-    this.allCommands.setLayout(new GridLayout(7, 1));
-    this.allCommands.add(this.loadAndSave);
+    this.allCommands.setLayout(new GridLayout(6, 1));
+    //this.allCommands.add(this.loadAndSave);
     this.allCommands.add(this.colorCommands);
     this.allCommands.add(this.flipCommands);
     this.allCommands.add(this.filterCommands);
@@ -103,62 +99,128 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
     this.allCommands.add(this.specificGreyscaleCommands);
     this.allCommands.add(this.editImageButton);
     c.add(this.allCommands);
-    c.add(this.picturePanel, "North");
+    c.add(this.picturePanel);
     this.instantiateButtons();
     this.pack();
     this.setVisible(true);
 
   }
 
+  private void instantiatePanels() {
+    this.picturePanel = new JPanel();
+    this.flipCommands = new JPanel();
+    this.filterCommands = new JPanel();
+    this.colorCommands = new JPanel();
+    this.brightnessCommands = new JPanel();
+    this.allCommands= new JPanel();
+    this.specificGreyscaleCommands = new JPanel();
+  }
+
+  private void instantiateLabels() {
+    this.incrementLabel = new JLabel("Increment: N/A");
+    this.chosenFlip = new JLabel("\tNone selected");
+    this.chosenColor = new JLabel("\tNone selected");
+    this.chosenGreyScale = new JLabel("\tNone selected");
+    this.chosenFilter = new JLabel("\tNone selected");
+  }
+
   public void instantiateButtons() {
-    this.loadButton.addActionListener(this);
-    this.loadButton.setActionCommand("Load");
-    this.saveButton.addActionListener(this);
-    this.saveButton.setActionCommand("Save");
-    this.chooseFilterButton.addActionListener(this);
-    this.chooseFilterButton.setActionCommand("Picked Filter");
-    this.chooseColorButton.addActionListener(this);
-    this.chooseColorButton.setActionCommand("Picked Color");
-    this.chooseGreyscaleButton.addActionListener(this);
-    this.chooseGreyscaleButton.setActionCommand("Picked Greyscale");
-    this.chooseFlipButton.addActionListener(this);
-    this.chooseFlipButton.setActionCommand("Picked Flip");
+    JButton loadButton = new JButton("Load Image");
+    JButton saveButton = new JButton("Save Image");
+    JButton helpButton = new JButton("Help!");
+    this.editImageButton = new JButton("Edit Image");
+    JButton chooseGreyscaleButton = new JButton("Choose Greyscale");
+    JButton chooseColorButton = new JButton("Choose Color Combination");
+    JButton chooseFilterButton = new JButton("Choose Filter");
+    JButton chooseFlipButton = new JButton("Choose Orientation or Size");
+    JButton adjustBrightnessButton = new JButton("Select Brightness Increment");
+
+    loadButton.addActionListener(this);
+    loadButton.setActionCommand("Load");
+    saveButton.addActionListener(this);
+    saveButton.setActionCommand("Save");
+    chooseFilterButton.addActionListener(this);
+    chooseFilterButton.setActionCommand("Picked Filter");
+    chooseColorButton.addActionListener(this);
+    chooseColorButton.setActionCommand("Picked Color");
+    chooseGreyscaleButton.addActionListener(this);
+    chooseGreyscaleButton.setActionCommand("Picked Greyscale");
+    chooseFlipButton.addActionListener(this);
+    chooseFlipButton.setActionCommand("Picked Flip");
     this.editImageButton.addActionListener(this);
     this.editImageButton.setActionCommand("Edit");
-    this.helpButton.addActionListener(this);
-    this.helpButton.setActionCommand("Help");
-    this.adjustBrightnessButton.addActionListener(this);
-    this.adjustBrightnessButton.setActionCommand("Brightness");
+    helpButton.addActionListener(this);
+    helpButton.setActionCommand("Help");
+    adjustBrightnessButton.addActionListener(this);
+    adjustBrightnessButton.setActionCommand("Brightness");
     this.dropDownGreyscale.setMaximumSize(this.dropDownGreyscale.getPreferredSize());
     this.dropDownGreyscale.setAlignmentX(0.5F);
-    System.out.println((String)this.dropDownGreyscale.getItemAt(this.dropDownGreyscale.getSelectedIndex()));
+    System.out.println((String) this.dropDownGreyscale.getItemAt(this.dropDownGreyscale.getSelectedIndex()));
     this.dropDownColorCombinations.setMaximumSize(this.dropDownColorCombinations.getPreferredSize());
     this.dropDownColorCombinations.setAlignmentX(0.5F);
-    System.out.println((String)this.dropDownColorCombinations.getItemAt(this.dropDownColorCombinations.getSelectedIndex()));
+    System.out.println((String) this.dropDownColorCombinations.getItemAt(this.dropDownColorCombinations.getSelectedIndex()));
     this.dropDownFilters.setMaximumSize(this.dropDownFilters.getPreferredSize());
     this.dropDownFilters.setAlignmentX(0.5F);
-    System.out.println((String)this.dropDownFilters.getItemAt(this.dropDownFilters.getSelectedIndex()));
+    System.out.println((String) this.dropDownFilters.getItemAt(this.dropDownFilters.getSelectedIndex()));
     this.dropOrientationAndSize.setMaximumSize(this.dropOrientationAndSize.getPreferredSize());
     this.dropOrientationAndSize.setAlignmentX(0.5F);
-    System.out.println((String)this.dropOrientationAndSize.getItemAt(this.dropOrientationAndSize.getSelectedIndex()));
-    this.loadAndSave.add(this.helpButton);
-    this.loadAndSave.add(this.loadButton);
-    this.loadAndSave.add(this.saveButton);
+    System.out.println((String) this.dropOrientationAndSize.getItemAt(this.dropOrientationAndSize.getSelectedIndex()));
     this.filterCommands.add(this.dropDownFilters);
-    this.filterCommands.add(this.chooseFilterButton);
+    this.filterCommands.add(chooseFilterButton);
     this.filterCommands.add(this.chosenFilter);
     this.colorCommands.add(this.dropDownColorCombinations);
-    this.colorCommands.add(this.chooseColorButton);
+    this.colorCommands.add(chooseColorButton);
     this.colorCommands.add(this.chosenColor);
     this.flipCommands.add(this.dropOrientationAndSize);
-    this.flipCommands.add(this.chooseFlipButton);
+    this.flipCommands.add(chooseFlipButton);
     this.flipCommands.add(this.chosenFlip);
-    this.brightnessCommands.add(this.adjustBrightnessButton);
+    this.brightnessCommands.add(adjustBrightnessButton);
     this.brightnessCommands.add(this.incrementLabel);
     this.specificGreyscaleCommands.add(this.dropDownGreyscale);
-    this.specificGreyscaleCommands.add(this.chooseGreyscaleButton);
+    this.specificGreyscaleCommands.add(chooseGreyscaleButton);
     this.specificGreyscaleCommands.add(this.chosenGreyScale);
-    this.picturePanel.add(new JLabel(new ImageIcon("res/battlefield.jpg")));
+    //this.picturePanel.add(new JLabel(new ImageIcon("res/battlefield.jpg")));
+
+    picturePanel.setBorder(BorderFactory.createTitledBorder("Showing an image"));
+    picturePanel.setLayout(new GridLayout(1, 0, 10, 10));
+    //imagePanel.setMaximumSize(null);
+    this.add(picturePanel);
+
+    String[] images = {"Jellyfish.jpg", "penis.jpg"};
+    JLabel[] imageLabel = new JLabel[images.length];
+    JScrollPane[] imageScrollPane = new JScrollPane[images.length];
+
+    for (int i = 0; i < imageLabel.length; i++) {
+      imageLabel[i] = new JLabel();
+      imageScrollPane[i] = new JScrollPane(imageLabel[i]);
+      imageLabel[i].setIcon(new ImageIcon(images[i]));
+      imageScrollPane[i].setPreferredSize(new Dimension(600, 600));
+      picturePanel.add(imageScrollPane[i]);
+    }
+
+
+    JMenu file = new JMenu("File");
+    JMenuItem load = new JMenuItem("Load");
+    JMenuItem save = new JMenuItem("Save");
+    JMenuItem quit = new JMenuItem("Quit");
+    file.add(load);
+    file.add(save);
+    file.add(quit);
+
+    JMenu help = new JMenu("Help");
+    JMenuItem howTo = new JMenuItem("How to use");
+    howTo.addActionListener((ActionListener) this);
+    howTo.setActionCommand("HowTo");
+    JMenuItem validCommands = new JMenuItem("Information on Valid Commands");
+    JMenuItem documentation = new JMenuItem("Full Documentation");
+    help.add(howTo);
+    help.add(validCommands);
+    help.add(documentation);
+
+
+    menuBar.add(file);
+    menuBar.add(help);
+    setJMenuBar(menuBar);
 
 //    buttonA.setEnabled(false); //Disables the buttons
 //    buttonB.setEnabled(false);
@@ -195,7 +257,19 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
       }
     }
     if (game.equals("Brightness")) {
-      String increment = JOptionPane.showInputDialog(new JFrame(), "Enter an increment. Positive to increase brightness and negative to decrease brightness");
+      String increment = JOptionPane.showInputDialog(new JFrame(), "Enter an increment. Positive "
+              + "to increase brightness and negative to decrease brightness");
+
+      try {
+        Integer.parseInt(increment);
+        this.incrementLabel.setText(increment);
+      } catch (Exception var5) {
+        this.incrementLabel.setText("Invalid Increment, Please try again.");
+      }
+    }
+    if (game.equals("HowTo")) {
+      String increment = JOptionPane.showInputDialog(new JFrame(), "Enter an increment. Positive "
+              + "to increase brightness and negative to decrease brightness");
 
       try {
         Integer.parseInt(increment);
@@ -291,8 +365,7 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
   public void replaceImage(String filename) {
     int length = model.getMap().get(filename).length;
     int width = model.getMap().get(filename)[0].length;
-    BufferedImage bufferedImage = new BufferedImage(width,
-            length, BufferedImage.TYPE_INT_RGB);
+    BufferedImage bufferedImage = new BufferedImage(width, length, BufferedImage.TYPE_INT_RGB);
     for (int row = 0; row < length; row++) {
       for (int col = 0; col < width; col++) {
         Color c = new Color(model.getMap().get(filename)[row][col].getRed(),
@@ -308,7 +381,7 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
     picturePanel.add(new JLabel(image));
   }
 
-  public void getHistogram(String filename){
+  public void getHistogram(String filename) {
     Pixel[][] pixels = model.getMap().get(filename);
     int[] red = new int[256];
     int[] green = new int[256];
@@ -316,7 +389,9 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
     int[] intensity = new int[256];
     for (int i = 0; i < pixels.length; i++) {
       for (int j = 0; j < pixels[0].length; j++) {
-        int pixelIntensity = (pixels[i][j].getRed() + pixels[i][j].getGreen() + pixels[i][j].getBlue())/3;
+        int pixelIntensity = (pixels[i][j].getRed()
+                + pixels[i][j].getGreen()
+                + pixels[i][j].getBlue()) / 3;
         red[pixels[i][j].getRed()] += 1;
         green[pixels[i][j].getGreen()] += 1;
         blue[pixels[i][j].getBlue()] += 1;
@@ -325,4 +400,6 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
     }
   }
 
+
 }
+
