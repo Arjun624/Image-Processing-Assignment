@@ -254,14 +254,12 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
     for (int i = 0; i < edits.size(); i++) {
       edit(edits.get(i));
     }
+    edits.clear();
   }
 
   public void addEdit(JLabel command) {
     if (!command.toString().equalsIgnoreCase("NONE")) {
       edits.add(command.getText().substring(11));
-    }
-    for (int i = 0; i < edits.size(); i++) {
-      System.out.println(edits.get(i));
     }
   }
 
