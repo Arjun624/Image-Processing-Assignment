@@ -11,6 +11,7 @@ import java.util.NoSuchElementException;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import controller.commands.Blur;
 import controller.commands.Greyscale;
@@ -125,9 +126,6 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
   }
 
   public void instantiateButtons() {
-    JButton loadButton = new JButton("Load Image");
-    JButton saveButton = new JButton("Save Image");
-    JButton helpButton = new JButton("Help!");
     this.editImageButton = new JButton("Edit Image");
     JButton chooseGreyscaleButton = new JButton("Choose Greyscale");
     JButton chooseColorButton = new JButton("Choose Color Combination");
@@ -135,10 +133,7 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
     JButton chooseFlipButton = new JButton("Choose Orientation or Size");
     JButton adjustBrightnessButton = new JButton("Select Brightness Increment");
 
-    loadButton.addActionListener(this);
-    loadButton.setActionCommand("Load");
-    saveButton.addActionListener(this);
-    saveButton.setActionCommand("Save");
+
     chooseFilterButton.addActionListener(this);
     chooseFilterButton.setActionCommand("Picked Filter");
     chooseColorButton.addActionListener(this);
@@ -149,8 +144,7 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
     chooseFlipButton.setActionCommand("Picked Flip");
     this.editImageButton.addActionListener(this);
     this.editImageButton.setActionCommand("Edit");
-    helpButton.addActionListener(this);
-    helpButton.setActionCommand("Help");
+
     adjustBrightnessButton.addActionListener(this);
     adjustBrightnessButton.setActionCommand("Brightness");
     this.dropDownGreyscale.setMaximumSize(this.dropDownGreyscale.getPreferredSize());
@@ -179,14 +173,16 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
     this.specificGreyscaleCommands.add(this.dropDownGreyscale);
     this.specificGreyscaleCommands.add(chooseGreyscaleButton);
     this.specificGreyscaleCommands.add(this.chosenGreyScale);
-    //this.picturePanel.add(new JLabel(new ImageIcon("res/battlefield.jpg")));
 
     picturePanel.setBorder(BorderFactory.createTitledBorder("Showing an image"));
     picturePanel.setLayout(new GridLayout(1, 0, 10, 10));
     //imagePanel.setMaximumSize(null);
     this.add(picturePanel);
 
-    String[] images = {"Jellyfish.jpg", "penis.jpg"};
+
+
+
+    String[] images = {"res/battlefield.jpg", "penis.jpg"};
     JLabel[] imageLabel = new JLabel[images.length];
     JScrollPane[] imageScrollPane = new JScrollPane[images.length];
 
@@ -201,6 +197,8 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
 
     JMenu file = new JMenu("File");
     JMenuItem load = new JMenuItem("Load");
+    load.addActionListener((ActionListener) this);
+    load.setActionCommand("Load");
     JMenuItem save = new JMenuItem("Save");
     JMenuItem quit = new JMenuItem("Quit");
     file.add(load);
@@ -233,6 +231,21 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
 
   public void actionPerformed(ActionEvent e) {
     Object game = e.getActionCommand();
+    if(game.equals("Load")){
+      System.out.println("yuh");
+      JFileChooser chooser = new JFileChooser();
+      chooser.showOpenDialog(this);
+      File file = chooser.getSelectedFile();
+      try{
+        BufferedImage image = ImageIO.read(file);
+        this.picturePanel.removeAll();
+        this.picturePanel.add(new JLabel(new ImageIcon(image)));
+        this.picturePanel.revalidate();
+        this.picturePanel.repaint();
+      }catch(Exception ex){
+        System.out.println("Error loading image");
+      }
+    }
     if (game.equals("Picked Filter")) {
       this.changeLabelText(dropDownFilters, chosenFilter);
       addEdit(chosenFilter);
