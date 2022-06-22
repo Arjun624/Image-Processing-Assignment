@@ -3,6 +3,7 @@ package controller;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -64,7 +65,6 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
     this.view = view;
     this.compNum = 0;
     this.filename = "test";
-    loadPic();
     edits = new ArrayList<>();
     this.dropDownGreyscale = new JComboBox(this.greyScale);
     this.colorCombinations = new String[]{"NONE", "SEPIA", "GREYSCALE"};
@@ -178,7 +178,7 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
 
   private void displayImage(){
 
-    String[] images = {"res/battlefield.jpg", "penis.jpg"};
+    String[] images = {"",""};
     JLabel[] imageLabel = new JLabel[images.length];
     JScrollPane[] imageScrollPane = new JScrollPane[images.length];
 
@@ -239,6 +239,7 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
       File file = chooser.getSelectedFile();
       try{
         BufferedImage image = ImageIO.read(file);
+        loadPic(file);
         this.picturePanel.removeAll();
         this.picturePanel.add(new JLabel(new ImageIcon(image)));
         this.picturePanel.revalidate();
@@ -264,7 +265,9 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
       addEdit(chosenFlip);
     }
     if (game.equals("Edit")) {
+      System.out.print("hello");
       try {
+        System.out.print("hello");
         editImage();
       } catch (IOException ex) {
         throw new RuntimeException(ex);
@@ -281,17 +284,17 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
         this.incrementLabel.setText("Invalid Increment, Please try again.");
       }
     }
-    if (game.equals("HowTo")) {
-      String increment = JOptionPane.showInputDialog(new JFrame(), "Enter an increment. Positive "
-              + "to increase brightness and negative to decrease brightness");
-
-      try {
-        Integer.parseInt(increment);
-        this.incrementLabel.setText(increment);
-      } catch (Exception var5) {
-        this.incrementLabel.setText("Invalid Increment, Please try again.");
-      }
-    }
+//    if (game.equals("HowTo")) {
+//      String increment = JOptionPane.showInputDialog(new JFrame(), "Enter an increment. Positive "
+//              + "to increase brightness and negative to decrease brightness");
+//
+//      try {
+//        Integer.parseInt(increment);
+//        this.incrementLabel.setText(increment);
+//      } catch (Exception var5) {
+//        this.incrementLabel.setText("Invalid Increment, Please try again.");
+//      }
+//    }
 
 
   }
@@ -300,10 +303,10 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
     label.setText("\tSelected: " + dropDown.getItemAt(dropDown.getSelectedIndex()));
   }
 
-  public void loadPic() throws IOException {
+  public void loadPic(File file) throws IOException {
     BufferedImage b;
     try {
-      b = ImageIO.read(new File("res/battlefield.jpg"));
+      b = ImageIO.read(file);
     } catch (IOException e) {
       throw new NoSuchElementException();
     }
@@ -321,6 +324,7 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
 
   public void editImage() throws IOException {
     for (int i = 0; i < edits.size(); i++) {
+      System.out.println(edits.get(i));
       edit(edits.get(i));
     }
     edits.clear();
@@ -328,6 +332,7 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
 
   public void addEdit(JLabel command) {
     if (!command.toString().equalsIgnoreCase("NONE")) {
+      System.out.println(command.getText().substring(11));
       edits.add(command.getText().substring(11));
     }
   }
@@ -412,8 +417,32 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
         intensity[pixelIntensity] += 1;
       }
     }
+    BarChart redChart = new BarChart(Color.red, red);
+    BarChart greenChart = new BarChart(Color.green, green);
+    BarChart blueChart = new BarChart(Color.blue, blue);
+    BarChart intensityChart = new BarChart(Color.GRAY, intensity);
   }
 
+
+  public class BarChart extends JPanel{
+    private Color c;
+    private int[] nums;
+    public BarChart( Color c, int[] nums){
+      this.c = c;
+      this.nums = nums;
+    }
+
+    public void paintComponent(Graphics g) {
+      super.paintComponent(g);
+      Graphics2D graph = (Graphics2D) g;
+      graph.setColor(c);
+      for (int i = 695; i < 950; i++) {
+        for (int j = 0; j < 254; j++) {
+          graph.drawLine(i,nums[i],i+1,nums[i+1]);
+        }
+      }
+    }
+  }
 
 }
 
