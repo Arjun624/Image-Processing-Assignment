@@ -253,10 +253,10 @@ chosenGreyScale.setText("\tSelected: " + dropDownGreyscale.getItemAt(dropDownGre
  chosenFilter.setText("\tSelected: " + dropDownFilters.getItemAt(dropDownFilters.getSelectedIndex()));
     }
     if(type.equals("BRIGHTEN")){
-      incrementLabel.setText("\tSelected: " + dropOrientationAndSize.getItemAt(dropOrientationAndSize.getSelectedIndex()));
+      incrementLabel.setText("Brightness increment: " + brightness);
     }
     if(type.equals("DIM")){
-      incrementLabel.setText("\tSelected: " + dropOrientationAndSize.getItemAt(dropOrientationAndSize.getSelectedIndex()));
+      incrementLabel.setText("Dimness increment: " + brightness);
     }
     if(type.equals("INVALID")){
       incrementLabel.setText("Invalid Increment, Please try again.");

@@ -213,10 +213,10 @@ public class ImageControllerGUI implements ImageController, ActionListener {
           gui.changeLabelText("BRIGHTEN");
           gui.addEdit("BRIGHTEN");
         } else if(brightness<0){
-          gui.changeLabelText("BRIGHTEN");
-          gui.addEdit("DIM");
+          gui.changeLabelText("DIM");
+          gui.addEdit("BRIGHTEN");
         } else {
-          gui.changeLabelText("BRIGHTEN");
+          gui.changeLabelText("INVALID");
         };
       } catch (Exception var5) {
         gui.changeLabelText("INVALID");
