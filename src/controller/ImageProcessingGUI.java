@@ -58,7 +58,7 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
   String[] orientationAndSize;
   final JComboBox<String> dropOrientationAndSize;
 
-  String[] imageBoxes = new String[]{"none", "histogram"};
+  ImageIcon[] imageBoxes = new ImageIcon[]{new ImageIcon("none"), new ImageIcon("histogram")};
 
   public ImageProcessingGUI(ImageEditor model, GUIView view) throws IOException {
     instantiateLabels();
@@ -192,7 +192,7 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
     for (int i = 0; i < imageLabel.length; i++) {
       imageLabel[i] = new JLabel();
       imageScrollPane[i] = new JScrollPane(imageLabel[i]);
-      imageLabel[i].setIcon(new ImageIcon(imageBoxes[i]));
+      imageLabel[i].setIcon(imageBoxes[i]);
       imageScrollPane[i].setPreferredSize(new Dimension(600, 600));
       imagePanel.add(imageScrollPane[i]);
     }
@@ -249,9 +249,8 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
       chooser.showOpenDialog(this);
       File file = chooser.getSelectedFile();
       try{
-        BufferedImage image = ImageIO.read(file);
         loadPic(file);
-        imageBoxes[0] = file.getAbsolutePath();
+        imageBoxes[0] = new ImageIcon(file.getAbsolutePath());
         displayImage(this.picturePanel);
       }catch(Exception ex){
         System.out.println("Error loading image");
@@ -404,9 +403,9 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
       }
     }
     ImageIcon image = new ImageIcon(bufferedImage);
-    picturePanel.getComponent(compNum).setVisible(false);
+    imageBoxes[0]=image;
+    displayImage(picturePanel);
     compNum += 1;
-    picturePanel.add(new JLabel(image));
   }
 
   public void getHistogram(String filename) {
@@ -430,6 +429,7 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
     BarChart greenChart = new BarChart(Color.green, green);
     BarChart blueChart = new BarChart(Color.blue, blue);
     BarChart intensityChart = new BarChart(Color.GRAY, intensity);
+
   }
 
 
