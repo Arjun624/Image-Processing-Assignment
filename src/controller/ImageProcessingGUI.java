@@ -328,6 +328,7 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
       }
     }
     model.add(filename, arr);
+    getHistogram(filename);
   }
 
   public void editImage() throws IOException {
@@ -352,6 +353,7 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
         newFilename = filename + "-vf";
         new VerticalFlip(filename, newFilename).execute(model, new ImageDisplay(System.out));
         filename = newFilename;
+        getHistogram(filename);
         replaceImage(filename);
         break;
       case ("HORIZONTAL FLIP"):
@@ -425,33 +427,40 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
         intensity[pixelIntensity] += 1;
       }
     }
-    BarChart redChart = new BarChart(Color.red, red);
-    BarChart greenChart = new BarChart(Color.green, green);
-    BarChart blueChart = new BarChart(Color.blue, blue);
-    BarChart intensityChart = new BarChart(Color.GRAY, intensity);
+    ImageIcon image = new ImageIcon(makeHistogram(red, green,blue,intensity));
+    imageBoxes[1] = image;
+    displayImage(picturePanel);
 
   }
 
-
-  public class BarChart extends JPanel{
-    private Color c;
-    private int[] nums;
-    public BarChart( Color c, int[] nums){
-      this.c = c;
-      this.nums = nums;
-    }
-
-    public void paintComponent(Graphics g) {
-      super.paintComponent(g);
-      Graphics2D graph = (Graphics2D) g;
-      graph.setColor(c);
-      for (int i = 695; i < 950; i++) {
-        for (int j = 0; j < 254; j++) {
-          graph.drawLine(i,nums[i],i+1,nums[i+1]);
-        }
+  public BufferedImage makeHistogram(int[] red, int[] green, int[] blue, int[] intensity){
+    BufferedImage bufferedImage = new BufferedImage(600, 950, BufferedImage.TYPE_INT_RGB);
+    Graphics2D graph = bufferedImage.createGraphics();
+    graph.setColor(Color.red);
+    for (int i = 0; i < 254; i++) {
+      for (int j = 0; j < 254; j++) {
+        graph.drawLine(i * 2 ,red[i],(i+1) * 2,red[i+1]);
       }
     }
+    graph.setColor(Color.BLUE);
+    for (int i = 0; i < 254; i++) {
+      for (int j = 0; j < 254; j++) {
+        graph.drawLine(i * 2,blue[i],(i+1) * 2,blue[i+1]);
+      }
+    }
+    graph.setColor(Color.green);
+    for (int i = 0; i < 254; i++) {
+      for (int j = 0; j < 254; j++) {
+        graph.drawLine(i*2,green[i],(i+1) * 2,green[i+1]);
+      }
+    }
+    graph.setColor(Color.gray);
+    for (int i = 0; i < 254; i++) {
+      for (int j = 0; j < 254; j++) {
+        graph.drawLine(i*2,intensity[i],(i+1) * 2,intensity[i+1]);
+      }
+    }
+    return bufferedImage;
   }
-
 }
 
