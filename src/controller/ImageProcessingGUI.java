@@ -16,20 +16,6 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import controller.commands.AdjustBrightness;
-import controller.commands.BlueGreyscale;
-import controller.commands.Blur;
-import controller.commands.GreenGreyscale;
-import controller.commands.Greyscale;
-import controller.commands.HorizontalFlip;
-import controller.commands.IntensityGreyscale;
-import controller.commands.LumaGreyscale;
-import controller.commands.RedGreyscale;
-import controller.commands.Sepia;
-import controller.commands.Sharpen;
-import controller.commands.ValueGreyscale;
-import controller.commands.VerticalFlip;
-import model.ImageEditor;
 import model.Pixel;
 import view.GUIView;
 import view.ImageDisplay;
@@ -292,25 +278,6 @@ chosenGreyScale.setText("\tSelected: " + dropDownGreyscale.getItemAt(dropDownGre
     return brightness;
   }
 
-  public void loadPic(File file) throws IOException {
-//    BufferedImage b;
-//    try {
-//      b = ImageIO.read(file);
-//    } catch (IOException e) {
-//      throw new NoSuchElementException();
-//    }
-//    int width = b.getWidth();
-//    int height = b.getHeight();
-//    Pixel[][] arr = new Pixel[height][width];
-//    for (int i = 0; i < width; i++) {
-//      for (int j = 0; j < height; j++) {
-//        Color c = new Color(b.getRGB(i, j));
-//        arr[j][i] = new Pixel(c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha());
-//      }
-//    }
-//    model.add(filename, arr);
-//    getHistogram(filename);
-  }
 
   public void editImage() throws IOException {
     if (edits.isEmpty()) {
@@ -354,102 +321,6 @@ chosenGreyScale.setText("\tSelected: " + dropDownGreyscale.getItemAt(dropDownGre
     return null;
 
   }
-//  public void edit(String command) throws IOException {
-//    String newFilename;
-//    switch (command) {
-//      case ("VERTICAL FLIP"):
-//        newFilename = filename + "-vf";
-//        new VerticalFlip(filename, newFilename).execute(model, new ImageDisplay(System.out));
-//        filename = newFilename;
-//        replaceImage(filename);
-//        break;
-//      case ("HORIZONTAL FLIP"):
-//        newFilename = filename + "-hf";
-//        new HorizontalFlip(filename, newFilename).execute(model, new ImageDisplay(System.out));
-//        filename = newFilename;
-//        replaceImage(filename);
-//        break;
-//      case ("SEPIA"):
-//        newFilename = filename + "-sep";
-//        new Sepia(filename, newFilename).execute(model, new ImageDisplay(System.out));
-//        filename = newFilename;
-//        getHistogram(filename);
-//        replaceImage(filename);
-//        break;
-//      case ("GREYSCALE"):
-//        newFilename = filename + "-vf";
-//        new Greyscale(filename, newFilename).execute(model, new ImageDisplay(System.out));
-//        filename = newFilename;
-//        getHistogram(filename);
-//        replaceImage(filename);
-//        break;
-//      case ("BLUR"):
-//        newFilename = filename + "-bl";
-//        new Blur(filename, newFilename).execute(model, new ImageDisplay(System.out));
-//        filename = newFilename;
-//        getHistogram(filename);
-//        replaceImage(filename);
-//        break;
-//      case ("SHARPEN"):
-//        newFilename = filename + "-sh";
-//        new Sharpen(filename, newFilename).execute(model, new ImageDisplay(System.out));
-//        filename = newFilename;
-//        getHistogram(filename);
-//        replaceImage(filename);
-//        break;
-//      case ("RED"):
-//        newFilename = filename + "-gr";
-//        new RedGreyscale(filename, newFilename).execute(model, new ImageDisplay(System.out));
-//        filename = newFilename;
-//        getHistogram(filename);
-//        replaceImage(filename);
-//        break;
-//      case ("GREEN"):
-//        newFilename = filename + "-gg";
-//        new GreenGreyscale(filename, newFilename).execute(model, new ImageDisplay(System.out));
-//        filename = newFilename;
-//        getHistogram(filename);
-//        replaceImage(filename);
-//        break;
-//      case ("BLUE"):
-//        newFilename = filename + "-gb";
-//        new BlueGreyscale(filename, newFilename).execute(model, new ImageDisplay(System.out));
-//        filename = newFilename;
-//        getHistogram(filename);
-//        replaceImage(filename);
-//        break;
-//      case ("LUMA"):
-//        newFilename = filename + "-gl";
-//        new LumaGreyscale(filename, newFilename).execute(model, new ImageDisplay(System.out));
-//        filename = newFilename;
-//        getHistogram(filename);
-//        replaceImage(filename);
-//        break;
-//      case ("INTENSITY"):
-//        newFilename = filename + "-gi";
-//        new IntensityGreyscale(filename, newFilename).execute(model, new ImageDisplay(System.out));
-//        filename = newFilename;
-//        getHistogram(filename);
-//        replaceImage(filename);
-//        break;
-//      case ("VALUE"):
-//        newFilename = filename + "-gv";
-//        new ValueGreyscale(filename, newFilename).execute(model, new ImageDisplay(System.out));
-//        filename = newFilename;
-//        getHistogram(filename);
-//        replaceImage(filename);
-//        break;
-//      case ("BRIGHTEN"):
-//        newFilename = filename + "-br";
-//        new AdjustBrightness(brightness, filename, newFilename).execute(model, new ImageDisplay(System.out));
-//        filename = newFilename;
-//        getHistogram(filename);
-//        replaceImage(filename);
-//        break;
-//      default:
-//        break;
-//    }
-//  }
 
   public void replaceImage(String filename) {
 
