@@ -14,6 +14,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import controller.commands.AdjustBrightness;
 import controller.commands.BlueGreyscale;
 import controller.commands.Blur;
 import controller.commands.GreenGreyscale;
@@ -34,7 +35,7 @@ import view.ImageDisplay;
 public class ImageProcessingGUI extends JFrame implements ActionListener {
   private ImageEditor model;
   private GUIView view;
-  private int compNum;
+  private int brightness;
   private String filename;
 
   ArrayList<String> edits;
@@ -71,7 +72,7 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
     instantiatePanels();
     this.model = model;
     this.view = view;
-    this.compNum = 0;
+    this.brightness = 0;
     this.filename = "test";
     edits = new ArrayList<>();
     this.dropDownGreyscale = new JComboBox(this.greyScale);
@@ -279,9 +280,7 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
       addEdit(chosenFlip);
     }
     if (game.equals("Edit")) {
-      System.out.print("hello");
       try {
-        System.out.print("hello");
         editImage();
       } catch (IOException ex) {
         throw new RuntimeException(ex);
@@ -292,8 +291,11 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
               + "to increase brightness and negative to decrease brightness");
 
       try {
-        Integer.parseInt(increment);
+        brightness = Integer.parseInt(increment);
         this.incrementLabel.setText(increment);
+        JLabel brightened = new JLabel();
+        brightened.setText("SELECTED:  BRIGHTEN");
+        addEdit(brightened);
       } catch (Exception var5) {
         this.incrementLabel.setText("Invalid Increment, Please try again.");
       }
@@ -339,7 +341,6 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
 
   public void editImage() throws IOException {
     for (int i = 0; i < edits.size(); i++) {
-      System.out.println(edits.get(i));
       edit(edits.get(i));
     }
     edits.clear();
@@ -347,7 +348,6 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
 
   public void addEdit(JLabel command) {
     if (!command.toString().equalsIgnoreCase("NONE")) {
-      System.out.println(command.getText().substring(11));
       edits.add(command.getText().substring(11));
     }
   }
@@ -437,6 +437,13 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
         getHistogram(filename);
         replaceImage(filename);
         break;
+      case ("BRIGHTEN"):
+        newFilename = filename + "-br";
+        new AdjustBrightness(brightness, filename, newFilename).execute(model, new ImageDisplay(System.out));
+        filename = newFilename;
+        getHistogram(filename);
+        replaceImage(filename);
+        break;
       default:
         break;
     }
@@ -458,7 +465,6 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
     ImageIcon image = new ImageIcon(bufferedImage);
     imageBoxes[0]=image;
     displayImage(picturePanel);
-    compNum += 1;
   }
 
   public void getHistogram(String filename) {
