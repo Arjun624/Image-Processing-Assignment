@@ -265,9 +265,10 @@ public class ImageControllerImpl implements ImageController {
       return;
     }
 
-    ImageProcessingGUI gui = new ImageProcessingGUI(model, null);
 
-    BufferedImage bufferedImage = gui.getBufferedImage(filename, model);
+
+    BufferedImage bufferedImage = new BufferedImage(model.getMap().get(filename)[0].length,
+            model.getMap().get(filename).length, BufferedImage.TYPE_INT_ARGB);
 
 
     ArrayList<String> formats = new ArrayList<>(Arrays.asList(ImageIO.getWriterFormatNames()));

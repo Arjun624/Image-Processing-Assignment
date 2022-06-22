@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 import javax.imageio.ImageIO;
@@ -33,9 +34,9 @@ import model.Pixel;
 import view.GUIView;
 import view.ImageDisplay;
 
-public class ImageProcessingGUI extends JFrame implements ActionListener {
-  private ImageEditor model;
-  private GUIView view;
+public class ImageProcessingGUI extends JFrame{
+
+  private ImageControllerGUI controller;
   private int brightness;
   private String filename;
 
@@ -68,11 +69,10 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
 
   ImageIcon[] imageBoxes = new ImageIcon[]{new ImageIcon("none"), new ImageIcon("histogram")};
 
-  public ImageProcessingGUI(ImageEditor model, GUIView view) throws IOException {
+  public ImageProcessingGUI(ImageControllerGUI controller) throws IOException {
     instantiateLabels();
     instantiatePanels();
-    this.model = model;
-    this.view = view;
+    this.controller = controller;
     this.brightness = 0;
     this.filename = "test";
     edits = new ArrayList<>();
@@ -106,7 +106,7 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
 
     this.allCommands.setLayout(new GridLayout(6, 1));
     this.instantiateButtons();
-    this.displayImage(picturePanel);
+    this.displayImage();
     this.instantiateDropDowns();
     instantiateMenuBar();
     this.allCommands.add(this.colorCommands);
@@ -151,18 +151,18 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
     JButton adjustBrightnessButton = new JButton("Select Brightness Increment");
 
 
-    chooseFilterButton.addActionListener(this);
+    chooseFilterButton.addActionListener((ActionListener) controller);
     chooseFilterButton.setActionCommand("Picked Filter");
-    chooseColorButton.addActionListener(this);
+    chooseColorButton.addActionListener((ActionListener) controller);
     chooseColorButton.setActionCommand("Picked Color");
-    chooseGreyscaleButton.addActionListener(this);
+    chooseGreyscaleButton.addActionListener((ActionListener) controller);
     chooseGreyscaleButton.setActionCommand("Picked Greyscale");
-    chooseFlipButton.addActionListener(this);
+    chooseFlipButton.addActionListener((ActionListener) controller);
     chooseFlipButton.setActionCommand("Picked Flip");
-    this.editImageButton.addActionListener(this);
+    this.editImageButton.addActionListener((ActionListener) controller);
     this.editImageButton.setActionCommand("Edit");
 
-    adjustBrightnessButton.addActionListener(this);
+    adjustBrightnessButton.addActionListener((ActionListener) controller);
     adjustBrightnessButton.setActionCommand("Brightness");
 
 
@@ -189,10 +189,10 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
 
   }
 
-  private void displayImage(JPanel imagePanel) {
+  protected void displayImage() {
 
 
-    imagePanel.removeAll();
+    this.picturePanel.removeAll();
 
     JLabel[] imageLabel = new JLabel[imageBoxes.length];
     JScrollPane[] imageScrollPane = new JScrollPane[imageBoxes.length];
@@ -202,7 +202,7 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
       imageScrollPane[i] = new JScrollPane(imageLabel[i]);
       imageLabel[i].setIcon(imageBoxes[i]);
       imageScrollPane[i].setPreferredSize(new Dimension(600, 600));
-      imagePanel.add(imageScrollPane[i]);
+      this.picturePanel.add(imageScrollPane[i]);
     }
 
     this.picturePanel.repaint();
@@ -225,10 +225,10 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
   private void instantiateMenuBar() {
     JMenu file = new JMenu("File");
     JMenuItem load = new JMenuItem("Load");
-    load.addActionListener((ActionListener) this);
+    load.addActionListener( controller);
     load.setActionCommand("Load");
     JMenuItem save = new JMenuItem("Save");
-    save.addActionListener((ActionListener) this);
+    save.addActionListener(controller);
     save.setActionCommand("Save");
     JMenuItem quit = new JMenuItem("Quit");
     file.add(load);
@@ -237,7 +237,7 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
 
     JMenu help = new JMenu("Help");
     JMenuItem howTo = new JMenuItem("How to use");
-    howTo.addActionListener((ActionListener) this);
+    howTo.addActionListener(controller);
     howTo.setActionCommand("HowTo");
     JMenuItem validCommands = new JMenuItem("Information on Valid Commands");
     JMenuItem documentation = new JMenuItem("Full Documentation");
@@ -252,107 +252,64 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
   }
 
 
-  public void actionPerformed(ActionEvent e) {
-    Object game = e.getActionCommand();
-    if(game.equals("Load")){
-      JFileChooser chooser = new JFileChooser();
-      chooser.showOpenDialog(this);
-      File file = chooser.getSelectedFile();
-      System.out.println(file.getName());
-      String format = file.getName().split("\\.")[1];
-      try{
-        if(format!=".ppm"){
 
-        }
-        loadPic(file);
-        imageBoxes[0] = new ImageIcon(file.getAbsolutePath());
-        displayImage(this.picturePanel);
-      }catch(Exception ex){
-        JOptionPane.showMessageDialog(this, "Error loading file, please check file format.", "Error", JOptionPane.ERROR_MESSAGE);
-      }
+  protected void changeLabelText(String type) {
+    if(type.equals("FLIP")){
+      chosenFlip.setText("\tSelected: " + dropOrientationAndSize.getItemAt(dropOrientationAndSize.getSelectedIndex()));
     }
-    if (game.equals("Picked Filter")) {
-      this.changeLabelText(dropDownFilters, chosenFilter);
-      addEdit(chosenFilter);
+    if(type.equals("COLOR")){
+chosenColor.setText("\tSelected: " + dropDownColorCombinations.getItemAt(dropDownColorCombinations.getSelectedIndex()));
     }
-    if (game.equals("Picked Color")) {
-      this.changeLabelText(dropDownColorCombinations, chosenColor);
-      addEdit(chosenColor);
+    if(type.equals("GREYSCALE")){
+chosenGreyScale.setText("\tSelected: " + dropDownGreyscale.getItemAt(dropDownGreyscale.getSelectedIndex()));
     }
-    if (game.equals("Picked Greyscale")) {
-      this.changeLabelText(dropDownGreyscale, chosenGreyScale);
-      addEdit(chosenGreyScale);
+    if(type.equals("FILTER")){
+ chosenFilter.setText("\tSelected: " + dropDownFilters.getItemAt(dropDownFilters.getSelectedIndex()));
     }
-    if (game.equals("Picked Flip")) {
-      this.changeLabelText(dropOrientationAndSize, chosenFlip);
-      addEdit(chosenFlip);
+    if(type.equals("BRIGHTEN")){
+      incrementLabel.setText("\tSelected: " + dropOrientationAndSize.getItemAt(dropOrientationAndSize.getSelectedIndex()));
     }
-    if (game.equals("Edit")) {
-      try {
-        editImage();
-      } catch (IOException ex) {
-        throw new RuntimeException(ex);
-      }
+    if(type.equals("DIM")){
+      incrementLabel.setText("\tSelected: " + dropOrientationAndSize.getItemAt(dropOrientationAndSize.getSelectedIndex()));
     }
-    if (game.equals("Brightness")) {
-      String increment = JOptionPane.showInputDialog(new JFrame(), "Enter an increment. Positive "
-              + "to increase brightness and negative to decrease brightness");
-
-      try {
-        brightness = Integer.parseInt(increment);
-        this.incrementLabel.setText(increment);
-        JLabel brightened = new JLabel();
-        brightened.setText("SELECTED:  BRIGHTEN");
-        addEdit(brightened);
-      } catch (Exception var5) {
-        this.incrementLabel.setText("Invalid Increment, Please try again.");
-      }
+    if(type.equals("INVALID")){
+      incrementLabel.setText("Invalid Increment, Please try again.");
     }
-    if(game.equals("Save")){
-      String newFile = "res/" + JOptionPane.showInputDialog(new JFrame(), "Enter the new file name");
-      try {
-        this.save(newFile);
-      } catch (IOException ex) {
-        throw new RuntimeException(ex);
-      }
-    }
-//    if (game.equals("HowTo")) {
-//      String increment = JOptionPane.showInputDialog(new JFrame(), "Enter an increment. Positive "
-//              + "to increase brightness and negative to decrease brightness");
-//
-//      try {
-//        Integer.parseInt(increment);
-//        this.incrementLabel.setText(increment);
-//      } catch (Exception var5) {
-//        this.incrementLabel.setText("Invalid Increment, Please try again.");
-//      }
-//    }
-
-
   }
 
-  private void changeLabelText(JComboBox<String> dropDown, JLabel label) {
-    label.setText("\tSelected: " + dropDown.getItemAt(dropDown.getSelectedIndex()));
+  protected void setIncrement() {
+     String increment = JOptionPane.showInputDialog(new JFrame(), "Enter an increment. Positive "
+            + "to increase brightness and negative to decrease brightness");
+     try{
+       brightness = Integer.parseInt(increment);
+     } catch(Exception ex){
+        incrementLabel.setText("Invalid Increment, Please try again.");
+      }
+    }
+
+
+  protected int getIncrement() {
+    return brightness;
   }
 
   public void loadPic(File file) throws IOException {
-    BufferedImage b;
-    try {
-      b = ImageIO.read(file);
-    } catch (IOException e) {
-      throw new NoSuchElementException();
-    }
-    int width = b.getWidth();
-    int height = b.getHeight();
-    Pixel[][] arr = new Pixel[height][width];
-    for (int i = 0; i < width; i++) {
-      for (int j = 0; j < height; j++) {
-        Color c = new Color(b.getRGB(i, j));
-        arr[j][i] = new Pixel(c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha());
-      }
-    }
-    model.add(filename, arr);
-    getHistogram(filename);
+//    BufferedImage b;
+//    try {
+//      b = ImageIO.read(file);
+//    } catch (IOException e) {
+//      throw new NoSuchElementException();
+//    }
+//    int width = b.getWidth();
+//    int height = b.getHeight();
+//    Pixel[][] arr = new Pixel[height][width];
+//    for (int i = 0; i < width; i++) {
+//      for (int j = 0; j < height; j++) {
+//        Color c = new Color(b.getRGB(i, j));
+//        arr[j][i] = new Pixel(c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha());
+//      }
+//    }
+//    model.add(filename, arr);
+//    getHistogram(filename);
   }
 
   public void editImage() throws IOException {
@@ -362,133 +319,155 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
     }else {
 
       for (String edit : edits) {
-        edit(edit);
+        controller.edit(edit);
       }
       edits.clear();
     }
 
   }
 
-  public void addEdit(JLabel command) {
-    if (!command.toString().equalsIgnoreCase("NONE")) {
-      edits.add(command.getText().substring(11));
+  protected void addEdit(String type) {
+    if(type.equals("FLIP")){
+      edits.add(this.getLabelText(chosenFlip));
     }
+    if(type.equals("COLOR")){
+      edits.add(this.getLabelText(chosenColor));
+    }
+    if(type.equals("GREYSCALE")){
+      edits.add(this.getLabelText(chosenGreyScale));
+    }
+    if(type.equals("FILTER")){
+      edits.add(this.getLabelText(chosenFilter));
+    }
+    if(type.equals("BRIGHTEN")){
+      JLabel brightened = new JLabel();
+      brightened.setText("SELECTED:  BRIGHTEN");
+      edits.add(this.getLabelText(brightened));
+    }
+
   }
 
-  public void edit(String command) throws IOException {
-    String newFilename;
-    switch (command) {
-      case ("VERTICAL FLIP"):
-        newFilename = filename + "-vf";
-        new VerticalFlip(filename, newFilename).execute(model, new ImageDisplay(System.out));
-        filename = newFilename;
-        replaceImage(filename);
-        break;
-      case ("HORIZONTAL FLIP"):
-        newFilename = filename + "-hf";
-        new HorizontalFlip(filename, newFilename).execute(model, new ImageDisplay(System.out));
-        filename = newFilename;
-        replaceImage(filename);
-        break;
-      case ("SEPIA"):
-        newFilename = filename + "-sep";
-        new Sepia(filename, newFilename).execute(model, new ImageDisplay(System.out));
-        filename = newFilename;
-        getHistogram(filename);
-        replaceImage(filename);
-        break;
-      case ("GREYSCALE"):
-        newFilename = filename + "-vf";
-        new Greyscale(filename, newFilename).execute(model, new ImageDisplay(System.out));
-        filename = newFilename;
-        getHistogram(filename);
-        replaceImage(filename);
-        break;
-      case ("BLUR"):
-        newFilename = filename + "-bl";
-        new Blur(filename, newFilename).execute(model, new ImageDisplay(System.out));
-        filename = newFilename;
-        getHistogram(filename);
-        replaceImage(filename);
-        break;
-      case ("SHARPEN"):
-        newFilename = filename + "-sh";
-        new Sharpen(filename, newFilename).execute(model, new ImageDisplay(System.out));
-        filename = newFilename;
-        getHistogram(filename);
-        replaceImage(filename);
-        break;
-      case ("RED"):
-        newFilename = filename + "-gr";
-        new RedGreyscale(filename, newFilename).execute(model, new ImageDisplay(System.out));
-        filename = newFilename;
-        getHistogram(filename);
-        replaceImage(filename);
-        break;
-      case ("GREEN"):
-        newFilename = filename + "-gg";
-        new GreenGreyscale(filename, newFilename).execute(model, new ImageDisplay(System.out));
-        filename = newFilename;
-        getHistogram(filename);
-        replaceImage(filename);
-        break;
-      case ("BLUE"):
-        newFilename = filename + "-gb";
-        new BlueGreyscale(filename, newFilename).execute(model, new ImageDisplay(System.out));
-        filename = newFilename;
-        getHistogram(filename);
-        replaceImage(filename);
-        break;
-      case ("LUMA"):
-        newFilename = filename + "-gl";
-        new LumaGreyscale(filename, newFilename).execute(model, new ImageDisplay(System.out));
-        filename = newFilename;
-        getHistogram(filename);
-        replaceImage(filename);
-        break;
-      case ("INTENSITY"):
-        newFilename = filename + "-gi";
-        new IntensityGreyscale(filename, newFilename).execute(model, new ImageDisplay(System.out));
-        filename = newFilename;
-        getHistogram(filename);
-        replaceImage(filename);
-        break;
-      case ("VALUE"):
-        newFilename = filename + "-gv";
-        new ValueGreyscale(filename, newFilename).execute(model, new ImageDisplay(System.out));
-        filename = newFilename;
-        getHistogram(filename);
-        replaceImage(filename);
-        break;
-      case ("BRIGHTEN"):
-        newFilename = filename + "-br";
-        new AdjustBrightness(brightness, filename, newFilename).execute(model, new ImageDisplay(System.out));
-        filename = newFilename;
-        getHistogram(filename);
-        replaceImage(filename);
-        break;
-      default:
-        break;
+  private String getLabelText(JLabel label) {
+    if(!label.toString().equalsIgnoreCase("NONE")){
+      return label.getText().substring(11);
     }
+    return null;
+
   }
+//  public void edit(String command) throws IOException {
+//    String newFilename;
+//    switch (command) {
+//      case ("VERTICAL FLIP"):
+//        newFilename = filename + "-vf";
+//        new VerticalFlip(filename, newFilename).execute(model, new ImageDisplay(System.out));
+//        filename = newFilename;
+//        replaceImage(filename);
+//        break;
+//      case ("HORIZONTAL FLIP"):
+//        newFilename = filename + "-hf";
+//        new HorizontalFlip(filename, newFilename).execute(model, new ImageDisplay(System.out));
+//        filename = newFilename;
+//        replaceImage(filename);
+//        break;
+//      case ("SEPIA"):
+//        newFilename = filename + "-sep";
+//        new Sepia(filename, newFilename).execute(model, new ImageDisplay(System.out));
+//        filename = newFilename;
+//        getHistogram(filename);
+//        replaceImage(filename);
+//        break;
+//      case ("GREYSCALE"):
+//        newFilename = filename + "-vf";
+//        new Greyscale(filename, newFilename).execute(model, new ImageDisplay(System.out));
+//        filename = newFilename;
+//        getHistogram(filename);
+//        replaceImage(filename);
+//        break;
+//      case ("BLUR"):
+//        newFilename = filename + "-bl";
+//        new Blur(filename, newFilename).execute(model, new ImageDisplay(System.out));
+//        filename = newFilename;
+//        getHistogram(filename);
+//        replaceImage(filename);
+//        break;
+//      case ("SHARPEN"):
+//        newFilename = filename + "-sh";
+//        new Sharpen(filename, newFilename).execute(model, new ImageDisplay(System.out));
+//        filename = newFilename;
+//        getHistogram(filename);
+//        replaceImage(filename);
+//        break;
+//      case ("RED"):
+//        newFilename = filename + "-gr";
+//        new RedGreyscale(filename, newFilename).execute(model, new ImageDisplay(System.out));
+//        filename = newFilename;
+//        getHistogram(filename);
+//        replaceImage(filename);
+//        break;
+//      case ("GREEN"):
+//        newFilename = filename + "-gg";
+//        new GreenGreyscale(filename, newFilename).execute(model, new ImageDisplay(System.out));
+//        filename = newFilename;
+//        getHistogram(filename);
+//        replaceImage(filename);
+//        break;
+//      case ("BLUE"):
+//        newFilename = filename + "-gb";
+//        new BlueGreyscale(filename, newFilename).execute(model, new ImageDisplay(System.out));
+//        filename = newFilename;
+//        getHistogram(filename);
+//        replaceImage(filename);
+//        break;
+//      case ("LUMA"):
+//        newFilename = filename + "-gl";
+//        new LumaGreyscale(filename, newFilename).execute(model, new ImageDisplay(System.out));
+//        filename = newFilename;
+//        getHistogram(filename);
+//        replaceImage(filename);
+//        break;
+//      case ("INTENSITY"):
+//        newFilename = filename + "-gi";
+//        new IntensityGreyscale(filename, newFilename).execute(model, new ImageDisplay(System.out));
+//        filename = newFilename;
+//        getHistogram(filename);
+//        replaceImage(filename);
+//        break;
+//      case ("VALUE"):
+//        newFilename = filename + "-gv";
+//        new ValueGreyscale(filename, newFilename).execute(model, new ImageDisplay(System.out));
+//        filename = newFilename;
+//        getHistogram(filename);
+//        replaceImage(filename);
+//        break;
+//      case ("BRIGHTEN"):
+//        newFilename = filename + "-br";
+//        new AdjustBrightness(brightness, filename, newFilename).execute(model, new ImageDisplay(System.out));
+//        filename = newFilename;
+//        getHistogram(filename);
+//        replaceImage(filename);
+//        break;
+//      default:
+//        break;
+//    }
+//  }
 
   public void replaceImage(String filename) {
 
-    ImageIcon image = new ImageIcon(getBufferedImage(filename, model));
+    ImageIcon image = new ImageIcon(getBufferedImage(filename, controller.getModelMap()));
     imageBoxes[0]=image;
-    displayImage(picturePanel);
+    displayImage();
   }
 
-  public BufferedImage getBufferedImage(String filename, ImageEditor model) {
-    int length = model.getMap().get(filename).length;
-    int width = model.getMap().get(filename)[0].length;
+  public BufferedImage getBufferedImage(String filename, Map<String, Pixel[][]> map) {
+    int length = map.get(filename).length;
+    int width = map.get(filename)[0].length;
     BufferedImage bufferedImage = new BufferedImage(width, length, BufferedImage.TYPE_INT_RGB);
     for (int row = 0; row < length; row++) {
       for (int col = 0; col < width; col++) {
-        Color c = new Color(model.getMap().get(filename)[row][col].getRed(),
-                model.getMap().get(filename)[row][col].getGreen(),
-                model.getMap().get(filename)[row][col].getBlue(),
-                model.getMap().get(filename)[row][col].getAlpha());
+        Color c = new Color(map.get(filename)[row][col].getRed(),
+                map.get(filename)[row][col].getGreen(),
+                map.get(filename)[row][col].getBlue(),
+                map.get(filename)[row][col].getAlpha());
         bufferedImage.setRGB(col, row, c.getRGB());
       }
     }
@@ -496,12 +475,12 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
   }
 
   public void save(String pathname) throws IOException {
-    if (!model.getMap().containsKey(filename)) {
+    if (!controller.getModelMap().containsKey(filename)) {
       System.out.println("Image " + filename + " does not exist or has not been loaded!");
       return;
     }
 
-    BufferedImage bufferedImage = this.getBufferedImage(filename, model);
+    BufferedImage bufferedImage = this.getBufferedImage(filename, controller.getModelMap());
 
 
     ArrayList<String> formats = new ArrayList<>(Arrays.asList(ImageIO.getWriterFormatNames()));
@@ -517,11 +496,11 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
   }
 
   public void getHistogram(String filename) {
-    if (!model.getMap().containsKey(filename)) {
+    if (!controller.getModelMap().containsKey(filename)) {
       JOptionPane.showMessageDialog(new JFrame(), "No image loaded!", "Error", JOptionPane.ERROR_MESSAGE);
       return;
     }
-    Pixel[][] pixels = model.getMap().get(filename);
+    Pixel[][] pixels = controller.getModelMap().get(filename);
     int[] red = new int[256];
     int[] green = new int[256];
     int[] blue = new int[256];
@@ -539,7 +518,7 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
     }
     ImageIcon image = new ImageIcon(makeHistogram(red, green,blue,intensity));
     imageBoxes[1] = image;
-    displayImage(picturePanel);
+    displayImage();
 
   }
 
@@ -571,6 +550,10 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
       }
     }
     return bufferedImage;
+  }
+
+  protected void  showErrorPopup(String errorMessage) {
+    JOptionPane.showMessageDialog(new JFrame(), errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
   }
 }
 
