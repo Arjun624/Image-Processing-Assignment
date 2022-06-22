@@ -44,10 +44,10 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
   private JLabel chosenColor ;
   private JLabel chosenGreyScale;
   private JLabel chosenFilter;
-  private JButton editImageButton = new JButton("Edit Image");
+  private JButton editImageButton;
 
 
-  private JMenuBar menuBar = new JMenuBar();
+  private final JMenuBar menuBar = new JMenuBar();
   String[] greyScale = new String[]{"NONE", "RED", "GREEN", "BLUE", "LUMA", "VALUE", "INTENSITY"};
   final JComboBox<String> dropDownGreyscale;
   String[] colorCombinations;
@@ -75,11 +75,11 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
     this.dropOrientationAndSize = new JComboBox(this.orientationAndSize);
     setDefaultLookAndFeelDecorated(true);
     this.setTitle("ImageProcessing");
-    this.setDefaultCloseOperation(3);
+    this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     this.setSize(950, 950);
     this.setResizable(false);
     Container c = this.getContentPane();
-    BoxLayout bl = new BoxLayout(c, 0);
+    BoxLayout bl = new BoxLayout(c, BoxLayout.X_AXIS);
     c.setLayout(bl);
     this.flipCommands.setLayout(new GridLayout(3, 1));
     this.flipCommands.setBorder(BorderFactory.createTitledBorder("Change Orientation or Size"));
@@ -92,7 +92,10 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
     this.specificGreyscaleCommands.setLayout(new GridLayout(3, 1));
     this.specificGreyscaleCommands.setBorder(BorderFactory.createTitledBorder("Choose Greyscale"));
     this.allCommands.setLayout(new GridLayout(6, 1));
-    //this.allCommands.add(this.loadAndSave);
+    this.instantiateButtons();
+    this.displayImage();
+    this.instantiateDropDowns();
+    instantiateMenuBar();
     this.allCommands.add(this.colorCommands);
     this.allCommands.add(this.flipCommands);
     this.allCommands.add(this.filterCommands);
@@ -101,7 +104,8 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
     this.allCommands.add(this.editImageButton);
     c.add(this.allCommands);
     c.add(this.picturePanel);
-    this.instantiateButtons();
+
+
     this.pack();
     this.setVisible(true);
 
@@ -147,18 +151,9 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
 
     adjustBrightnessButton.addActionListener(this);
     adjustBrightnessButton.setActionCommand("Brightness");
-    this.dropDownGreyscale.setMaximumSize(this.dropDownGreyscale.getPreferredSize());
-    this.dropDownGreyscale.setAlignmentX(0.5F);
-    System.out.println((String) this.dropDownGreyscale.getItemAt(this.dropDownGreyscale.getSelectedIndex()));
-    this.dropDownColorCombinations.setMaximumSize(this.dropDownColorCombinations.getPreferredSize());
-    this.dropDownColorCombinations.setAlignmentX(0.5F);
-    System.out.println((String) this.dropDownColorCombinations.getItemAt(this.dropDownColorCombinations.getSelectedIndex()));
-    this.dropDownFilters.setMaximumSize(this.dropDownFilters.getPreferredSize());
-    this.dropDownFilters.setAlignmentX(0.5F);
-    System.out.println((String) this.dropDownFilters.getItemAt(this.dropDownFilters.getSelectedIndex()));
-    this.dropOrientationAndSize.setMaximumSize(this.dropOrientationAndSize.getPreferredSize());
-    this.dropOrientationAndSize.setAlignmentX(0.5F);
-    System.out.println((String) this.dropOrientationAndSize.getItemAt(this.dropOrientationAndSize.getSelectedIndex()));
+
+
+
     this.filterCommands.add(this.dropDownFilters);
     this.filterCommands.add(chooseFilterButton);
     this.filterCommands.add(this.chosenFilter);
@@ -176,11 +171,12 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
 
     picturePanel.setBorder(BorderFactory.createTitledBorder("Showing an image"));
     picturePanel.setLayout(new GridLayout(1, 0, 10, 10));
-    //imagePanel.setMaximumSize(null);
+
     this.add(picturePanel);
 
+  }
 
-
+  private void displayImage(){
 
     String[] images = {"res/battlefield.jpg", "penis.jpg"};
     JLabel[] imageLabel = new JLabel[images.length];
@@ -194,7 +190,20 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
       picturePanel.add(imageScrollPane[i]);
     }
 
+  }
 
+  private void instantiateDropDowns(){
+    this.dropDownGreyscale.setMaximumSize(this.dropDownGreyscale.getPreferredSize());
+    this.dropDownGreyscale.setAlignmentX(0.5F);
+    this.dropDownColorCombinations.setMaximumSize(this.dropDownColorCombinations.getPreferredSize());
+    this.dropDownColorCombinations.setAlignmentX(0.5F);
+    this.dropDownFilters.setMaximumSize(this.dropDownFilters.getPreferredSize());
+    this.dropDownFilters.setAlignmentX(0.5F);
+    this.dropOrientationAndSize.setMaximumSize(this.dropOrientationAndSize.getPreferredSize());
+    this.dropOrientationAndSize.setAlignmentX(0.5F);
+  }
+
+  private void instantiateMenuBar() {
     JMenu file = new JMenu("File");
     JMenuItem load = new JMenuItem("Load");
     load.addActionListener((ActionListener) this);
@@ -219,20 +228,12 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
     menuBar.add(file);
     menuBar.add(help);
     setJMenuBar(menuBar);
-
-//    buttonA.setEnabled(false); //Disables the buttons
-//    buttonB.setEnabled(false);
-//    buttonC.setEnabled(false);
-//    buttonD.setEnabled(false);
-
-
   }
 
 
   public void actionPerformed(ActionEvent e) {
     Object game = e.getActionCommand();
     if(game.equals("Load")){
-      System.out.println("yuh");
       JFileChooser chooser = new JFileChooser();
       chooser.showOpenDialog(this);
       File file = chooser.getSelectedFile();
