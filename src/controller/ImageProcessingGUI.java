@@ -58,6 +58,8 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
   String[] orientationAndSize;
   final JComboBox<String> dropOrientationAndSize;
 
+  String[] imageBoxes = new String[]{"none", "histogram"};
+
   public ImageProcessingGUI(ImageEditor model, GUIView view) throws IOException {
     instantiateLabels();
     instantiatePanels();
@@ -91,9 +93,12 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
     this.brightnessCommands.setBorder(BorderFactory.createTitledBorder("Adjust Brightness"));
     this.specificGreyscaleCommands.setLayout(new GridLayout(3, 1));
     this.specificGreyscaleCommands.setBorder(BorderFactory.createTitledBorder("Choose Greyscale"));
+    this.picturePanel.setBorder(BorderFactory.createTitledBorder("Showing an image"));
+    this.picturePanel.setLayout(new GridLayout(1, 0, 10, 10));
+
     this.allCommands.setLayout(new GridLayout(6, 1));
     this.instantiateButtons();
-    this.displayImage();
+    this.displayImage(picturePanel);
     this.instantiateDropDowns();
     instantiateMenuBar();
     this.allCommands.add(this.colorCommands);
@@ -176,19 +181,25 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
 
   }
 
-  private void displayImage(){
+  private void displayImage(JPanel imagePanel) {
 
-    String[] images = {"",""};
-    JLabel[] imageLabel = new JLabel[images.length];
-    JScrollPane[] imageScrollPane = new JScrollPane[images.length];
+
+    imagePanel.removeAll();
+
+    JLabel[] imageLabel = new JLabel[imageBoxes.length];
+    JScrollPane[] imageScrollPane = new JScrollPane[imageBoxes.length];
 
     for (int i = 0; i < imageLabel.length; i++) {
       imageLabel[i] = new JLabel();
       imageScrollPane[i] = new JScrollPane(imageLabel[i]);
-      imageLabel[i].setIcon(new ImageIcon(images[i]));
+      imageLabel[i].setIcon(new ImageIcon(imageBoxes[i]));
       imageScrollPane[i].setPreferredSize(new Dimension(600, 600));
-      picturePanel.add(imageScrollPane[i]);
+      imagePanel.add(imageScrollPane[i]);
     }
+
+    this.picturePanel.repaint();
+    this.picturePanel.revalidate();
+
 
   }
 
@@ -240,10 +251,8 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
       try{
         BufferedImage image = ImageIO.read(file);
         loadPic(file);
-        this.picturePanel.removeAll();
-        this.picturePanel.add(new JLabel(new ImageIcon(image)));
-        this.picturePanel.revalidate();
-        this.picturePanel.repaint();
+        imageBoxes[0] = file.getAbsolutePath();
+        displayImage(this.picturePanel);
       }catch(Exception ex){
         System.out.println("Error loading image");
       }
