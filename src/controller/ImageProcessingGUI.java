@@ -1,24 +1,18 @@
 package controller;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
-import java.util.NoSuchElementException;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 import model.Pixel;
-import view.GUIView;
-import view.ImageDisplay;
 
 public class ImageProcessingGUI extends JFrame{
 
@@ -396,31 +390,20 @@ chosenGreyScale.setText("\tSelected: " + dropDownGreyscale.getItemAt(dropDownGre
   public BufferedImage makeHistogram(int[] red, int[] green, int[] blue, int[] intensity){
     BufferedImage bufferedImage = new BufferedImage(600, 950, BufferedImage.TYPE_INT_RGB);
     Graphics2D graph = bufferedImage.createGraphics();
-    graph.setColor(Color.red);
-    for (int i = 0; i < 254; i++) {
-      for (int j = 0; j < 254; j++) {
-        graph.drawLine(i * 2 ,red[i],(i+1) * 2,red[i+1]);
-      }
-    }
-    graph.setColor(Color.BLUE);
-    for (int i = 0; i < 254; i++) {
-      for (int j = 0; j < 254; j++) {
-        graph.drawLine(i * 2,blue[i],(i+1) * 2,blue[i+1]);
-      }
-    }
-    graph.setColor(Color.green);
-    for (int i = 0; i < 254; i++) {
-      for (int j = 0; j < 254; j++) {
-        graph.drawLine(i*2,green[i],(i+1) * 2,green[i+1]);
-      }
-    }
-    graph.setColor(Color.gray);
-    for (int i = 0; i < 254; i++) {
-      for (int j = 0; j < 254; j++) {
-        graph.drawLine(i*2,intensity[i],(i+1) * 2,intensity[i+1]);
-      }
-    }
+    drawLines(graph, red, Color.red);
+    drawLines(graph, green, Color.green);
+    drawLines(graph, blue, Color.blue);
+    drawLines(graph, intensity, Color.gray);
     return bufferedImage;
+  }
+
+  private void drawLines(Graphics2D graph, int[] nums, Color c){
+    graph.setColor(c);
+    for (int i = 0; i < 254; i++) {
+      for (int j = 0; j < 254; j++) {
+        graph.drawLine((int)(i * 2.35),nums[i]/2,(int)((i+1) * 2.35),nums[i+1]/2);
+      }
+    }
   }
 
   protected void  showErrorPopup(String errorMessage) {

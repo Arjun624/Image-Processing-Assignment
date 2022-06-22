@@ -1,13 +1,8 @@
 package controller;
 
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 import model.ImageModel;
-import view.GUIView;
-import view.ImageDisplay;
-import view.ImageView;
 
 /**
  * The class that runs the program in its entirety.
