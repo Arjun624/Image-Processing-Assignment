@@ -111,9 +111,22 @@ public interface ImageEditor {
    * @param filename    the file reference
    * @param newFilename what the new file will be saved as
    * @throws IOException              if the program cannot read the input or write the output
-   * @throws IllegalArgumentException if the matrix is null, if the file doesnt exist,
+   * @throws IllegalArgumentException if the matrix is null, 'if the file doesnt exist',
    *                                  <p> or if the color matrix is not size 3x3</p>
    */
   void colorTransform(float[][] colors, String filename, String newFilename)
           throws IOException, IllegalArgumentException;
+
+  /**
+   * Downscales an image.
+   * @param height the height of the new image.
+   * @param width the width of the new image
+   * @param filename the name of the reference
+   * @param newFilename the name that the new image will be stored as
+   * @throws IOException if the program cannot read the input or write the output
+   * @throws IllegalArgumentException if the height or width are negative,
+   * or if the file doesn't exist.
+   */
+  void imageDownscale(int height, int width, String filename, String newFilename) throws IOException,
+          IllegalArgumentException;
 }

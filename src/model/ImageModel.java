@@ -268,5 +268,32 @@ public class ImageModel implements ImageEditor {
     return (int) Math.round(value);
   }
 
+  @Override
+  public void imageDownscale(int height, int width, String filename, String newFilename) throws IOException,
+          IllegalArgumentException {
+    Pixel[][] arr = new Pixel[height][width];
+    int oldHeight = images.get(filename).length;
+    int oldWidth = images.get(filename)[0].length;
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width; j++) {
+        double expHeight = (double) i / (double) height * (double) oldHeight;
+        double expWidth = (double) j / (double) width * (double) oldWidth;
+        if (expHeight - (int) expHeight != 0 && expHeight - (int) expHeight != 0) {
+          Pixel a = images.get(filename)[(int) Math.floor(expHeight)][(int) Math.floor(expWidth)];
+          Pixel b = images.get(filename)[(int) Math.ceil(expHeight)][(int) Math.floor(expWidth)];
+          Pixel c = images.get(filename)[(int) Math.floor(expHeight)][(int) Math.ceil(expWidth)];
+          Pixel d = images.get(filename)[(int) Math.ceil(expHeight)][(int) Math.ceil(expWidth)];
+
+          double redM = (double) b.getRed(expHeight ) * () + a.getRed() * ();
+
+        } else {
+          int newHeight = (int) expHeight;
+          int newWidth = (int) expWidth;
+          arr[i][j] = images.get(filename)[newHeight][newWidth];
+        }
+      }
+    }
+
+  }
 
 }
