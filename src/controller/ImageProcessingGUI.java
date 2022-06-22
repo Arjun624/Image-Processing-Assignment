@@ -14,11 +14,17 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import controller.commands.BlueGreyscale;
 import controller.commands.Blur;
+import controller.commands.GreenGreyscale;
 import controller.commands.Greyscale;
 import controller.commands.HorizontalFlip;
+import controller.commands.IntensityGreyscale;
+import controller.commands.LumaGreyscale;
+import controller.commands.RedGreyscale;
 import controller.commands.Sepia;
 import controller.commands.Sharpen;
+import controller.commands.ValueGreyscale;
 import controller.commands.VerticalFlip;
 import model.ImageEditor;
 import model.Pixel;
@@ -385,6 +391,48 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
       case ("SHARPEN"):
         newFilename = filename + "-sh";
         new Sharpen(filename, newFilename).execute(model, new ImageDisplay(System.out));
+        filename = newFilename;
+        getHistogram(filename);
+        replaceImage(filename);
+        break;
+      case ("RED"):
+        newFilename = filename + "-gr";
+        new RedGreyscale(filename, newFilename).execute(model, new ImageDisplay(System.out));
+        filename = newFilename;
+        getHistogram(filename);
+        replaceImage(filename);
+        break;
+      case ("GREEN"):
+        newFilename = filename + "-gg";
+        new GreenGreyscale(filename, newFilename).execute(model, new ImageDisplay(System.out));
+        filename = newFilename;
+        getHistogram(filename);
+        replaceImage(filename);
+        break;
+      case ("BLUE"):
+        newFilename = filename + "-gb";
+        new BlueGreyscale(filename, newFilename).execute(model, new ImageDisplay(System.out));
+        filename = newFilename;
+        getHistogram(filename);
+        replaceImage(filename);
+        break;
+      case ("LUMA"):
+        newFilename = filename + "-gl";
+        new LumaGreyscale(filename, newFilename).execute(model, new ImageDisplay(System.out));
+        filename = newFilename;
+        getHistogram(filename);
+        replaceImage(filename);
+        break;
+      case ("INTENSITY"):
+        newFilename = filename + "-gi";
+        new IntensityGreyscale(filename, newFilename).execute(model, new ImageDisplay(System.out));
+        filename = newFilename;
+        getHistogram(filename);
+        replaceImage(filename);
+        break;
+      case ("VALUE"):
+        newFilename = filename + "-gv";
+        new ValueGreyscale(filename, newFilename).execute(model, new ImageDisplay(System.out));
         filename = newFilename;
         getHistogram(filename);
         replaceImage(filename);
