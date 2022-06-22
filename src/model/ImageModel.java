@@ -284,8 +284,28 @@ public class ImageModel implements ImageEditor {
           Pixel c = images.get(filename)[(int) Math.floor(expHeight)][(int) Math.ceil(expWidth)];
           Pixel d = images.get(filename)[(int) Math.ceil(expHeight)][(int) Math.ceil(expWidth)];
 
-          double redM = (double) b.getRed(expHeight ) * () + a.getRed() * ();
+          double redM = (double) b.getRed() * (expHeight - Math.floor(expHeight)) +
+                  a.getRed() * (Math.ceil(expHeight) + expHeight);
+          double greenM = (double) b.getGreen() * (expHeight - Math.floor(expHeight)) +
+                  a.getGreen() * (Math.ceil(expHeight) + expHeight);
+          double blueM = (double) b.getBlue() * (expHeight - Math.floor(expHeight)) +
+                  a.getBlue() * (Math.ceil(expHeight) + expHeight);
 
+          double redN = (double) d.getRed() * (expHeight - Math.floor(expHeight)) +
+                  c.getRed() * (Math.ceil(expHeight) + expHeight);
+          double greenN = (double) d.getGreen() * (expHeight - Math.floor(expHeight)) +
+                  c.getGreen() * (Math.ceil(expHeight) + expHeight);
+          double blueN = (double) d.getBlue() * (expHeight - Math.floor(expHeight)) +
+                  c.getBlue() * (Math.ceil(expHeight) + expHeight);
+
+          double redP =  redN * (expWidth - Math.floor(expWidth)) +
+                  redM * (Math.ceil(expWidth) + expWidth);
+          double greenP =  greenN * (expWidth - Math.floor(expWidth)) +
+                  greenM * (Math.ceil(expWidth) + expWidth);
+          double blueP =  blueN * (expWidth - Math.floor(expWidth)) +
+                  blueM * (Math.ceil(expWidth) + expWidth);
+
+          arr[i][j] = new Pixel(fixRGBRange(redP),fixRGBRange(greenP),fixRGBRange(blueP));
         } else {
           int newHeight = (int) expHeight;
           int newWidth = (int) expWidth;
@@ -293,7 +313,7 @@ public class ImageModel implements ImageEditor {
         }
       }
     }
-
+    images.put(newFilename,arr);
   }
 
 }
