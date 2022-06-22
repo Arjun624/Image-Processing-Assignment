@@ -66,7 +66,7 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
     this.model = model;
     this.view = view;
     this.compNum = 0;
-    this.filename = "test";
+    this.filename = "image";
     edits = new ArrayList<>();
     this.dropDownGreyscale = new JComboBox(this.greyScale);
     this.colorCombinations = new String[]{"NONE", "SEPIA", "GREYSCALE"};
@@ -192,7 +192,13 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
     for (int i = 0; i < imageLabel.length; i++) {
       imageLabel[i] = new JLabel();
       imageScrollPane[i] = new JScrollPane(imageLabel[i]);
-      imageLabel[i].setIcon(new ImageIcon(imageBoxes[i]));
+      if(i == 0) {
+        try {
+          imageLabel[i].setIcon(new ImageIcon(getBuffered(imageBoxes[0])));
+        } catch (NullPointerException e) {
+          imageLabel[i].setIcon(new ImageIcon("none"));
+        }
+      }
       imageScrollPane[i].setPreferredSize(new Dimension(600, 600));
       imagePanel.add(imageScrollPane[i]);
     }
@@ -251,7 +257,7 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
       try{
         BufferedImage image = ImageIO.read(file);
         loadPic(file);
-        imageBoxes[0] = file.getAbsolutePath();
+        imageBoxes[0] = filename;
         displayImage(this.picturePanel);
       }catch(Exception ex){
         System.out.println("Error loading image");
@@ -353,37 +359,49 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
         newFilename = filename + "-vf";
         new VerticalFlip(filename, newFilename).execute(model, new ImageDisplay(System.out));
         filename = newFilename;
-        replaceImage(filename);
+        imageBoxes[0] = filename;
+        getHistogram(filename);
+        displayImage(picturePanel);
         break;
       case ("HORIZONTAL FLIP"):
         newFilename = filename + "-hf";
         new HorizontalFlip(filename, newFilename).execute(model, new ImageDisplay(System.out));
         filename = newFilename;
-        replaceImage(filename);
+        imageBoxes[0] = filename;
+        getHistogram(filename);
+        displayImage(picturePanel);
         break;
       case ("SEPIA"):
         newFilename = filename + "-sep";
         new Sepia(filename, newFilename).execute(model, new ImageDisplay(System.out));
         filename = newFilename;
-        replaceImage(filename);
+        imageBoxes[0] = filename;
+        getHistogram(filename);
+        displayImage(picturePanel);
         break;
       case ("GREYSCALE"):
         newFilename = filename + "-vf";
         new Greyscale(filename, newFilename).execute(model, new ImageDisplay(System.out));
         filename = newFilename;
-        replaceImage(filename);
+        imageBoxes[0] = filename;
+        getHistogram(filename);
+        displayImage(picturePanel);
         break;
       case ("BLUR"):
         newFilename = filename + "-bl";
         new Blur(filename, newFilename).execute(model, new ImageDisplay(System.out));
         filename = newFilename;
-        replaceImage(filename);
+        imageBoxes[0] = filename;
+        getHistogram(filename);
+        displayImage(picturePanel);
         break;
       case ("SHARPEN"):
         newFilename = filename + "-sh";
         new Sharpen(filename, newFilename).execute(model, new ImageDisplay(System.out));
         filename = newFilename;
-        replaceImage(filename);
+        imageBoxes[0] = filename;
+        getHistogram(filename);
+        displayImage(picturePanel);
         break;
       default:
         break;
@@ -408,6 +426,24 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
     compNum += 1;
     picturePanel.add(new JLabel(image));
   }
+
+  public BufferedImage getBuffered(String filename) {
+    int length = model.getMap().get(filename).length;
+    int width = model.getMap().get(filename)[0].length;
+    BufferedImage bufferedImage = new BufferedImage(width, length, BufferedImage.TYPE_INT_RGB);
+    for (int row = 0; row < length; row++) {
+      for (int col = 0; col < width; col++) {
+        Color c = new Color(model.getMap().get(filename)[row][col].getRed(),
+                model.getMap().get(filename)[row][col].getGreen(),
+                model.getMap().get(filename)[row][col].getBlue(),
+                model.getMap().get(filename)[row][col].getAlpha());
+        bufferedImage.setRGB(col, row, c.getRGB());
+      }
+    }
+    return bufferedImage;
+  }
+
+
 
   public void getHistogram(String filename) {
     Pixel[][] pixels = model.getMap().get(filename);
