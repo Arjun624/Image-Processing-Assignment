@@ -258,12 +258,17 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
       JFileChooser chooser = new JFileChooser();
       chooser.showOpenDialog(this);
       File file = chooser.getSelectedFile();
+      System.out.println(file.getName());
+      String format = file.getName().split("\\.")[1];
       try{
+        if(format!=".ppm"){
+
+        }
         loadPic(file);
         imageBoxes[0] = new ImageIcon(file.getAbsolutePath());
         displayImage(this.picturePanel);
       }catch(Exception ex){
-        System.out.println("Error loading image");
+        JOptionPane.showMessageDialog(this, "Error loading file, please check file format.", "Error", JOptionPane.ERROR_MESSAGE);
       }
     }
     if (game.equals("Picked Filter")) {
@@ -351,10 +356,17 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
   }
 
   public void editImage() throws IOException {
-    for (int i = 0; i < edits.size(); i++) {
-      edit(edits.get(i));
+    if (edits.isEmpty()) {
+      JOptionPane.showMessageDialog(new JFrame(), "No edits to apply", "Error", JOptionPane.ERROR_MESSAGE);
+
+    }else {
+
+      for (String edit : edits) {
+        edit(edit);
+      }
+      edits.clear();
     }
-    edits.clear();
+
   }
 
   public void addEdit(JLabel command) {
@@ -461,6 +473,13 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
   }
 
   public void replaceImage(String filename) {
+
+    ImageIcon image = new ImageIcon(getBufferedImage(filename, model));
+    imageBoxes[0]=image;
+    displayImage(picturePanel);
+  }
+
+  public BufferedImage getBufferedImage(String filename, ImageEditor model) {
     int length = model.getMap().get(filename).length;
     int width = model.getMap().get(filename)[0].length;
     BufferedImage bufferedImage = new BufferedImage(width, length, BufferedImage.TYPE_INT_RGB);
@@ -473,9 +492,7 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
         bufferedImage.setRGB(col, row, c.getRGB());
       }
     }
-    ImageIcon image = new ImageIcon(bufferedImage);
-    imageBoxes[0]=image;
-    displayImage(picturePanel);
+    return bufferedImage;
   }
 
   public void save(String pathname) throws IOException {
@@ -484,19 +501,7 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
       return;
     }
 
-    int length = model.getMap().get(filename).length;
-    int width = model.getMap().get(filename)[0].length;
-    BufferedImage bufferedImage = new BufferedImage(width,
-            length, BufferedImage.TYPE_INT_RGB);
-    for (int row = 0; row < length; row++) {
-      for (int col = 0; col < width; col++) {
-        Color c = new Color(model.getMap().get(filename)[row][col].getRed(),
-                model.getMap().get(filename)[row][col].getGreen(),
-                model.getMap().get(filename)[row][col].getBlue(),
-                model.getMap().get(filename)[row][col].getAlpha());
-        bufferedImage.setRGB(col, row, c.getRGB());
-      }
-    }
+    BufferedImage bufferedImage = this.getBufferedImage(filename, model);
 
 
     ArrayList<String> formats = new ArrayList<>(Arrays.asList(ImageIO.getWriterFormatNames()));
@@ -512,6 +517,10 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
   }
 
   public void getHistogram(String filename) {
+    if (!model.getMap().containsKey(filename)) {
+      JOptionPane.showMessageDialog(new JFrame(), "No image loaded!", "Error", JOptionPane.ERROR_MESSAGE);
+      return;
+    }
     Pixel[][] pixels = model.getMap().get(filename);
     int[] red = new int[256];
     int[] green = new int[256];

@@ -263,19 +263,9 @@ public class ImageControllerImpl implements ImageController {
       return;
     }
 
-    int length = model.getMap().get(filename).length;
-    int width = model.getMap().get(filename)[0].length;
-    BufferedImage bufferedImage = new BufferedImage(width,
-            length, BufferedImage.TYPE_INT_RGB);
-    for (int row = 0; row < length; row++) {
-      for (int col = 0; col < width; col++) {
-        Color c = new Color(model.getMap().get(filename)[row][col].getRed(),
-                model.getMap().get(filename)[row][col].getGreen(),
-                model.getMap().get(filename)[row][col].getBlue(),
-                model.getMap().get(filename)[row][col].getAlpha());
-        bufferedImage.setRGB(col, row, c.getRGB());
-      }
-    }
+    ImageProcessingGUI gui = new ImageProcessingGUI(model, null);
+
+    BufferedImage bufferedImage = gui.getBufferedImage(filename, model);
 
 
     ArrayList<String> formats = new ArrayList<>(Arrays.asList(ImageIO.getWriterFormatNames()));
