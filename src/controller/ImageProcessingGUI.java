@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.NoSuchElementException;
 
 import javax.imageio.ImageIO;
@@ -227,6 +228,8 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
     load.addActionListener((ActionListener) this);
     load.setActionCommand("Load");
     JMenuItem save = new JMenuItem("Save");
+    save.addActionListener((ActionListener) this);
+    save.setActionCommand("Save");
     JMenuItem quit = new JMenuItem("Quit");
     file.add(load);
     file.add(save);
@@ -298,6 +301,14 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
         addEdit(brightened);
       } catch (Exception var5) {
         this.incrementLabel.setText("Invalid Increment, Please try again.");
+      }
+    }
+    if(game.equals("Save")){
+      String newFile = "res/" + JOptionPane.showInputDialog(new JFrame(), "Enter the new file name");
+      try {
+        this.save(newFile);
+      } catch (IOException ex) {
+        throw new RuntimeException(ex);
       }
     }
 //    if (game.equals("HowTo")) {
@@ -465,6 +476,39 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
     ImageIcon image = new ImageIcon(bufferedImage);
     imageBoxes[0]=image;
     displayImage(picturePanel);
+  }
+
+  public void save(String pathname) throws IOException {
+    if (!model.getMap().containsKey(filename)) {
+      System.out.println("Image " + filename + " does not exist or has not been loaded!");
+      return;
+    }
+
+    int length = model.getMap().get(filename).length;
+    int width = model.getMap().get(filename)[0].length;
+    BufferedImage bufferedImage = new BufferedImage(width,
+            length, BufferedImage.TYPE_INT_RGB);
+    for (int row = 0; row < length; row++) {
+      for (int col = 0; col < width; col++) {
+        Color c = new Color(model.getMap().get(filename)[row][col].getRed(),
+                model.getMap().get(filename)[row][col].getGreen(),
+                model.getMap().get(filename)[row][col].getBlue(),
+                model.getMap().get(filename)[row][col].getAlpha());
+        bufferedImage.setRGB(col, row, c.getRGB());
+      }
+    }
+
+
+    ArrayList<String> formats = new ArrayList<>(Arrays.asList(ImageIO.getWriterFormatNames()));
+    String type2 = pathname.split("\\.")[1];
+
+    if (formats.contains(type2)) {
+      File file = new File(pathname);
+      ImageIO.write(bufferedImage, type2, file);
+      System.out.println("Image: " + filename + "\nsaved as: " + pathname);
+    } else {
+      System.out.println("Image type not supported");
+    }
   }
 
   public void getHistogram(String filename) {
