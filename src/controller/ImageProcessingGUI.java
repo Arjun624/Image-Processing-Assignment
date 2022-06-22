@@ -353,7 +353,6 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
         newFilename = filename + "-vf";
         new VerticalFlip(filename, newFilename).execute(model, new ImageDisplay(System.out));
         filename = newFilename;
-        getHistogram(filename);
         replaceImage(filename);
         break;
       case ("HORIZONTAL FLIP"):
@@ -366,24 +365,28 @@ public class ImageProcessingGUI extends JFrame implements ActionListener {
         newFilename = filename + "-sep";
         new Sepia(filename, newFilename).execute(model, new ImageDisplay(System.out));
         filename = newFilename;
+        getHistogram(filename);
         replaceImage(filename);
         break;
       case ("GREYSCALE"):
         newFilename = filename + "-vf";
         new Greyscale(filename, newFilename).execute(model, new ImageDisplay(System.out));
         filename = newFilename;
+        getHistogram(filename);
         replaceImage(filename);
         break;
       case ("BLUR"):
         newFilename = filename + "-bl";
         new Blur(filename, newFilename).execute(model, new ImageDisplay(System.out));
         filename = newFilename;
+        getHistogram(filename);
         replaceImage(filename);
         break;
       case ("SHARPEN"):
         newFilename = filename + "-sh";
         new Sharpen(filename, newFilename).execute(model, new ImageDisplay(System.out));
         filename = newFilename;
+        getHistogram(filename);
         replaceImage(filename);
         break;
       default:
