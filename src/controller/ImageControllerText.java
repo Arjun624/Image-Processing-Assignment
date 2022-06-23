@@ -23,7 +23,6 @@ import controller.commands.Blur;
 import controller.commands.GreenGreyscale;
 import controller.commands.Greyscale;
 import controller.commands.HorizontalFlip;
-import controller.commands.ImageDownscale;
 import controller.commands.IntensityGreyscale;
 import controller.commands.LoadImage;
 import controller.commands.LumaGreyscale;
@@ -41,7 +40,7 @@ import view.ImageView;
 /**
  * Implementation of an image controller.
  */
-public class ImageControllerImpl implements ImageController {
+public class ImageControllerText implements ImageController {
 
   private final ImageView view;
 
@@ -57,7 +56,7 @@ public class ImageControllerImpl implements ImageController {
    * @param view the view
    * @param rd   the readable object to be read by the scanner
    */
-  public ImageControllerImpl(ImageView view, Readable rd, ImageEditor model)
+  public ImageControllerText(ImageView view, Readable rd, ImageEditor model)
           throws IllegalArgumentException {
     if (view == null || rd == null || model == null) {
       throw new IllegalArgumentException("View, readable, or model cannot be null");
@@ -83,7 +82,6 @@ public class ImageControllerImpl implements ImageController {
     commands.put("blur", s -> new Blur(s.next(), s.next()));
     commands.put("sepia", s -> new Sepia(s.next(), s.next()));
     commands.put("greyscale", s -> new Greyscale(s.next(), s.next()));
-    commands.put("downscale", s -> new ImageDownscale(s.nextInt(), s.nextInt(), s.next(), s.next()));
     commands.put("q", s -> new Quit());
 
   }
@@ -194,7 +192,7 @@ public class ImageControllerImpl implements ImageController {
           NoSuchElementException {
     if (pathname.length() >= 4
             && pathname.substring(pathname.length() - 4)
-                    .equalsIgnoreCase(".ppm")) {
+            .equalsIgnoreCase(".ppm")) {
       savePPM(pathname, filename);
     } else {
       saveOther(pathname, filename);
@@ -265,10 +263,19 @@ public class ImageControllerImpl implements ImageController {
       return;
     }
 
-
-
-    BufferedImage bufferedImage = new BufferedImage(model.getMap().get(filename)[0].length,
-            model.getMap().get(filename).length, BufferedImage.TYPE_INT_ARGB);
+    int length = model.getMap().get(filename).length;
+    int width = model.getMap().get(filename)[0].length;
+    BufferedImage bufferedImage = new BufferedImage(width,
+            length, BufferedImage.TYPE_INT_RGB);
+    for (int row = 0; row < length; row++) {
+      for (int col = 0; col < width; col++) {
+        Color c = new Color(model.getMap().get(filename)[row][col].getRed(),
+                model.getMap().get(filename)[row][col].getGreen(),
+                model.getMap().get(filename)[row][col].getBlue(),
+                model.getMap().get(filename)[row][col].getAlpha());
+        bufferedImage.setRGB(col, row, c.getRGB());
+      }
+    }
 
 
     ArrayList<String> formats = new ArrayList<>(Arrays.asList(ImageIO.getWriterFormatNames()));

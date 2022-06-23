@@ -17,7 +17,7 @@ import java.util.Scanner;
 import javax.imageio.ImageIO;
 
 import controller.ImageController;
-import controller.ImageControllerImpl;
+import controller.ImageControllerText;
 import model.ImageEditor;
 import model.ImageModel;
 import model.Pixel;
@@ -49,7 +49,7 @@ public class TestController {
   @Test
   public void testValidInitialization() throws IOException {
     Readable r = new StringReader("q");
-    ImageController c = new ImageControllerImpl(v, r, m);
+    ImageController c = new ImageControllerText(v, r, m);
     c.start();
     assertEquals("program quit", ap.toString());
   }
@@ -57,28 +57,28 @@ public class TestController {
   @Test
   public void testInvalidInitialization() throws IOException {
     try {
-      new ImageControllerImpl(null, new StringReader(""), m);
+      new ImageControllerText(null, new StringReader(""), m);
       fail("Should have thrown an exception");
     } catch (IllegalArgumentException e) {
       assertEquals(e.getMessage(), "View, readable, or model cannot be null");
     }
 
     try {
-      new ImageControllerImpl(v, null, m);
+      new ImageControllerText(v, null, m);
       fail("Should have thrown an exception");
     } catch (IllegalArgumentException e) {
       assertEquals(e.getMessage(), "View, readable, or model cannot be null");
     }
 
     try {
-      new ImageControllerImpl(v, new StringReader(""), null);
+      new ImageControllerText(v, new StringReader(""), null);
       fail("Should have thrown an exception");
     } catch (IllegalArgumentException e) {
       assertEquals(e.getMessage(), "View, readable, or model cannot be null");
     }
 
     Readable r = new StringReader("");
-    ImageController c = new ImageControllerImpl(v, r, m);
+    ImageController c = new ImageControllerText(v, r, m);
     try {
       c.start();
       fail("Should have thrown an exception");
@@ -102,7 +102,7 @@ public class TestController {
             + "luma test test-l "
             + "intensity test test-i  "
             + "value test test-v  q");
-    ImageController c = new ImageControllerImpl(v, r, m);
+    ImageController c = new ImageControllerText(v, r, m);
     c.start();
     assertEquals("added test to hashmap", ap.toString().split("\n")[0]);
     assertEquals("adjusted test by 10. Is now test-ab", ap.toString().split("\n")[1]);
@@ -128,7 +128,7 @@ public class TestController {
   @Test
   public void testInvalidInput() throws IOException {
     Readable r = new StringReader("hello q");
-    ImageController c = new ImageControllerImpl(v, r, m);
+    ImageController c = new ImageControllerText(v, r, m);
     c.start();
     assertEquals("Enter a command: \n"
             + "Invalid command!\n"
@@ -141,7 +141,7 @@ public class TestController {
     Readable r2 = new StringReader("load hello1 test q");
     Appendable apView2 = new StringBuilder();
     ImageView v2 = new ImageDisplay(apView2);
-    ImageController c2 = new ImageControllerImpl(v2, r2, m2);
+    ImageController c2 = new ImageControllerText(v2, r2, m2);
     c2.start();
 
     Appendable ap3 = new StringBuilder();
@@ -150,7 +150,7 @@ public class TestController {
     Readable r3 = new StringReader("load " + "res/doesNotExist.ppm " + "test max hello test-max q");
     Appendable apView3 = new StringBuilder();
     ImageView v3 = new ImageDisplay(apView3);
-    ImageController c3 = new ImageControllerImpl(v3, r3, m3);
+    ImageController c3 = new ImageControllerText(v3, r3, m3);
     c3.start();
     assertEquals("Enter a command: ", apView3.toString().split("\n")[2]);
 
@@ -161,7 +161,7 @@ public class TestController {
   public void testLoadPPM() throws IOException {
     ImageModel m = new ImageModel();
     ImageView view = new ImageDisplay(new StringBuilder());
-    ImageController c = new ImageControllerImpl(view, new InputStreamReader(System.in), m);
+    ImageController c = new ImageControllerText(view, new InputStreamReader(System.in), m);
     c.loadImage("res/test.ppm", "test");
 
 
@@ -223,7 +223,7 @@ public class TestController {
   public void testLoadOther() throws IOException {
     ImageModel m = new ImageModel();
     ImageView view = new ImageDisplay(new StringBuilder());
-    ImageController c = new ImageControllerImpl(view, new InputStreamReader(System.in), m);
+    ImageController c = new ImageControllerText(view, new InputStreamReader(System.in), m);
     c.loadImage("res/ClassDiagram.png", "test");
 
     BufferedImage b;
@@ -259,7 +259,7 @@ public class TestController {
   public void testSavePPM() throws IOException {
     ImageModel m = new ImageModel();
     ImageView view = new ImageDisplay(new StringBuilder());
-    ImageController c = new ImageControllerImpl(view, new InputStreamReader(System.in), m);
+    ImageController c = new ImageControllerText(view, new InputStreamReader(System.in), m);
     c.loadImage("res/test.ppm", "test");
     c.saveImage("res/SaveTest.ppm", "test");
 
@@ -314,7 +314,7 @@ public class TestController {
   public void testSaveOtherPNG() throws IOException {
     ImageModel m = new ImageModel();
     ImageView view = new ImageDisplay(new StringBuilder());
-    ImageController c = new ImageControllerImpl(view, new InputStreamReader(System.in), m);
+    ImageController c = new ImageControllerText(view, new InputStreamReader(System.in), m);
     c.loadImage("res/ClassDiagram.png", "test");
     c.saveImage("res/testClassDiagram.png", "test");
 
@@ -345,7 +345,7 @@ public class TestController {
   public void testSaveOtherBMP() throws IOException {
     ImageModel m = new ImageModel();
     ImageView view = new ImageDisplay(new StringBuilder());
-    ImageController c = new ImageControllerImpl(view, new InputStreamReader(System.in), m);
+    ImageController c = new ImageControllerText(view, new InputStreamReader(System.in), m);
     c.loadImage("res/battlefield-red-greyscale.bmp", "test");
     c.saveImage("res/testBMP.bmp", "test");
 
@@ -378,7 +378,7 @@ public class TestController {
     ImageView view = new ImageDisplay(new StringBuilder());
     ImageEditor model = new MockImageModel(ap);
     InputStreamReader in = new FileReader("res/testScript.txt");
-    ImageControllerImpl controller = new ImageControllerImpl(view, in, model);
+    ImageControllerText controller = new ImageControllerText(view, in, model);
     controller.start();
     assertEquals("added test to hashmap\n" +
             "flipped test vertically. Is now test-vf\n" +

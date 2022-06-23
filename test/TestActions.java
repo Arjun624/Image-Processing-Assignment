@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 
 import controller.ImageController;
-import controller.ImageControllerImpl;
+import controller.ImageControllerText;
 import controller.commands.AdjustBrightness;
 import controller.commands.BlueGreyscale;
 import controller.commands.Blur;
@@ -164,7 +164,7 @@ public class TestActions {
 
   @Test
   public void testLoadImage() throws IOException {
-    ImageController c = new ImageControllerImpl(v, new InputStreamReader(System.in), m);
+    ImageController c = new ImageControllerText(v, new InputStreamReader(System.in), m);
     LoadImage l = new LoadImage("arjun", "test", c);
 
     l.execute(m2, v);
@@ -178,7 +178,7 @@ public class TestActions {
 
   @Test
   public void testSaveImage() throws IOException {
-    ImageController c = new ImageControllerImpl(v, new InputStreamReader(System.in), m2);
+    ImageController c = new ImageControllerText(v, new InputStreamReader(System.in), m2);
     SaveImage s = new SaveImage("arjun", "test", c);
     s.execute(m2, v);
     assertEquals("Image test does not exist or has not been loaded!\n", ap2.toString());

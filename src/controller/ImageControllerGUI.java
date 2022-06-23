@@ -11,7 +11,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -32,22 +31,26 @@ import controller.commands.Sharpen;
 import controller.commands.ValueGreyscale;
 import controller.commands.VerticalFlip;
 import model.ImageEditor;
-import model.ImageModel;
 import model.Pixel;
+import view.GUIView;
 import view.ImageDisplay;
 
 public class ImageControllerGUI implements ImageController, ActionListener {
 
 
   private final ImageEditor model;
-  private final ImageProcessingGUI gui;
+  private final GUIView gui;
 
   private String filename;
 
-  public ImageControllerGUI(ImageEditor model) throws IOException {
+  ArrayList<String> inputtedEdits;
+
+  public ImageControllerGUI(ImageEditor model, GUIView view) throws IOException {
     this.model = model;
-    this.gui = new ImageProcessingGUI(this);
+    this.gui = view;
     this.filename = "image";
+    this.inputtedEdits = new ArrayList<>();
+    gui.setActionListeners(this);
   }
 
   /**
@@ -57,7 +60,7 @@ public class ImageControllerGUI implements ImageController, ActionListener {
    */
   @Override
   public void start() throws IOException {
-
+    gui.displayWelcomeMessage();
   }
 
   /**
@@ -86,7 +89,9 @@ public class ImageControllerGUI implements ImageController, ActionListener {
     try {
       sc = new Scanner(new FileInputStream(file));
     } catch (FileNotFoundException e) {
-      throw new NoSuchElementException("File " + file.getName() + " not found!");
+
+      gui.showErrorPopup("File " + file.getName() + " not found!");
+      return;
     }
     StringBuilder builder = new StringBuilder();
     //read the file line by line, and populate a string. This will throw away any comment lines
@@ -120,10 +125,9 @@ public class ImageControllerGUI implements ImageController, ActionListener {
         pixels[row][col] = new Pixel(r, g, b);
       }
     }
-    System.out.println("yuh");
     model.add(filename, pixels);
-    gui.getHistogram(filename);
-    //view.renderMessage("Image: " + pathname + "\nloaded as: " + filename);
+    gui.getHistogram(filename, model.getMap());
+    gui.renderMessage("Image: " + file.getAbsolutePath() + "\nloaded as: " + filename);
 
   }
 
@@ -146,7 +150,7 @@ public class ImageControllerGUI implements ImageController, ActionListener {
       }
     }
     model.add(filename, arr);
-    gui.getHistogram(filename);
+    gui.getHistogram(filename, model.getMap());
   }
 
 
@@ -173,7 +177,7 @@ public class ImageControllerGUI implements ImageController, ActionListener {
     StringBuilder sb = new StringBuilder();
     try {
       if (!model.getMap().containsKey(filename)) {
-        //view.renderMessage("Image " + filename + " does not exist or has not been loaded!");
+        gui.showErrorPopup("Image " + filename + " does not exist or has not been loaded!");
         return;
       }
     } catch (NullPointerException e) {
@@ -181,11 +185,11 @@ public class ImageControllerGUI implements ImageController, ActionListener {
     }
     try {
       File newFile = new File(pathname);
-      //view.renderMessage("Image: " + filename + "\nsaved as: " + pathname);
+      gui.renderMessage("Image: " + filename + "\nsaved as: " + pathname);
       if (newFile.createNewFile()) {
-       // view.renderMessage("File created: " + newFile.getName());
+        gui.renderMessage("File created: " + newFile.getName());
       } else {
-        //view.renderMessage("File already exists.");
+        gui.showErrorPopup("File already exists.");
       }
 
     } catch (IOException e) {
@@ -216,9 +220,9 @@ public class ImageControllerGUI implements ImageController, ActionListener {
       }
       writer.write(sb.toString());
       writer.close();
-     // view.renderMessage("Successfully wrote to the file.");
+      // view.renderMessage("Successfully wrote to the file.");
     } catch (IOException e) {
-     // view.renderMessage("An error occurred.");
+      // view.renderMessage("An error occurred.");
       e.printStackTrace();
     }
 
@@ -227,10 +231,9 @@ public class ImageControllerGUI implements ImageController, ActionListener {
   private void saveOther(String pathname) throws IOException {
 
     if (!model.getMap().containsKey(filename)) {
-      //view.renderMessage("Image " + filename + " does not exist or has not been loaded!");
+
       return;
     }
-
 
 
     BufferedImage bufferedImage = gui.getBufferedImage(filename, model.getMap());
@@ -242,9 +245,9 @@ public class ImageControllerGUI implements ImageController, ActionListener {
     if (formats.contains(type2)) {
       File file = new File(pathname);
       ImageIO.write(bufferedImage, type2, file);
-      //view.renderMessage("Image: " + filename + "\nsaved as: " + pathname);
+      gui.renderMessage("Image: " + filename + "\nsaved as: " + pathname);
     } else {
-     // view.renderMessage("Image type not supported");
+      gui.showErrorPopup("Image type not supported");
     }
 
 
@@ -258,176 +261,189 @@ public class ImageControllerGUI implements ImageController, ActionListener {
   @Override
   public void actionPerformed(ActionEvent e) {
     Object game = e.getActionCommand();
-    if(game.equals("Load")){
-      JFileChooser chooser = new JFileChooser();
-      chooser.showOpenDialog(gui);
-      File file = chooser.getSelectedFile();
-      filename=file.getName();
-      try{
+    if (game.equals("Load")) {
+      File file = gui.GetLoadFile();
+      filename = file.getName();
+      try {
         this.loadImage(file.getAbsolutePath(), filename);
-        gui.imageBoxes[0] = new ImageIcon(file.getAbsolutePath());
-        gui.replaceImage(filename);
-      }catch(Exception ex){
+        this.replaceImage(filename);
+      } catch (Exception ex) {
         gui.showErrorPopup("Error loading file, please check file format.");
       }
     }
     if (game.equals("Picked Filter")) {
       gui.changeLabelText("FILTER");
-      gui.addEdit("FILTER");
+      gui.addEdit("FILTER", inputtedEdits);
     }
     if (game.equals("Picked Color")) {
       gui.changeLabelText("COLOR");
-      gui.addEdit("COLOR");
+      gui.addEdit("COLOR", inputtedEdits);
     }
     if (game.equals("Picked Greyscale")) {
       gui.changeLabelText("GREYSCALE");
-      gui.addEdit("GREYSCALE");
+      gui.addEdit("GREYSCALE", inputtedEdits);
     }
     if (game.equals("Picked Flip")) {
       gui.changeLabelText("FLIP");
-      gui.addEdit("FLIP");
+      gui.addEdit("FLIP", inputtedEdits);
     }
     if (game.equals("Edit")) {
       try {
-        gui.editImage();
-      } catch (IOException ex) {
+        this.editImage();
+      } catch (Exception ex) {
         throw new RuntimeException(ex);
       }
     }
     if (game.equals("Brightness")) {
-       gui.setIncrement();
+      gui.setIncrement();
 
       try {
         int brightness = gui.getIncrement();
-        if(brightness>0){
+        if (brightness > 0) {
           gui.changeLabelText("BRIGHTEN");
-          gui.addEdit("BRIGHTEN");
-        } else if(brightness<0){
+          gui.addEdit("BRIGHTEN", inputtedEdits);
+        } else if (brightness < 0) {
           gui.changeLabelText("DIM");
-          gui.addEdit("BRIGHTEN");
+          gui.addEdit("BRIGHTEN", inputtedEdits);
         } else {
           gui.changeLabelText("INVALID");
-        };
+        }
       } catch (Exception var5) {
         gui.changeLabelText("INVALID");
       }
     }
-    if(game.equals("Save")){
-      String fileType = filename.split("\\.")[1];
-      JFileChooser chooser = new JFileChooser();
-      chooser.showSaveDialog(gui);
-      File file = chooser.getSelectedFile();
-      System.out.println(file.getAbsolutePath());
-      //String newFile = file.getAbsolutePath() + JOptionPane.showInputDialog(new JFrame(), "Enter the new file name") + "." + fileType;
-      try {
-        this.saveImage(file.getAbsolutePath(), filename);
-      } catch (IOException ex) {
-        throw new RuntimeException(ex);
+    if (game.equals("Save")) {
+      if (model.getMap().isEmpty()) {
+        gui.showErrorPopup("No image loaded!");
+      } else {
+        File file = gui.getSaveFile();
+        try {
+          this.saveImage(file.getAbsolutePath(), filename);
+        } catch (IOException ex) {
+          gui.showErrorPopup("Error saving file, please check file format.");
+        }
       }
     }
   }
 
-  public void edit(String command) throws IOException {
+  private void edit(String command) throws IOException {
     String newFilename;
     switch (command) {
       case ("VERTICAL FLIP"):
         newFilename = filename + "-vf";
         new VerticalFlip(filename, newFilename).execute(model, new ImageDisplay(System.out));
         filename = newFilename;
-        gui.replaceImage(filename);
+        this.replaceImage(filename);
         break;
       case ("HORIZONTAL FLIP"):
         newFilename = filename + "-hf";
         new HorizontalFlip(filename, newFilename).execute(model, new ImageDisplay(System.out));
         filename = newFilename;
-        gui.replaceImage(filename);
+        this.replaceImage(filename);
         break;
       case ("SEPIA"):
         newFilename = filename + "-sep";
         new Sepia(filename, newFilename).execute(model, new ImageDisplay(System.out));
         filename = newFilename;
-        gui.getHistogram(filename);
-        gui.replaceImage(filename);
+        gui.getHistogram(filename, model.getMap());
+        this.replaceImage(filename);
         break;
       case ("GREYSCALE"):
         newFilename = filename + "-vf";
         new Greyscale(filename, newFilename).execute(model, new ImageDisplay(System.out));
         filename = newFilename;
-        gui.getHistogram(filename);
-        gui.replaceImage(filename);
+        gui.getHistogram(filename, model.getMap());
+        this.replaceImage(filename);
         break;
       case ("BLUR"):
         newFilename = filename + "-bl";
         new Blur(filename, newFilename).execute(model, new ImageDisplay(System.out));
         filename = newFilename;
-        gui.getHistogram(filename);
-        gui.replaceImage(filename);
+        gui.getHistogram(filename, model.getMap());
+        this.replaceImage(filename);
         break;
       case ("SHARPEN"):
         newFilename = filename + "-sh";
         new Sharpen(filename, newFilename).execute(model, new ImageDisplay(System.out));
         filename = newFilename;
-        gui.getHistogram(filename);
-        gui.replaceImage(filename);
+        gui.getHistogram(filename, model.getMap());
+        this.replaceImage(filename);
         break;
       case ("RED"):
         newFilename = filename + "-gr";
         new RedGreyscale(filename, newFilename).execute(model, new ImageDisplay(System.out));
         filename = newFilename;
-        gui.getHistogram(filename);
-        gui.replaceImage(filename);
+        gui.getHistogram(filename, model.getMap());
+        this.replaceImage(filename);
         break;
       case ("GREEN"):
         newFilename = filename + "-gg";
         new GreenGreyscale(filename, newFilename).execute(model, new ImageDisplay(System.out));
         filename = newFilename;
-        gui.getHistogram(filename);
-        gui.replaceImage(filename);
+        gui.getHistogram(filename, model.getMap());
+        this.replaceImage(filename);
         break;
       case ("BLUE"):
         newFilename = filename + "-gb";
         new BlueGreyscale(filename, newFilename).execute(model, new ImageDisplay(System.out));
         filename = newFilename;
-        gui.getHistogram(filename);
-        gui.replaceImage(filename);
+        gui.getHistogram(filename, model.getMap());
+        this.replaceImage(filename);
         break;
       case ("LUMA"):
         newFilename = filename + "-gl";
         new LumaGreyscale(filename, newFilename).execute(model, new ImageDisplay(System.out));
         filename = newFilename;
-        gui.getHistogram(filename);
-        gui.replaceImage(filename);
+        gui.getHistogram(filename, model.getMap());
+        this.replaceImage(filename);
         break;
       case ("INTENSITY"):
         newFilename = filename + "-gi";
         new IntensityGreyscale(filename, newFilename).execute(model, new ImageDisplay(System.out));
         filename = newFilename;
-        gui.getHistogram(filename);
-        gui.replaceImage(filename);
+        gui.getHistogram(filename, model.getMap());
+        this.replaceImage(filename);
         break;
       case ("VALUE"):
         newFilename = filename + "-gv";
         new ValueGreyscale(filename, newFilename).execute(model, new ImageDisplay(System.out));
         filename = newFilename;
-        gui.getHistogram(filename);
-        gui.replaceImage(filename);
+        gui.getHistogram(filename, model.getMap());
+        this.replaceImage(filename);
         break;
       case ("BRIGHTEN"):
         newFilename = filename + "-br";
-        new AdjustBrightness(gui.getIncrement(), filename, newFilename).execute(model, new ImageDisplay(System.out));
+        new AdjustBrightness(gui.getIncrement(), filename, newFilename).execute(model,
+                new ImageDisplay(System.out));
         filename = newFilename;
-        gui.getHistogram(filename);
-        gui.replaceImage(filename);
+        gui.getHistogram(filename, model.getMap());
+        this.replaceImage(filename);
         break;
       default:
         break;
     }
   }
 
-  protected Map<String, Pixel[][]> getModelMap(){
-    return model.getMap();
+  public void replaceImage(String filename) {
+
+    ImageIcon image = new ImageIcon(gui.getBufferedImage(filename, model.getMap()));
+    gui.changeImage(image);
   }
 
+  private void editImage() throws IOException {
+    if (inputtedEdits.isEmpty()) {
+      JOptionPane.showMessageDialog(new JFrame(), "No edits to apply", "Error",
+              JOptionPane.ERROR_MESSAGE);
+
+    } else {
+
+      for (String edit : inputtedEdits) {
+        this.edit(edit);
+      }
+      inputtedEdits.clear();
+    }
+
+  }
 
 
 }

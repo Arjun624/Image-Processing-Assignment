@@ -1,4 +1,4 @@
-package controller;
+package view;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -6,18 +6,18 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
+import controller.ImageControllerGUI;
 import model.Pixel;
 
-public class ImageProcessingGUI extends JFrame{
+public class ImageProcessingGUI extends JFrame implements GUIView {
 
-  private ImageControllerGUI controller;
-  private int brightness;
+
+  protected int brightness;
   //private String filename;
 
   ArrayList<String> edits;
@@ -36,6 +36,20 @@ public class ImageProcessingGUI extends JFrame{
   private JLabel chosenFilter;
   private JButton editImageButton;
 
+  JMenu file = new JMenu("File");
+  JMenuItem load = new JMenuItem("Load");
+
+  JMenuItem save = new JMenuItem("Save");
+
+  JMenu help = new JMenu("Help");
+  JMenuItem howTo = new JMenuItem("How to use");
+
+  JButton chooseGreyscaleButton = new JButton("Choose Greyscale");
+  JButton chooseColorButton = new JButton("Choose Color Combination");
+  JButton chooseFilterButton = new JButton("Choose Filter");
+  JButton chooseFlipButton = new JButton("Choose Orientation or Size");
+  JButton adjustBrightnessButton = new JButton("Select Brightness Increment");
+
 
   private final JMenuBar menuBar = new JMenuBar();
   String[] greyScale = new String[]{"NONE", "RED", "GREEN", "BLUE", "LUMA", "VALUE", "INTENSITY"};
@@ -47,12 +61,11 @@ public class ImageProcessingGUI extends JFrame{
   String[] orientationAndSize;
   final JComboBox<String> dropOrientationAndSize;
 
-  ImageIcon[] imageBoxes = new ImageIcon[]{new ImageIcon("none"), new ImageIcon("histogram")};
+  public ImageIcon[] imageBoxes = new ImageIcon[]{new ImageIcon("none"), new ImageIcon("histogram")};
 
-  public ImageProcessingGUI(ImageControllerGUI controller) throws IOException {
+  public ImageProcessingGUI() throws IOException {
     instantiateLabels();
     instantiatePanels();
-    this.controller = controller;
     this.brightness = 0;
     edits = new ArrayList<>();
     this.dropDownGreyscale = new JComboBox(this.greyScale);
@@ -123,25 +136,18 @@ public class ImageProcessingGUI extends JFrame{
 
   public void instantiateButtons() {
     this.editImageButton = new JButton("Edit Image");
-    JButton chooseGreyscaleButton = new JButton("Choose Greyscale");
-    JButton chooseColorButton = new JButton("Choose Color Combination");
-    JButton chooseFilterButton = new JButton("Choose Filter");
-    JButton chooseFlipButton = new JButton("Choose Orientation or Size");
-    JButton adjustBrightnessButton = new JButton("Select Brightness Increment");
 
 
-    chooseFilterButton.addActionListener((ActionListener) controller);
+
+
+
+
+
     chooseFilterButton.setActionCommand("Picked Filter");
-    chooseColorButton.addActionListener((ActionListener) controller);
     chooseColorButton.setActionCommand("Picked Color");
-    chooseGreyscaleButton.addActionListener((ActionListener) controller);
     chooseGreyscaleButton.setActionCommand("Picked Greyscale");
-    chooseFlipButton.addActionListener((ActionListener) controller);
     chooseFlipButton.setActionCommand("Picked Flip");
-    this.editImageButton.addActionListener((ActionListener) controller);
     this.editImageButton.setActionCommand("Edit");
-
-    adjustBrightnessButton.addActionListener((ActionListener) controller);
     adjustBrightnessButton.setActionCommand("Brightness");
 
 
@@ -164,6 +170,19 @@ public class ImageProcessingGUI extends JFrame{
 
     this.add(picturePanel);
 
+  }
+
+  public void setActionListeners(ActionListener listener) {
+    load.addActionListener( listener);
+    save.addActionListener(listener);
+    howTo.addActionListener(listener);
+    chooseFilterButton.addActionListener(listener);
+    chooseColorButton.addActionListener(listener);
+    chooseGreyscaleButton.addActionListener(listener);
+    chooseFlipButton.addActionListener(listener);
+    this.editImageButton.addActionListener(listener);
+
+    adjustBrightnessButton.addActionListener(listener);
   }
 
   protected void displayImage() {
@@ -200,21 +219,17 @@ public class ImageProcessingGUI extends JFrame{
   }
 
   private void instantiateMenuBar() {
-    JMenu file = new JMenu("File");
-    JMenuItem load = new JMenuItem("Load");
-    load.addActionListener( controller);
+
     load.setActionCommand("Load");
-    JMenuItem save = new JMenuItem("Save");
-    save.addActionListener(controller);
+
     save.setActionCommand("Save");
     JMenuItem quit = new JMenuItem("Quit");
     file.add(load);
     file.add(save);
     file.add(quit);
 
-    JMenu help = new JMenu("Help");
-    JMenuItem howTo = new JMenuItem("How to use");
-    howTo.addActionListener(controller);
+
+
     howTo.setActionCommand("HowTo");
     JMenuItem validCommands = new JMenuItem("Information on Valid Commands");
     JMenuItem documentation = new JMenuItem("Full Documentation");
@@ -228,9 +243,7 @@ public class ImageProcessingGUI extends JFrame{
     setJMenuBar(menuBar);
   }
 
-
-
-  protected void changeLabelText(String type) {
+  public void changeLabelText(String type) {
     if(type.equals("FLIP")){
       chosenFlip.setText("\tSelected: " + dropOrientationAndSize.getItemAt(dropOrientationAndSize.getSelectedIndex()));
     }
@@ -253,8 +266,7 @@ chosenGreyScale.setText("\tSelected: " + dropDownGreyscale.getItemAt(dropDownGre
       incrementLabel.setText("Invalid Increment, Please try again.");
     }
   }
-
-  protected void setIncrement() {
+  public void setIncrement() {
      String increment = JOptionPane.showInputDialog(new JFrame(), "Enter an increment. Positive "
             + "to increase brightness and negative to decrease brightness");
      try{
@@ -264,43 +276,27 @@ chosenGreyScale.setText("\tSelected: " + dropDownGreyscale.getItemAt(dropDownGre
       }
     }
 
-
-  protected int getIncrement() {
+  public int getIncrement() {
     return brightness;
   }
 
-
-  public void editImage() throws IOException {
-    if (edits.isEmpty()) {
-      JOptionPane.showMessageDialog(new JFrame(), "No edits to apply", "Error", JOptionPane.ERROR_MESSAGE);
-
-    }else {
-
-      for (String edit : edits) {
-        controller.edit(edit);
-      }
-      edits.clear();
-    }
-
-  }
-
-  protected void addEdit(String type) {
+  public void addEdit(String type, ArrayList<String> inputtedEdits) {
     if(type.equals("FLIP")){
-      edits.add(this.getLabelText(chosenFlip));
+      inputtedEdits.add(this.getLabelText(chosenFlip));
     }
     if(type.equals("COLOR")){
-      edits.add(this.getLabelText(chosenColor));
+      inputtedEdits.add(this.getLabelText(chosenColor));
     }
     if(type.equals("GREYSCALE")){
-      edits.add(this.getLabelText(chosenGreyScale));
+      inputtedEdits.add(this.getLabelText(chosenGreyScale));
     }
     if(type.equals("FILTER")){
-      edits.add(this.getLabelText(chosenFilter));
+      inputtedEdits.add(this.getLabelText(chosenFilter));
     }
     if(type.equals("BRIGHTEN")){
       JLabel brightened = new JLabel();
       brightened.setText("SELECTED:  BRIGHTEN");
-      edits.add(this.getLabelText(brightened));
+      inputtedEdits.add(this.getLabelText(brightened));
     }
 
   }
@@ -313,56 +309,12 @@ chosenGreyScale.setText("\tSelected: " + dropDownGreyscale.getItemAt(dropDownGre
 
   }
 
-  public void replaceImage(String filename) {
-
-    ImageIcon image = new ImageIcon(getBufferedImage(filename, controller.getModelMap()));
-    imageBoxes[0]=image;
-    displayImage();
-  }
-
-  public BufferedImage getBufferedImage(String filename, Map<String, Pixel[][]> map) {
-    int length = map.get(filename).length;
-    int width = map.get(filename)[0].length;
-    BufferedImage bufferedImage = new BufferedImage(width, length, BufferedImage.TYPE_INT_RGB);
-    for (int row = 0; row < length; row++) {
-      for (int col = 0; col < width; col++) {
-        Color c = new Color(map.get(filename)[row][col].getRed(),
-                map.get(filename)[row][col].getGreen(),
-                map.get(filename)[row][col].getBlue(),
-                map.get(filename)[row][col].getAlpha());
-        bufferedImage.setRGB(col, row, c.getRGB());
-      }
-    }
-    return bufferedImage;
-  }
-
-  public void save(String pathname) throws IOException {
-//    if (!controller.getModelMap().containsKey(filename)) {
-//      System.out.println("Image " + filename + " does not exist or has not been loaded!");
-//      return;
-//    }
-//
-//    BufferedImage bufferedImage = this.getBufferedImage(filename, controller.getModelMap());
-//
-//
-//    ArrayList<String> formats = new ArrayList<>(Arrays.asList(ImageIO.getWriterFormatNames()));
-//    String type2 = pathname.split("\\.")[1];
-//
-//    if (formats.contains(type2)) {
-//      File file = new File(pathname);
-//      ImageIO.write(bufferedImage, type2, file);
-//      System.out.println("Image: " + filename + "\nsaved as: " + pathname);
-//    } else {
-//      System.out.println("Image type not supported");
-//    }
-  }
-
-  public void getHistogram(String filename) {
-    if (!controller.getModelMap().containsKey(filename)) {
+  public void getHistogram(String filename, Map<String, Pixel[][]> map) {
+    if (!map.containsKey(filename)) {
       JOptionPane.showMessageDialog(new JFrame(), "No image loaded!", "Error", JOptionPane.ERROR_MESSAGE);
       return;
     }
-    Pixel[][] pixels = controller.getModelMap().get(filename);
+    Pixel[][] pixels = map.get(filename);
     int[] red = new int[256];
     int[] green = new int[256];
     int[] blue = new int[256];
@@ -384,7 +336,24 @@ chosenGreyScale.setText("\tSelected: " + dropDownGreyscale.getItemAt(dropDownGre
 
   }
 
-  public BufferedImage makeHistogram(int[] red, int[] green, int[] blue, int[] intensity){
+  @Override
+  public BufferedImage getBufferedImage(String filename, Map<String, Pixel[][]> map) {
+    int length = map.get(filename).length;
+    int width = map.get(filename)[0].length;
+    BufferedImage bufferedImage = new BufferedImage(width, length, BufferedImage.TYPE_INT_RGB);
+    for (int row = 0; row < length; row++) {
+      for (int col = 0; col < width; col++) {
+        Color c = new Color(map.get(filename)[row][col].getRed(),
+                map.get(filename)[row][col].getGreen(),
+                map.get(filename)[row][col].getBlue(),
+                map.get(filename)[row][col].getAlpha());
+        bufferedImage.setRGB(col, row, c.getRGB());
+      }
+    }
+    return bufferedImage;
+  }
+
+  private BufferedImage makeHistogram(int[] red, int[] green, int[] blue, int[] intensity){
     BufferedImage bufferedImage = new BufferedImage(600, 950, BufferedImage.TYPE_INT_RGB);
     Graphics2D graph = bufferedImage.createGraphics();
     drawLines(graph, red, Color.red);
@@ -405,8 +374,62 @@ chosenGreyScale.setText("\tSelected: " + dropDownGreyscale.getItemAt(dropDownGre
 
 
 
-  protected void  showErrorPopup(String errorMessage) {
+  public void  showErrorPopup(String errorMessage) {
     JOptionPane.showMessageDialog(new JFrame(), errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+  }
+
+
+  /**
+   * Renders the inputted message.
+   *
+   * @param message the inputted message
+   * @throws IOException if the program can't read the input or write the output
+   */
+  @Override
+  public void renderMessage(String message)  {
+    JOptionPane.showMessageDialog(new JFrame(), message, "Messsage", JOptionPane.INFORMATION_MESSAGE);
+  }
+
+  /**
+   * Displays the welcome message.
+   */
+  @Override
+  public void displayWelcomeMessage() {
+    StringBuilder welcomeMessage = new StringBuilder("Welcome to the Image Program!" +
+            "\n" + "Please select an image to load from the file menu.");
+    welcomeMessage.append("\n" + "Valid edits:");
+    welcomeMessage.append("\n" + "\t"+ "1. Flip Horizontal");
+    welcomeMessage.append("\n" + "\t"+ "2. Flip Vertical");
+    welcomeMessage.append("\n" + "\t"+ "3. Sepia");
+    welcomeMessage.append("\n" + "\t"+ "4. Grayscale");
+    welcomeMessage.append("\n" + "\t"+ "5. Adjust Brightness");
+    welcomeMessage.append("\n" + "\t"+ "6. Blur");
+    welcomeMessage.append("\n" + "\t"+ "7. Sharpen");
+    welcomeMessage.append("\n" + "\t"+ "8. Red Greyscale");
+    welcomeMessage.append("\n" + "\t"+ "9. Green Greyscale");
+    welcomeMessage.append("\n" + "\t"+ "10. Blue Greyscale");
+    welcomeMessage.append("\n" + "\t"+ "11. Luma Greyscale");
+    welcomeMessage.append("\n" + "\t"+ "12. Value Greyscale");
+    welcomeMessage.append("\n" + "\t"+ "13. Intensity Greyscale");
+
+    JOptionPane.showMessageDialog(new JFrame(), welcomeMessage, "Welcome", JOptionPane.INFORMATION_MESSAGE);
+  }
+
+  public void changeImage(ImageIcon image){
+    imageBoxes[0]=image;
+    displayImage();
+  }
+
+  public File getSaveFile(){
+    JFileChooser chooser = new JFileChooser();
+    chooser.showSaveDialog(this);
+    return chooser.getSelectedFile();
+  }
+
+  public File GetLoadFile(){
+    JFileChooser chooser = new JFileChooser();
+    chooser.showOpenDialog(this);
+    return  chooser.getSelectedFile();
   }
 }
 

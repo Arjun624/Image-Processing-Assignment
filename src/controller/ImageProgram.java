@@ -4,8 +4,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import model.ImageEditor;
 import model.ImageModel;
+import view.GUIView;
 import view.ImageDisplay;
+import view.ImageProcessingGUI;
 import view.ImageView;
 
 /**
@@ -20,13 +23,13 @@ public class ImageProgram {
    */
   public static void main(String[] args) throws IOException {
     ImageModel model = new ImageModel();
-    ImageControllerImpl controller;
+    ImageControllerText controller;
     ImageView view = new ImageDisplay(System.out);
     if (args.length > 0) {
         if (args[0].equalsIgnoreCase("-file")) {
           try {
             InputStreamReader in = new FileReader(args[1]);
-            controller = new ImageControllerImpl(view, in, model);
+            controller = new ImageControllerText(view, in, model);
             controller.start();
             return;
           } catch (IOException e) {
@@ -40,13 +43,14 @@ public class ImageProgram {
         } else if (args[0].equalsIgnoreCase("-text")) {
           InputStreamReader in = new InputStreamReader(System.in);
           view.displayWelcomeMessage();
-          controller = new ImageControllerImpl(view, in, model);
+          controller = new ImageControllerText(view, in, model);
           controller.start();
           return;
         }
-
     }
-    ImageControllerGUI controllerGUI = new ImageControllerGUI(model);
-
+    GUIView guiView = new ImageProcessingGUI();
+    model = new ImageModel();
+    ImageControllerGUI controllerGUI = new ImageControllerGUI(model, guiView);
+    controllerGUI.start();
   }
 }
