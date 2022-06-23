@@ -23,6 +23,7 @@ import controller.commands.Blur;
 import controller.commands.GreenGreyscale;
 import controller.commands.Greyscale;
 import controller.commands.HorizontalFlip;
+import controller.commands.ImageDownscale;
 import controller.commands.IntensityGreyscale;
 import controller.commands.LoadImage;
 import controller.commands.LumaGreyscale;
@@ -82,6 +83,7 @@ public class ImageControllerText implements ImageController {
     commands.put("blur", s -> new Blur(s.next(), s.next()));
     commands.put("sepia", s -> new Sepia(s.next(), s.next()));
     commands.put("greyscale", s -> new Greyscale(s.next(), s.next()));
+    commands.put("downscale", s -> new ImageDownscale(s.nextInt(),s.nextInt(),s.next(), s.next()));
     commands.put("q", s -> new Quit());
 
   }

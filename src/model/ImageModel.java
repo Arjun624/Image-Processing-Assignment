@@ -279,34 +279,34 @@ public class ImageModel implements ImageEditor {
       for (int j = 0; j < width; j++) {
         double expHeight = (double) i / (double) height * (double) oldHeight;
         double expWidth = (double) j / (double) width * (double) oldWidth;
-        if (expHeight - (int) expHeight != 0 && expHeight - (int) expHeight != 0) {
+        if (expHeight - (int) expHeight != 0 && expWidth - (int) expWidth != 0) {
           Pixel a = images.get(filename)[(int) Math.floor(expHeight)][(int) Math.floor(expWidth)];
           Pixel b = images.get(filename)[(int) Math.ceil(expHeight)][(int) Math.floor(expWidth)];
           Pixel c = images.get(filename)[(int) Math.floor(expHeight)][(int) Math.ceil(expWidth)];
           Pixel d = images.get(filename)[(int) Math.ceil(expHeight)][(int) Math.ceil(expWidth)];
 
           double redM = (double) b.getRed() * (expHeight - Math.floor(expHeight)) +
-                  a.getRed() * (Math.ceil(expHeight) + expHeight);
+                  (double) a.getRed() * (Math.ceil(expHeight) - expHeight);
           double greenM = (double) b.getGreen() * (expHeight - Math.floor(expHeight)) +
-                  a.getGreen() * (Math.ceil(expHeight) + expHeight);
+                  (double) a.getGreen() * (Math.ceil(expHeight) - expHeight);
           double blueM = (double) b.getBlue() * (expHeight - Math.floor(expHeight)) +
-                  a.getBlue() * (Math.ceil(expHeight) + expHeight);
+                  (double) a.getBlue() * (Math.ceil(expHeight) - expHeight);
 
           double redN = (double) d.getRed() * (expHeight - Math.floor(expHeight)) +
-                  c.getRed() * (Math.ceil(expHeight) + expHeight);
+                  (double) c.getRed() * (Math.ceil(expHeight) - expHeight);
           double greenN = (double) d.getGreen() * (expHeight - Math.floor(expHeight)) +
-                  c.getGreen() * (Math.ceil(expHeight) + expHeight);
+                  (double) c.getGreen() * (Math.ceil(expHeight) - expHeight);
           double blueN = (double) d.getBlue() * (expHeight - Math.floor(expHeight)) +
-                  c.getBlue() * (Math.ceil(expHeight) + expHeight);
+                  (double) c.getBlue() * (Math.ceil(expHeight) - expHeight);
 
-          double redP = redN * (expWidth - Math.floor(expWidth)) +
-                  redM * (Math.ceil(expWidth) + expWidth);
-          double greenP = greenN * (expWidth - Math.floor(expWidth)) +
-                  greenM * (Math.ceil(expWidth) + expWidth);
-          double blueP = blueN * (expWidth - Math.floor(expWidth)) +
-                  blueM * (Math.ceil(expWidth) + expWidth);
+          int redP = (int) (redN * (expWidth - Math.floor(expWidth)) +
+                  redM * (Math.ceil(expWidth) - expWidth));
+          int greenP = (int) (greenN * (expWidth - Math.floor(expWidth)) +
+                  greenM * (Math.ceil(expWidth) - expWidth));
+          int blueP = (int) (blueN * (expWidth - Math.floor(expWidth)) +
+                  blueM * (Math.ceil(expWidth) - expWidth));
 
-          arr[i][j] = new Pixel(fixRGBRange(redP), fixRGBRange(greenP), fixRGBRange(blueP));
+          arr[i][j] = new Pixel(redP, greenP, blueP);
         } else {
           int newHeight = (int) expHeight;
           int newWidth = (int) expWidth;
@@ -315,6 +315,7 @@ public class ImageModel implements ImageEditor {
       }
     }
     images.put(newFilename, arr);
+    view.renderMessage("downscale");
   }
 
   public void PartialImageManipulation(String filename,
@@ -328,41 +329,39 @@ public class ImageModel implements ImageEditor {
     for (int i = 0; i < images.get(filename).length; i++) {
       for (int j = 0; j < images.get(filename)[0].length; j++) {
         Pixel p = images.get(filename)[i][j];
-        temp[i][j] = new Pixel(p.getRed(),p.getGreen(),p.getBlue(),p.getAlpha());
+        temp[i][j] = new Pixel(p.getRed(), p.getGreen(), p.getBlue(), p.getAlpha());
       }
     }
     Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
     for (int i = 0; i < mask.length; i++) {
       for (int j = 0; j < mask[0].length; j++) {
-        if (mask[i][j].equals(new Pixel(0,0,0))){
+        if (mask[i][j].equals(new Pixel(0, 0, 0))) {
           Pixel p = temp[i][j];
-          arr[i][j] = new Pixel(p.getRed(),p.getGreen(),p.getBlue(),p.getAlpha());
-        }
-        else{
+          arr[i][j] = new Pixel(p.getRed(), p.getGreen(), p.getBlue(), p.getAlpha());
+        } else {
           arr[i][j] = null;
         }
       }
     }
     images.remove(filename);
-    images.put(filename,arr);
-    c.execute(this,this.view);
+    images.put(filename, arr);
+    c.execute(this, this.view);
 
     Pixel[][] newPic = new Pixel[temp.length][temp[0].length];
     for (int i = 0; i < temp.length; i++) {
       for (int j = 0; j < temp[0].length; j++) {
-        if(images.get(newFilename)[i][j] != null){
+        if (images.get(newFilename)[i][j] != null) {
           Pixel p = images.get(newFilename)[i][j];
-          newPic[i][j] = new Pixel(p.getRed(),p.getGreen(),p.getBlue(),p.getAlpha());
-        }
-        else {
+          newPic[i][j] = new Pixel(p.getRed(), p.getGreen(), p.getBlue(), p.getAlpha());
+        } else {
           Pixel p = temp[i][j];
-          newPic[i][j] = new Pixel(p.getRed(),p.getGreen(),p.getBlue(),p.getAlpha());
+          newPic[i][j] = new Pixel(p.getRed(), p.getGreen(), p.getBlue(), p.getAlpha());
         }
       }
     }
     images.remove(filename);
-    images.put(filename,temp);
+    images.put(filename, temp);
     images.remove(newFilename);
-    images.put(newFilename,newPic);
+    images.put(newFilename, newPic);
   }
 }
