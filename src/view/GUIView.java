@@ -39,6 +39,8 @@ public interface GUIView extends ImageView {
 
 
   void setActionListeners(ActionListener listener);
+
+  void resetButtonsAndLabels();
 }
 
 

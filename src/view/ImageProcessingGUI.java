@@ -17,8 +17,7 @@ import model.Pixel;
 public class ImageProcessingGUI extends JFrame implements GUIView {
 
 
-  protected int brightness;
-  //private String filename;
+  private int brightness;
 
   ArrayList<String> edits;
   private JPanel picturePanel;
@@ -36,45 +35,33 @@ public class ImageProcessingGUI extends JFrame implements GUIView {
   private JLabel chosenFilter;
   private JButton editImageButton;
 
-  JMenu file = new JMenu("File");
-  JMenuItem load = new JMenuItem("Load");
+  private JMenuItem load ;
 
-  JMenuItem save = new JMenuItem("Save");
+  private JMenuItem save;
 
-  JMenu help = new JMenu("Help");
-  JMenuItem howTo = new JMenuItem("How to use");
+  private JMenuItem howTo;
+  private JButton chooseGreyscaleButton ;
+  private JButton chooseColorButton;
+  private JButton chooseFilterButton;
+  private JButton chooseFlipButton ;
+  private JButton adjustBrightnessButton ;
 
-  JButton chooseGreyscaleButton = new JButton("Choose Greyscale");
-  JButton chooseColorButton = new JButton("Choose Color Combination");
-  JButton chooseFilterButton = new JButton("Choose Filter");
-  JButton chooseFlipButton = new JButton("Choose Orientation or Size");
-  JButton adjustBrightnessButton = new JButton("Select Brightness Increment");
+  private JComboBox<String> dropDownGreyscale;
+  private JComboBox<String> dropDownColorCombinations;
+  private JComboBox<String> dropDownFilters;
+  private JComboBox<String> dropOrientationAndSize;
 
+  private final ImageIcon[] imageBoxes;
 
-  private final JMenuBar menuBar = new JMenuBar();
-  String[] greyScale = new String[]{"NONE", "RED", "GREEN", "BLUE", "LUMA", "VALUE", "INTENSITY"};
-  final JComboBox<String> dropDownGreyscale;
-  String[] colorCombinations;
-  final JComboBox<String> dropDownColorCombinations;
-  String[] filters;
-  final JComboBox<String> dropDownFilters;
-  String[] orientationAndSize;
-  final JComboBox<String> dropOrientationAndSize;
-
-  public ImageIcon[] imageBoxes = new ImageIcon[]{new ImageIcon("none"), new ImageIcon("histogram")};
-
-  public ImageProcessingGUI() throws IOException {
-    instantiateLabels();
-    instantiatePanels();
+  public ImageProcessingGUI() {
+    this.instantiateLabels();
+    this.instantiatePanelsAndLayout();
+    this.instantiateButtons();
+    this.instantiateDropDowns();
+    this.instantiateMenuBar();
     this.brightness = 0;
-    edits = new ArrayList<>();
-    this.dropDownGreyscale = new JComboBox(this.greyScale);
-    this.colorCombinations = new String[]{"NONE", "SEPIA", "GREYSCALE"};
-    this.dropDownColorCombinations = new JComboBox(this.colorCombinations);
-    this.filters = new String[]{"NONE", "BLUR", "SHARPEN"};
-    this.dropDownFilters = new JComboBox(this.filters);
-    this.orientationAndSize = new String[]{"NONE", "VERTICAL FLIP", "HORIZONTAL FLIP"};
-    this.dropOrientationAndSize = new JComboBox(this.orientationAndSize);
+    this.edits = new ArrayList<>();
+    this.imageBoxes = new ImageIcon[]{new ImageIcon("none"), new ImageIcon("histogram")};
     setDefaultLookAndFeelDecorated(true);
     this.setTitle("ImageProcessing");
     this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -83,6 +70,22 @@ public class ImageProcessingGUI extends JFrame implements GUIView {
     Container c = this.getContentPane();
     BoxLayout bl = new BoxLayout(c, BoxLayout.X_AXIS);
     c.setLayout(bl);
+    c.add(this.allCommands);
+    c.add(this.picturePanel);
+    this.addElementsToPanels();
+    this.displayImage();
+    this.pack();
+    this.setVisible(true);
+  }
+  private void instantiatePanelsAndLayout() {
+    this.flipCommands = new JPanel();
+    this.filterCommands = new JPanel();
+    this.colorCommands = new JPanel();
+    this.brightnessCommands = new JPanel();
+    this.allCommands= new JPanel();
+    this.specificGreyscaleCommands = new JPanel();
+    this.picturePanel = new JPanel();
+
     this.flipCommands.setLayout(new GridLayout(3, 1));
     this.flipCommands.setBorder(BorderFactory.createTitledBorder("Change Orientation or Size"));
     this.filterCommands.setLayout(new GridLayout(3, 1));
@@ -95,35 +98,7 @@ public class ImageProcessingGUI extends JFrame implements GUIView {
     this.specificGreyscaleCommands.setBorder(BorderFactory.createTitledBorder("Choose Greyscale"));
     this.picturePanel.setBorder(BorderFactory.createTitledBorder("Loaded Image and Histogram"));
     this.picturePanel.setLayout(new GridLayout(1, 0, 10, 10));
-
     this.allCommands.setLayout(new GridLayout(6, 1));
-    this.instantiateButtons();
-    this.displayImage();
-    this.instantiateDropDowns();
-    instantiateMenuBar();
-    this.allCommands.add(this.colorCommands);
-    this.allCommands.add(this.flipCommands);
-    this.allCommands.add(this.filterCommands);
-    this.allCommands.add(this.brightnessCommands);
-    this.allCommands.add(this.specificGreyscaleCommands);
-    this.allCommands.add(this.editImageButton);
-    c.add(this.allCommands);
-    c.add(this.picturePanel);
-
-
-    this.pack();
-    this.setVisible(true);
-
-  }
-
-  private void instantiatePanels() {
-    this.picturePanel = new JPanel();
-    this.flipCommands = new JPanel();
-    this.filterCommands = new JPanel();
-    this.colorCommands = new JPanel();
-    this.brightnessCommands = new JPanel();
-    this.allCommands= new JPanel();
-    this.specificGreyscaleCommands = new JPanel();
   }
 
   private void instantiateLabels() {
@@ -134,24 +109,28 @@ public class ImageProcessingGUI extends JFrame implements GUIView {
     this.chosenFilter = new JLabel("\tNone selected");
   }
 
+
+
+
   public void instantiateButtons() {
     this.editImageButton = new JButton("Edit Image");
+    chooseGreyscaleButton = new JButton("Choose Greyscale");
+    chooseColorButton = new JButton("Choose Color Combination");
+    chooseFilterButton = new JButton("Choose Filter");
+    chooseFlipButton = new JButton("Choose Orientation or Size");
+    adjustBrightnessButton = new JButton("Select Brightness Increment");
 
-
-
-
-
-
-
-    chooseFilterButton.setActionCommand("Picked Filter");
-    chooseColorButton.setActionCommand("Picked Color");
-    chooseGreyscaleButton.setActionCommand("Picked Greyscale");
-    chooseFlipButton.setActionCommand("Picked Flip");
     this.editImageButton.setActionCommand("Edit");
+    chooseGreyscaleButton.setActionCommand("Picked Greyscale");
+    chooseColorButton.setActionCommand("Picked Color");
+    chooseFilterButton.setActionCommand("Picked Filter");
+    chooseFlipButton.setActionCommand("Picked Flip");
     adjustBrightnessButton.setActionCommand("Brightness");
 
 
+  }
 
+  private void addElementsToPanels(){
     this.filterCommands.add(this.dropDownFilters);
     this.filterCommands.add(chooseFilterButton);
     this.filterCommands.add(this.chosenFilter);
@@ -167,10 +146,15 @@ public class ImageProcessingGUI extends JFrame implements GUIView {
     this.specificGreyscaleCommands.add(chooseGreyscaleButton);
     this.specificGreyscaleCommands.add(this.chosenGreyScale);
 
-
-    this.add(picturePanel);
+    this.allCommands.add(this.colorCommands);
+    this.allCommands.add(this.flipCommands);
+    this.allCommands.add(this.filterCommands);
+    this.allCommands.add(this.brightnessCommands);
+    this.allCommands.add(this.specificGreyscaleCommands);
+    this.allCommands.add(this.editImageButton);
 
   }
+
 
   public void setActionListeners(ActionListener listener) {
     load.addActionListener( listener);
@@ -208,6 +192,14 @@ public class ImageProcessingGUI extends JFrame implements GUIView {
   }
 
   private void instantiateDropDowns(){
+    String[] greyScale = new String[]{"NONE", "RED", "GREEN", "BLUE", "LUMA", "VALUE", "INTENSITY"};
+    this.dropDownGreyscale = new JComboBox<>(greyScale);
+    String[] colorCombinations = new String[]{"NONE", "SEPIA", "GREYSCALE"};
+    this.dropDownColorCombinations = new JComboBox<>(colorCombinations);
+    String[] filters = new String[]{"NONE", "BLUR", "SHARPEN"};
+    this.dropDownFilters = new JComboBox<>(filters);
+    String[] orientationAndSize = new String[]{"NONE", "VERTICAL FLIP", "HORIZONTAL FLIP"};
+    this.dropOrientationAndSize = new JComboBox<>(orientationAndSize);
     this.dropDownGreyscale.setMaximumSize(this.dropDownGreyscale.getPreferredSize());
     this.dropDownGreyscale.setAlignmentX(0.5F);
     this.dropDownColorCombinations.setMaximumSize(this.dropDownColorCombinations.getPreferredSize());
@@ -219,6 +211,16 @@ public class ImageProcessingGUI extends JFrame implements GUIView {
   }
 
   private void instantiateMenuBar() {
+    JMenu file = new JMenu("File");
+     load = new JMenuItem("Load");
+
+     save = new JMenuItem("Save");
+
+    JMenu help = new JMenu("Help");
+     howTo = new JMenuItem("How to use");
+
+
+    JMenuBar menuBar = new JMenuBar();
 
     load.setActionCommand("Load");
 
@@ -283,20 +285,29 @@ chosenGreyScale.setText("\tSelected: " + dropDownGreyscale.getItemAt(dropDownGre
   public void addEdit(String type, ArrayList<String> inputtedEdits) {
     if(type.equals("FLIP")){
       inputtedEdits.add(this.getLabelText(chosenFlip));
+      chooseFlipButton.setEnabled(false);
+      dropOrientationAndSize.setEnabled(false);
     }
     if(type.equals("COLOR")){
       inputtedEdits.add(this.getLabelText(chosenColor));
+      chooseColorButton.setEnabled(false);
+      dropDownColorCombinations.setEnabled(false);
     }
     if(type.equals("GREYSCALE")){
       inputtedEdits.add(this.getLabelText(chosenGreyScale));
+      chooseGreyscaleButton.setEnabled(false);
+      dropDownGreyscale.setEnabled(false);
     }
     if(type.equals("FILTER")){
       inputtedEdits.add(this.getLabelText(chosenFilter));
+      chooseFilterButton.setEnabled(false);
+      dropDownFilters.setEnabled(false);
     }
     if(type.equals("BRIGHTEN")){
       JLabel brightened = new JLabel();
       brightened.setText("SELECTED:  BRIGHTEN");
       inputtedEdits.add(this.getLabelText(brightened));
+      adjustBrightnessButton.setEnabled(false);
     }
 
   }
@@ -383,7 +394,6 @@ chosenGreyScale.setText("\tSelected: " + dropDownGreyscale.getItemAt(dropDownGre
    * Renders the inputted message.
    *
    * @param message the inputted message
-   * @throws IOException if the program can't read the input or write the output
    */
   @Override
   public void renderMessage(String message)  {
@@ -430,6 +440,23 @@ chosenGreyScale.setText("\tSelected: " + dropDownGreyscale.getItemAt(dropDownGre
     JFileChooser chooser = new JFileChooser();
     chooser.showOpenDialog(this);
     return  chooser.getSelectedFile();
+  }
+
+  public void resetButtonsAndLabels(){
+    this.dropDownColorCombinations.setEnabled(true);
+    this.chooseColorButton.setEnabled(true);
+    this.dropDownGreyscale.setEnabled(true);
+    this.chooseGreyscaleButton.setEnabled(true);
+    this.dropDownFilters.setEnabled(true);
+    this.chooseFilterButton.setEnabled(true);
+    this.dropOrientationAndSize.setEnabled(true);
+    this.chooseFlipButton.setEnabled(true);
+    this.adjustBrightnessButton.setEnabled(true);
+    this.chosenFlip.setText("None selected");
+    this.chosenFilter.setText("None selected");
+    this.chosenColor.setText("None selected");
+    this.chosenGreyScale.setText("None selected");
+    this.incrementLabel.setText("Increment: N/A");
   }
 }
 
