@@ -23,6 +23,7 @@ import controller.commands.Blur;
 import controller.commands.GreenGreyscale;
 import controller.commands.Greyscale;
 import controller.commands.HorizontalFlip;
+import controller.commands.ImageDownscale;
 import controller.commands.IntensityGreyscale;
 import controller.commands.LumaGreyscale;
 import controller.commands.RedGreyscale;
@@ -293,6 +294,21 @@ public class ImageControllerGUI implements ImageController, ActionListener {
         throw new RuntimeException(ex);
       }
     }
+    if (game.equals("Down Scale")) {
+      if(gui.getDownScaleWidth() == 0){
+        gui.setDownScaleWidth();
+      }
+      if(gui.getDownScaleHeight() == 0){
+        gui.setDownScaleHeight();
+      }
+      if(gui.getDownScaleHeight() != 0 && gui.getDownScaleWidth() != 0){
+        gui.addEdit("DOWNSCALE", inputtedEdits);
+        gui.changeLabelText("DOWNSCALE");
+      }
+
+
+
+    }
     if (game.equals("Brightness")) {
       gui.setIncrement();
 
@@ -413,6 +429,14 @@ public class ImageControllerGUI implements ImageController, ActionListener {
       case ("BRIGHTEN"):
         newFilename = filename + "-br";
         new AdjustBrightness(gui.getIncrement(), filename, newFilename).execute(model,
+                new ImageDisplay(System.out));
+        filename = newFilename;
+        gui.getHistogram(filename, model.getMap());
+        this.replaceImage(filename);
+        break;
+      case ("DOWNSCALE"):
+        newFilename = filename + "-ds";
+        new ImageDownscale(gui.getDownScaleWidth(), gui.getDownScaleHeight(), filename, newFilename).execute(model,
                 new ImageDisplay(System.out));
         filename = newFilename;
         gui.getHistogram(filename, model.getMap());
