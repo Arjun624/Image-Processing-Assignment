@@ -46,6 +46,9 @@ public class ImageProgram {
           controller = new ImageControllerText(view, in, model);
           controller.start();
           return;
+        } else {
+          view.renderMessage("Error: Invalid input, please check arguments.");
+          return;
         }
     }
     GUIView guiView = new ImageProcessingGUI();

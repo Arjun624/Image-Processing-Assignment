@@ -173,7 +173,6 @@ public class ImageControllerGUI implements ImageController, ActionListener {
   }
 
   private void savePPM(String pathname) throws IOException {
-
     StringBuilder sb = new StringBuilder();
     try {
       if (!model.getMap().containsKey(filename)) {
@@ -440,7 +439,10 @@ public class ImageControllerGUI implements ImageController, ActionListener {
       for (String edit : inputtedEdits) {
         this.edit(edit);
       }
+      gui.renderMessage("Image edited!" + "\n" + "Edits preformed:" + inputtedEdits.toString());
       inputtedEdits.clear();
+      gui.resetButtonsAndLabels();
+
     }
 
   }
