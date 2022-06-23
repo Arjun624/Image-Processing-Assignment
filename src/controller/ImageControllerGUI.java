@@ -7,7 +7,10 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -156,6 +159,94 @@ public class ImageControllerGUI implements ImageController, ActionListener {
    */
   @Override
   public void saveImage(String pathname, String filename) throws IOException {
+    if (pathname.length() >= 4
+            && pathname.substring(pathname.length() - 4)
+            .equalsIgnoreCase(".ppm")) {
+      savePPM(pathname);
+    } else {
+      saveOther(pathname);
+    }
+  }
+
+  private void savePPM(String pathname) throws IOException {
+
+    StringBuilder sb = new StringBuilder();
+    try {
+      if (!model.getMap().containsKey(filename)) {
+        //view.renderMessage("Image " + filename + " does not exist or has not been loaded!");
+        return;
+      }
+    } catch (NullPointerException e) {
+      throw new IllegalArgumentException("Invalid image name: " + filename);
+    }
+    try {
+      File newFile = new File(pathname);
+      //view.renderMessage("Image: " + filename + "\nsaved as: " + pathname);
+      if (newFile.createNewFile()) {
+       // view.renderMessage("File created: " + newFile.getName());
+      } else {
+        //view.renderMessage("File already exists.");
+      }
+
+    } catch (IOException e) {
+      //view.renderMessage("An error occurred.");
+      e.printStackTrace();
+    }
+
+    try {
+      FileWriter writer = new FileWriter(pathname);
+      sb.append("P3");
+      sb.append((System.lineSeparator()));
+      sb.append(model.getMap().get(filename)[0].length);
+      sb.append(" ");
+      sb.append(model.getMap().get(filename).length);
+      sb.append((System.lineSeparator()));
+      sb.append(model.findTotalValue(filename));
+      sb.append(System.lineSeparator());
+      for (int row = 0; row < model.getMap().get(filename).length; row++) {
+        for (int col = 0; col < model.getMap().get(filename)[0].length; col++) {
+          sb.append(model.getMap().get(filename)[row][col].getRed());
+          sb.append(" ");
+          sb.append((model.getMap().get(filename)[row][col].getGreen()));
+          sb.append(" ");
+          sb.append((model.getMap().get(filename)[row][col].getBlue()));
+          sb.append(" ");
+        }
+        sb.append((System.lineSeparator()));
+      }
+      writer.write(sb.toString());
+      writer.close();
+     // view.renderMessage("Successfully wrote to the file.");
+    } catch (IOException e) {
+     // view.renderMessage("An error occurred.");
+      e.printStackTrace();
+    }
+
+  }
+
+  private void saveOther(String pathname) throws IOException {
+
+    if (!model.getMap().containsKey(filename)) {
+      //view.renderMessage("Image " + filename + " does not exist or has not been loaded!");
+      return;
+    }
+
+
+
+    BufferedImage bufferedImage = gui.getBufferedImage(filename, model.getMap());
+
+
+    ArrayList<String> formats = new ArrayList<>(Arrays.asList(ImageIO.getWriterFormatNames()));
+    String type2 = pathname.split("\\.")[1];
+
+    if (formats.contains(type2)) {
+      File file = new File(pathname);
+      ImageIO.write(bufferedImage, type2, file);
+      //view.renderMessage("Image: " + filename + "\nsaved as: " + pathname);
+    } else {
+     // view.renderMessage("Image type not supported");
+    }
+
 
   }
 
@@ -171,8 +262,7 @@ public class ImageControllerGUI implements ImageController, ActionListener {
       JFileChooser chooser = new JFileChooser();
       chooser.showOpenDialog(gui);
       File file = chooser.getSelectedFile();
-      System.out.println(file.getName());
-      String format = file.getName().split("\\.")[1];
+      filename=file.getName();
       try{
         this.loadImage(file.getAbsolutePath(), filename);
         gui.imageBoxes[0] = new ImageIcon(file.getAbsolutePath());
@@ -223,9 +313,14 @@ public class ImageControllerGUI implements ImageController, ActionListener {
       }
     }
     if(game.equals("Save")){
-      String newFile = "res/" + JOptionPane.showInputDialog(new JFrame(), "Enter the new file name");
+      String fileType = filename.split("\\.")[1];
+      JFileChooser chooser = new JFileChooser();
+      chooser.showSaveDialog(gui);
+      File file = chooser.getSelectedFile();
+      System.out.println(file.getAbsolutePath());
+      //String newFile = file.getAbsolutePath() + JOptionPane.showInputDialog(new JFrame(), "Enter the new file name") + "." + fileType;
       try {
-        gui.save(newFile);
+        this.saveImage(file.getAbsolutePath(), filename);
       } catch (IOException ex) {
         throw new RuntimeException(ex);
       }

@@ -18,7 +18,7 @@ public class ImageProcessingGUI extends JFrame{
 
   private ImageControllerGUI controller;
   private int brightness;
-  private String filename;
+  //private String filename;
 
   ArrayList<String> edits;
   private JPanel picturePanel;
@@ -54,7 +54,6 @@ public class ImageProcessingGUI extends JFrame{
     instantiatePanels();
     this.controller = controller;
     this.brightness = 0;
-    this.filename = "test";
     edits = new ArrayList<>();
     this.dropDownGreyscale = new JComboBox(this.greyScale);
     this.colorCombinations = new String[]{"NONE", "SEPIA", "GREYSCALE"};
@@ -81,7 +80,7 @@ public class ImageProcessingGUI extends JFrame{
     this.brightnessCommands.setBorder(BorderFactory.createTitledBorder("Adjust Brightness"));
     this.specificGreyscaleCommands.setLayout(new GridLayout(3, 1));
     this.specificGreyscaleCommands.setBorder(BorderFactory.createTitledBorder("Choose Greyscale"));
-    this.picturePanel.setBorder(BorderFactory.createTitledBorder("Showing an image"));
+    this.picturePanel.setBorder(BorderFactory.createTitledBorder("Loaded Image and Histogram"));
     this.picturePanel.setLayout(new GridLayout(1, 0, 10, 10));
 
     this.allCommands.setLayout(new GridLayout(6, 1));
@@ -162,8 +161,6 @@ public class ImageProcessingGUI extends JFrame{
     this.specificGreyscaleCommands.add(chooseGreyscaleButton);
     this.specificGreyscaleCommands.add(this.chosenGreyScale);
 
-    picturePanel.setBorder(BorderFactory.createTitledBorder("Showing an image"));
-    picturePanel.setLayout(new GridLayout(1, 0, 10, 10));
 
     this.add(picturePanel);
 
@@ -340,24 +337,24 @@ chosenGreyScale.setText("\tSelected: " + dropDownGreyscale.getItemAt(dropDownGre
   }
 
   public void save(String pathname) throws IOException {
-    if (!controller.getModelMap().containsKey(filename)) {
-      System.out.println("Image " + filename + " does not exist or has not been loaded!");
-      return;
-    }
-
-    BufferedImage bufferedImage = this.getBufferedImage(filename, controller.getModelMap());
-
-
-    ArrayList<String> formats = new ArrayList<>(Arrays.asList(ImageIO.getWriterFormatNames()));
-    String type2 = pathname.split("\\.")[1];
-
-    if (formats.contains(type2)) {
-      File file = new File(pathname);
-      ImageIO.write(bufferedImage, type2, file);
-      System.out.println("Image: " + filename + "\nsaved as: " + pathname);
-    } else {
-      System.out.println("Image type not supported");
-    }
+//    if (!controller.getModelMap().containsKey(filename)) {
+//      System.out.println("Image " + filename + " does not exist or has not been loaded!");
+//      return;
+//    }
+//
+//    BufferedImage bufferedImage = this.getBufferedImage(filename, controller.getModelMap());
+//
+//
+//    ArrayList<String> formats = new ArrayList<>(Arrays.asList(ImageIO.getWriterFormatNames()));
+//    String type2 = pathname.split("\\.")[1];
+//
+//    if (formats.contains(type2)) {
+//      File file = new File(pathname);
+//      ImageIO.write(bufferedImage, type2, file);
+//      System.out.println("Image: " + filename + "\nsaved as: " + pathname);
+//    } else {
+//      System.out.println("Image type not supported");
+//    }
   }
 
   public void getHistogram(String filename) {
@@ -401,10 +398,12 @@ chosenGreyScale.setText("\tSelected: " + dropDownGreyscale.getItemAt(dropDownGre
     graph.setColor(c);
     for (int i = 0; i < 254; i++) {
       for (int j = 0; j < 254; j++) {
-        graph.drawLine((int)(i * 2.35),nums[i]/2,(int)((i+1) * 2.35),nums[i+1]/2);
+        graph.drawLine((int)(i * 2.34), 950-nums[i]/2,(int)((i+1) * 2.34),950-nums[i+1]/2);
       }
     }
   }
+
+
 
   protected void  showErrorPopup(String errorMessage) {
     JOptionPane.showMessageDialog(new JFrame(), errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
