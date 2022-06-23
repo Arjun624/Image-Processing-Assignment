@@ -274,7 +274,7 @@ public class ImageModel implements ImageEditor {
           IllegalArgumentException {
     if(height < 0 || width < 0 || width > images.get(filename)[0].length
             || height > images.get(filename).length ){
-      throw new IllegalArgumentException("size invalid");
+      throw new IllegalArgumentException("invalid size");
     }
     Pixel[][] arr = new Pixel[height][width];
     int oldHeight = images.get(filename).length;

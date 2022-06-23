@@ -25,7 +25,7 @@ public class ImageDownscale implements ImageCommands {
     try {
       model.imageDownscale(height, width, filename, newFilename);
     } catch (IllegalArgumentException e){
-      view.renderMessage(e.getMessage());
+      view.renderMessage(e.getMessage() + " " + width + " " + height);
     }
   }
 }
