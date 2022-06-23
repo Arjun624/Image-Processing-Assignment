@@ -3,6 +3,7 @@ package model;
 import java.io.IOException;
 import java.util.HashMap;
 
+import controller.ImageCommands;
 import view.ImageDisplay;
 import view.ImageView;
 
@@ -298,14 +299,14 @@ public class ImageModel implements ImageEditor {
           double blueN = (double) d.getBlue() * (expHeight - Math.floor(expHeight)) +
                   c.getBlue() * (Math.ceil(expHeight) + expHeight);
 
-          double redP =  redN * (expWidth - Math.floor(expWidth)) +
+          double redP = redN * (expWidth - Math.floor(expWidth)) +
                   redM * (Math.ceil(expWidth) + expWidth);
-          double greenP =  greenN * (expWidth - Math.floor(expWidth)) +
+          double greenP = greenN * (expWidth - Math.floor(expWidth)) +
                   greenM * (Math.ceil(expWidth) + expWidth);
-          double blueP =  blueN * (expWidth - Math.floor(expWidth)) +
+          double blueP = blueN * (expWidth - Math.floor(expWidth)) +
                   blueM * (Math.ceil(expWidth) + expWidth);
 
-          arr[i][j] = new Pixel(fixRGBRange(redP),fixRGBRange(greenP),fixRGBRange(blueP));
+          arr[i][j] = new Pixel(fixRGBRange(redP), fixRGBRange(greenP), fixRGBRange(blueP));
         } else {
           int newHeight = (int) expHeight;
           int newWidth = (int) expWidth;
@@ -313,7 +314,55 @@ public class ImageModel implements ImageEditor {
         }
       }
     }
-    images.put(newFilename,arr);
+    images.put(newFilename, arr);
   }
 
+  public void PartialImageManipulation(String filename,
+                                       String newFilename, ImageCommands c)
+          throws IllegalArgumentException, IOException {
+    Pixel[][] mask = images.get("mask");
+    if (mask.length != images.get(filename).length && mask[0].length != images.get(filename)[0].length) {
+      throw new IllegalArgumentException("mask is invalid size");
+    }
+    Pixel[][] temp = new Pixel[images.get(filename).length][images.get(filename)[0].length];
+    for (int i = 0; i < images.get(filename).length; i++) {
+      for (int j = 0; j < images.get(filename)[0].length; j++) {
+        Pixel p = images.get(filename)[i][j];
+        temp[i][j] = new Pixel(p.getRed(),p.getGreen(),p.getBlue(),p.getAlpha());
+      }
+    }
+    Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
+    for (int i = 0; i < mask.length; i++) {
+      for (int j = 0; j < mask[0].length; j++) {
+        if (mask[i][j].equals(new Pixel(0,0,0))){
+          Pixel p = temp[i][j];
+          arr[i][j] = new Pixel(p.getRed(),p.getGreen(),p.getBlue(),p.getAlpha());
+        }
+        else{
+          arr[i][j] = null;
+        }
+      }
+    }
+    images.remove(filename);
+    images.put(filename,arr);
+    c.execute(this,this.view);
+
+    Pixel[][] newPic = new Pixel[temp.length][temp[0].length];
+    for (int i = 0; i < temp.length; i++) {
+      for (int j = 0; j < temp[0].length; j++) {
+        if(images.get(newFilename)[i][j] != null){
+          Pixel p = images.get(newFilename)[i][j];
+          newPic[i][j] = new Pixel(p.getRed(),p.getGreen(),p.getBlue(),p.getAlpha());
+        }
+        else {
+          Pixel p = temp[i][j];
+          newPic[i][j] = new Pixel(p.getRed(),p.getGreen(),p.getBlue(),p.getAlpha());
+        }
+      }
+    }
+    images.remove(filename);
+    images.put(filename,temp);
+    images.remove(newFilename);
+    images.put(newFilename,newPic);
+  }
 }
