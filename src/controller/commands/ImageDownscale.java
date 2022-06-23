@@ -22,6 +22,10 @@ public class ImageDownscale implements ImageCommands {
 
   @Override
   public void execute(ImageEditor model, ImageView view) throws IOException {
-    model.imageDownscale(height,width,filename,newFilename);
+    try {
+      model.imageDownscale(height, width, filename, newFilename);
+    } catch (IllegalArgumentException e){
+      view.renderMessage(e.getMessage());
+    }
   }
 }

@@ -272,6 +272,10 @@ public class ImageModel implements ImageEditor {
   @Override
   public void imageDownscale(int height, int width, String filename, String newFilename) throws IOException,
           IllegalArgumentException {
+    if(height < 0 || width < 0 || width > images.get(filename)[0].length
+            || height > images.get(filename).length ){
+      throw new IllegalArgumentException("size invalid");
+    }
     Pixel[][] arr = new Pixel[height][width];
     int oldHeight = images.get(filename).length;
     int oldWidth = images.get(filename)[0].length;
