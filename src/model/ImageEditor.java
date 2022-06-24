@@ -2,6 +2,7 @@ package model;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 import controller.ImageCommands;
 
@@ -82,7 +83,7 @@ public interface ImageEditor {
    *
    * @return the hashmap of images
    */
-  HashMap<String, Pixel[][]> getMap();
+  Map<String, Pixel[][]> getMap();
 
   /**
    * Finds the total value of the image, which is the max value of each pixel.

@@ -11,8 +11,8 @@ import view.ImageView;
  * Represents a way to edit, load, and save PPM images.
  */
 public class ImageModel implements ImageEditor {
-  public HashMap<String, Pixel[][]> images;
-  public boolean quit;
+  private HashMap<String, Pixel[][]> images;
+  private boolean quit;
 
   ImageView view;
 

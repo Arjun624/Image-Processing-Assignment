@@ -22,8 +22,8 @@ public class TestModel {
   public void testValidInitialization() {
     ImageModel m = new ImageModel();
     ImageView v = new ImageDisplay(System.out);
-    assertFalse(m.quit);
-    assertTrue(m.images.isEmpty());
+    assertFalse(m.getStatus());
+    assertTrue(m.getMap().isEmpty());
 
     HashMap<String, Pixel[][]> testMap = new HashMap<>();
     String file = "test";
@@ -35,10 +35,10 @@ public class TestModel {
     }
     testMap.put(file, arr);
     ImageModel m1 = new ImageModel(testMap, v);
-    assertFalse(m1.quit);
+    assertFalse(m1.getStatus());
     for (int i = 0; i < 3; i++) {
       for (int j = 0; j < 3; j++) {
-        assertEquals(m1.images.get(file)[i][j], new Pixel(i, j, 1));
+        assertEquals(m1.getMap().get(file)[i][j], new Pixel(i, j, 1));
       }
     }
   }
@@ -88,7 +88,7 @@ public class TestModel {
 
     for (int i = 0; i < 3; i++) {
       for (int j = 0; j < 3; j++) {
-        assertEquals(m1.images.get("test-vf")[i][j], arr1[i][j]);
+        assertEquals(m1.getMap().get("test-vf")[i][j], arr1[i][j]);
       }
     }
 
@@ -123,7 +123,7 @@ public class TestModel {
 
     for (int i = 0; i < 3; i++) {
       for (int j = 0; j < 3; j++) {
-        assertEquals(m1.images.get("test-hf")[i][j], arr1[i][j]);
+        assertEquals(m1.getMap().get("test-hf")[i][j], arr1[i][j]);
       }
     }
 
@@ -158,7 +158,7 @@ public class TestModel {
 
     for (int i = 0; i < 3; i++) {
       for (int j = 0; j < 3; j++) {
-        assertEquals(m1.images.get("test-r")[i][j], arr1[i][j]);
+        assertEquals(m1.getMap().get("test-r")[i][j], arr1[i][j]);
       }
     }
 
@@ -193,7 +193,7 @@ public class TestModel {
 
     for (int i = 0; i < 3; i++) {
       for (int j = 0; j < 3; j++) {
-        assertEquals(m1.images.get("test-g")[i][j], arr1[i][j]);
+        assertEquals(m1.getMap().get("test-g")[i][j], arr1[i][j]);
       }
     }
 
@@ -228,7 +228,7 @@ public class TestModel {
 
     for (int i = 0; i < 3; i++) {
       for (int j = 0; j < 3; j++) {
-        assertEquals(m1.images.get("test-b")[i][j], arr1[i][j]);
+        assertEquals(m1.getMap().get("test-b")[i][j], arr1[i][j]);
       }
     }
 
@@ -263,7 +263,7 @@ public class TestModel {
 
     for (int i = 0; i < 3; i++) {
       for (int j = 0; j < 3; j++) {
-        assertEquals(m1.images.get("test-b1")[i][j], arr1[i][j]);
+        assertEquals(m1.getMap().get("test-b1")[i][j], arr1[i][j]);
       }
     }
 
@@ -288,7 +288,7 @@ public class TestModel {
 
     for (int i = 0; i < 3; i++) {
       for (int j = 0; j < 3; j++) {
-        assertEquals(m2.images.get("test-b2")[i][j], testArr2[i][j]);
+        assertEquals(m2.getMap().get("test-b2")[i][j], testArr2[i][j]);
       }
     }
 
@@ -313,7 +313,7 @@ public class TestModel {
 
     for (int i = 0; i < 3; i++) {
       for (int j = 0; j < 3; j++) {
-        assertEquals(m3.images.get("test-b3")[i][j], testArr3[i][j]);
+        assertEquals(m3.getMap().get("test-b3")[i][j], testArr3[i][j]);
       }
     }
 
@@ -338,7 +338,7 @@ public class TestModel {
 
     for (int i = 0; i < 3; i++) {
       for (int j = 0; j < 3; j++) {
-        assertEquals(m4.images.get("test-b4")[i][j], testArr4[i][j]);
+        assertEquals(m4.getMap().get("test-b4")[i][j], testArr4[i][j]);
       }
     }
 
@@ -374,7 +374,7 @@ public class TestModel {
 
     for (int i = 0; i < 3; i++) {
       for (int j = 0; j < 3; j++) {
-        assertEquals(m1.images.get("test-lg")[i][j], arr1[i][j]);
+        assertEquals(m1.getMap().get("test-lg")[i][j], arr1[i][j]);
       }
     }
 
@@ -410,7 +410,7 @@ public class TestModel {
 
     for (int i = 0; i < 3; i++) {
       for (int j = 0; j < 3; j++) {
-        assertEquals(m1.images.get("test-ig")[i][j], arr1[i][j]);
+        assertEquals(m1.getMap().get("test-ig")[i][j], arr1[i][j]);
       }
     }
     try {
@@ -444,7 +444,7 @@ public class TestModel {
 
     for (int i = 0; i < 3; i++) {
       for (int j = 0; j < 3; j++) {
-        assertEquals(m1.images.get("test-vg")[i][j], arr1[i][j]);
+        assertEquals(m1.getMap().get("test-vg")[i][j], arr1[i][j]);
       }
     }
 
@@ -481,7 +481,7 @@ public class TestModel {
 
     for (int i = 0; i < 2; i++) {
       for (int j = 0; j < 2; j++) {
-        assertEquals(m1.images.get("test-b")[i][j], arr1[i][j]);
+        assertEquals(m1.getMap().get("test-b")[i][j], arr1[i][j]);
       }
     }
 
@@ -535,7 +535,7 @@ public class TestModel {
 
     for (int i = 0; i < 2; i++) {
       for (int j = 0; j < 2; j++) {
-        assertEquals(m1.images.get("test-s")[i][j], arr1[i][j]);
+        assertEquals(m1.getMap().get("test-s")[i][j], arr1[i][j]);
       }
     }
 
@@ -609,7 +609,7 @@ public class TestModel {
     }
     for (int i = 0; i < 3; i++) {
       for (int j = 0; j < 3; j++) {
-        assertEquals(m1.images.get("test-ct")[i][j], arr2[i][j]);
+        assertEquals(m1.getMap().get("test-ct")[i][j], arr2[i][j]);
       }
     }
 
