@@ -41,6 +41,12 @@ public interface GUIView extends ImageView {
   void setActionListeners(ActionListener listener);
 
   void resetButtonsAndLabels();
+
+  public void setDownScaleHeight();
+  public void setDownScaleWidth();
+
+  public int getDownScaleHeight();
+  public int getDownScaleWidth();
 }
 
 
