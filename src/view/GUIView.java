@@ -15,9 +15,9 @@ import model.Pixel;
 public interface GUIView extends ImageView {
   void showErrorPopup(String s);
 
-  void getHistogram(String filename, Map<String, Pixel[][]> map);
+  void displayHistogram(Pixel[][] pixels);
 
-  BufferedImage getBufferedImage(String filename, Map<String, Pixel[][]> map);
+  BufferedImage getBufferedImage(Pixel[][] pixels);
 
   void renderMessage(String s);
 
@@ -40,13 +40,13 @@ public interface GUIView extends ImageView {
 
   void setActionListeners(ActionListener listener);
 
-  void resetButtonsAndLabels();
+  void reset();
 
-  public void setDownScaleHeight();
-  public void setDownScaleWidth();
+   void setDownScaleHeight(int imageHeight);
+   void setDownScaleWidth(int imageWidth);
 
-  public int getDownScaleHeight();
-  public int getDownScaleWidth();
+   int getDownScaleHeight();
+   int getDownScaleWidth();
 }
 
 

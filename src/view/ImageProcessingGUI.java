@@ -60,6 +60,12 @@ public class ImageProcessingGUI extends JFrame implements GUIView {
 
   private final ImageIcon[] imageBoxes;
 
+  JMenuItem validCommands ;
+  JMenuItem documentation ;
+
+  JMenuItem quit;
+
+
   public ImageProcessingGUI() {
     this.instantiateLabels();
     this.instantiatePanelsAndLayout();
@@ -177,12 +183,13 @@ public class ImageProcessingGUI extends JFrame implements GUIView {
     load.addActionListener(listener);
     save.addActionListener(listener);
     howTo.addActionListener(listener);
+    validCommands.addActionListener(listener);
+    documentation.addActionListener(listener);
     chooseFilterButton.addActionListener(listener);
     chooseColorButton.addActionListener(listener);
     chooseGreyscaleButton.addActionListener(listener);
     chooseFlipButton.addActionListener(listener);
     this.editImageButton.addActionListener(listener);
-
     adjustBrightnessButton.addActionListener(listener);
     downScaleButton.addActionListener(listener);
   }
@@ -229,29 +236,30 @@ public class ImageProcessingGUI extends JFrame implements GUIView {
   }
 
   private void instantiateMenuBar() {
-    JMenu file = new JMenu("File");
-    load = new JMenuItem("Load");
-
-    save = new JMenuItem("Save");
-
-    JMenu help = new JMenu("Help");
-    howTo = new JMenuItem("How to use");
-
-
     JMenuBar menuBar = new JMenuBar();
 
+    JMenu file = new JMenu("File");
+    load = new JMenuItem("Load");
     load.setActionCommand("Load");
 
+    save = new JMenuItem("Save");
     save.setActionCommand("Save");
-    JMenuItem quit = new JMenuItem("Quit");
+
+    quit = new JMenuItem("Quit");
+    quit.setActionCommand("Quit");
     file.add(load);
     file.add(save);
     file.add(quit);
 
-
+    JMenu help = new JMenu("Help");
+    howTo = new JMenuItem("How to use");
     howTo.setActionCommand("HowTo");
-    JMenuItem validCommands = new JMenuItem("Information on Valid Commands");
-    JMenuItem documentation = new JMenuItem("Full Documentation");
+
+    validCommands = new JMenuItem("Information on Valid Commands");
+    validCommands.setActionCommand("ValidCommands");
+
+    documentation = new JMenuItem("Full Documentation");
+    documentation.setActionCommand("Documentation");
     help.add(howTo);
     help.add(validCommands);
     help.add(documentation);
@@ -347,13 +355,8 @@ public class ImageProcessingGUI extends JFrame implements GUIView {
 
   }
 
-  public void getHistogram(String filename, Map<String, Pixel[][]> map) {
-    if (!map.containsKey(filename)) {
-      JOptionPane.showMessageDialog(new JFrame(), "No image loaded!", "Error",
-              JOptionPane.ERROR_MESSAGE);
-      return;
-    }
-    Pixel[][] pixels = map.get(filename);
+  public void displayHistogram(Pixel[][] pixels) {
+
     int[] red = new int[256];
     int[] green = new int[256];
     int[] blue = new int[256];
@@ -376,16 +379,16 @@ public class ImageProcessingGUI extends JFrame implements GUIView {
   }
 
   @Override
-  public BufferedImage getBufferedImage(String filename, Map<String, Pixel[][]> map) {
-    int length = map.get(filename).length;
-    int width = map.get(filename)[0].length;
+  public BufferedImage getBufferedImage(Pixel[][] pixels) {
+    int length = pixels.length;
+    int width = pixels.length;
     BufferedImage bufferedImage = new BufferedImage(width, length, BufferedImage.TYPE_INT_RGB);
     for (int row = 0; row < length; row++) {
       for (int col = 0; col < width; col++) {
-        Color c = new Color(map.get(filename)[row][col].getRed(),
-                map.get(filename)[row][col].getGreen(),
-                map.get(filename)[row][col].getBlue(),
-                map.get(filename)[row][col].getAlpha());
+        Color c = new Color(pixels[row][col].getRed(),
+                pixels[row][col].getGreen(),
+                pixels[row][col].getBlue(),
+                pixels[row][col].getAlpha());
         bufferedImage.setRGB(col, row, c.getRGB());
       }
     }
@@ -472,7 +475,7 @@ public class ImageProcessingGUI extends JFrame implements GUIView {
     return chooser.getSelectedFile();
   }
 
-  public void resetButtonsAndLabels() {
+  public void reset() {
     this.dropDownColorCombinations.setEnabled(true);
     this.chooseColorButton.setEnabled(true);
     this.dropDownGreyscale.setEnabled(true);
@@ -489,22 +492,36 @@ public class ImageProcessingGUI extends JFrame implements GUIView {
     this.incrementLabel.setText("Increment: N/A");
     this.downScaleButton.setEnabled(true);
     this.downScaleLabel.setText("Please select a width and a height");
+    this.downscaleHeight=0;
+    this.downscaleWidth=0;
+    this.brightness=0;
+
   }
 
-  public void setDownScaleHeight(){
+  public void setDownScaleHeight(int imageHeight) {
     String downScaleHeight = JOptionPane.showInputDialog(new JFrame(), "Enter a downscale Height. "
             + "Must be an positive integer.");
     try {
       downscaleHeight = Integer.parseInt(downScaleHeight);
+      if (downscaleHeight > imageHeight || downscaleHeight <= 0) {
+        downScaleLabel.setText("Invalid downscale height. Must be positive and less than or equal to the "
+                + "image height.");
+        downscaleHeight = 0;
+      }
     } catch (Exception ex) {
       downScaleLabel.setText("Invalid Downscale Height, Please try again.");
     }
   }
-  public void setDownScaleWidth(){
+  public void setDownScaleWidth(int imageWidth) {
     String downScaleWidth = JOptionPane.showInputDialog(new JFrame(), "Enter a downscale width. "
             + "Must be an positive integer.");
     try {
       downscaleWidth = Integer.parseInt(downScaleWidth);
+      if(downscaleWidth>imageWidth || downscaleWidth<=0) {
+        downScaleLabel.setText("Invalid Downscale Width.\n Must be positive and less than or equal to the "
+                + "image height.");
+        downscaleWidth=0;
+      }
     } catch (Exception ex) {
       downScaleLabel.setText("Invalid Downscale Width, Please try again.");
     }

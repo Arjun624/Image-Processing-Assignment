@@ -9,9 +9,12 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Scanner;
 
 import javax.imageio.ImageIO;
@@ -127,22 +130,31 @@ public class ImageControllerGUI implements ImageController, ActionListener {
       }
     }
     model.add(filename, pixels);
-    gui.getHistogram(filename, model.getMap());
+    this.replaceImage(gui.getBufferedImage(model.getMap().get(filename)));
+    gui.displayHistogram(model.getMap().get(filename));
     gui.renderMessage("Image: " + file.getAbsolutePath() + "\nloaded as: " + filename);
 
   }
 
   private void loadOther(File file) throws IOException,
           NoSuchElementException {
+
+    int width;
+    int height;
     BufferedImage b;
+
 
     try {
       b = ImageIO.read(file);
+      this.replaceImage(b);
+
     } catch (IOException e) {
       throw new NoSuchElementException();
     }
-    int width = b.getWidth();
-    int height = b.getHeight();
+
+    height = b.getHeight();
+    width = b.getWidth();
+
     Pixel[][] arr = new Pixel[height][width];
     for (int i = 0; i < width; i++) {
       for (int j = 0; j < height; j++) {
@@ -151,7 +163,7 @@ public class ImageControllerGUI implements ImageController, ActionListener {
       }
     }
     model.add(filename, arr);
-    gui.getHistogram(filename, model.getMap());
+    gui.displayHistogram(model.getMap().get(filename));
   }
 
 
@@ -236,7 +248,7 @@ public class ImageControllerGUI implements ImageController, ActionListener {
     }
 
 
-    BufferedImage bufferedImage = gui.getBufferedImage(filename, model.getMap());
+    BufferedImage bufferedImage = gui.getBufferedImage(model.getMap().get(filename));
 
 
     ArrayList<String> formats = new ArrayList<>(Arrays.asList(ImageIO.getWriterFormatNames()));
@@ -262,14 +274,28 @@ public class ImageControllerGUI implements ImageController, ActionListener {
   public void actionPerformed(ActionEvent e) {
     Object game = e.getActionCommand();
     if (game.equals("Load")) {
-      File file = gui.GetLoadFile();
-      filename = file.getName();
       try {
+        File file = gui.GetLoadFile();
+        filename = file.getName();
         this.loadImage(file.getAbsolutePath(), filename);
-        this.replaceImage(filename);
       } catch (Exception ex) {
+        ex.printStackTrace();
         gui.showErrorPopup("Error loading file, please check file format.");
       }
+    }
+    if(game.equals("ValidCommands")){
+      try {
+        Desktop desktop = java.awt.Desktop.getDesktop();
+        URI oURL = new URI("https://github.com/Arjun624/Image-Processing-Assignment/blob/master/USEME.md");
+        desktop.browse(oURL);
+        return;
+      } catch (Exception ex) {
+        ex.printStackTrace();
+      }
+    }
+    if(model.getMap().isEmpty()) {
+      gui.showErrorPopup("No image loaded");
+      return;
     }
     if (game.equals("Picked Filter")) {
       gui.changeLabelText("FILTER");
@@ -296,10 +322,10 @@ public class ImageControllerGUI implements ImageController, ActionListener {
     }
     if (game.equals("Down Scale")) {
       if(gui.getDownScaleWidth() == 0){
-        gui.setDownScaleWidth();
+        gui.setDownScaleWidth(model.getMap().get(filename)[0].length);
       }
       if(gui.getDownScaleHeight() == 0){
-        gui.setDownScaleHeight();
+        gui.setDownScaleHeight( model.getMap().get(filename).length);
       }
       if(gui.getDownScaleHeight() != 0 && gui.getDownScaleWidth() != 0){
         gui.addEdit("DOWNSCALE", inputtedEdits);
@@ -348,108 +374,116 @@ public class ImageControllerGUI implements ImageController, ActionListener {
         newFilename = filename + "-vf";
         new VerticalFlip(filename, newFilename).execute(model, new ImageDisplay(System.out));
         filename = newFilename;
-        this.replaceImage(filename);
+        gui.displayHistogram(model.getMap().get(filename));
+        this.replaceImage(gui.getBufferedImage(model.getMap().get(filename)));
         break;
       case ("HORIZONTAL FLIP"):
         newFilename = filename + "-hf";
         new HorizontalFlip(filename, newFilename).execute(model, new ImageDisplay(System.out));
         filename = newFilename;
-        this.replaceImage(filename);
+        gui.displayHistogram(model.getMap().get(filename));
+        this.replaceImage(gui.getBufferedImage(model.getMap().get(filename)));
         break;
       case ("SEPIA"):
         newFilename = filename + "-sep";
         new Sepia(filename, newFilename).execute(model, new ImageDisplay(System.out));
         filename = newFilename;
-        gui.getHistogram(filename, model.getMap());
-        this.replaceImage(filename);
+        gui.displayHistogram(model.getMap().get(filename));
+        this.replaceImage(gui.getBufferedImage(model.getMap().get(filename)));
         break;
       case ("GREYSCALE"):
         newFilename = filename + "-vf";
         new Greyscale(filename, newFilename).execute(model, new ImageDisplay(System.out));
         filename = newFilename;
-        gui.getHistogram(filename, model.getMap());
-        this.replaceImage(filename);
+        gui.displayHistogram(model.getMap().get(filename));
+        this.replaceImage(gui.getBufferedImage(model.getMap().get(filename)));
         break;
       case ("BLUR"):
         newFilename = filename + "-bl";
         new Blur(filename, newFilename).execute(model, new ImageDisplay(System.out));
         filename = newFilename;
-        gui.getHistogram(filename, model.getMap());
-        this.replaceImage(filename);
+        gui.displayHistogram(model.getMap().get(filename));
+        this.replaceImage(gui.getBufferedImage(model.getMap().get(filename)));
         break;
       case ("SHARPEN"):
         newFilename = filename + "-sh";
         new Sharpen(filename, newFilename).execute(model, new ImageDisplay(System.out));
         filename = newFilename;
-        gui.getHistogram(filename, model.getMap());
-        this.replaceImage(filename);
+        gui.displayHistogram(model.getMap().get(filename));
+        this.replaceImage(gui.getBufferedImage(model.getMap().get(filename)));
         break;
       case ("RED"):
         newFilename = filename + "-gr";
         new RedGreyscale(filename, newFilename).execute(model, new ImageDisplay(System.out));
         filename = newFilename;
-        gui.getHistogram(filename, model.getMap());
-        this.replaceImage(filename);
+        gui.displayHistogram(model.getMap().get(filename));
+        this.replaceImage(gui.getBufferedImage(model.getMap().get(filename)));
         break;
       case ("GREEN"):
         newFilename = filename + "-gg";
         new GreenGreyscale(filename, newFilename).execute(model, new ImageDisplay(System.out));
         filename = newFilename;
-        gui.getHistogram(filename, model.getMap());
-        this.replaceImage(filename);
+        gui.displayHistogram(model.getMap().get(filename));
+        this.replaceImage(gui.getBufferedImage(model.getMap().get(filename)));
         break;
       case ("BLUE"):
         newFilename = filename + "-gb";
         new BlueGreyscale(filename, newFilename).execute(model, new ImageDisplay(System.out));
         filename = newFilename;
-        gui.getHistogram(filename, model.getMap());
-        this.replaceImage(filename);
+        gui.displayHistogram(model.getMap().get(filename));
+        this.replaceImage(gui.getBufferedImage(model.getMap().get(filename)));
         break;
       case ("LUMA"):
         newFilename = filename + "-gl";
         new LumaGreyscale(filename, newFilename).execute(model, new ImageDisplay(System.out));
         filename = newFilename;
-        gui.getHistogram(filename, model.getMap());
-        this.replaceImage(filename);
+        gui.displayHistogram(model.getMap().get(filename));
+        this.replaceImage(gui.getBufferedImage(model.getMap().get(filename)));
         break;
       case ("INTENSITY"):
         newFilename = filename + "-gi";
         new IntensityGreyscale(filename, newFilename).execute(model, new ImageDisplay(System.out));
         filename = newFilename;
-        gui.getHistogram(filename, model.getMap());
-        this.replaceImage(filename);
+        gui.displayHistogram(model.getMap().get(filename));
+        this.replaceImage(gui.getBufferedImage(model.getMap().get(filename)));
         break;
       case ("VALUE"):
         newFilename = filename + "-gv";
         new ValueGreyscale(filename, newFilename).execute(model, new ImageDisplay(System.out));
         filename = newFilename;
-        gui.getHistogram(filename, model.getMap());
-        this.replaceImage(filename);
+        gui.displayHistogram(model.getMap().get(filename));
+        this.replaceImage(gui.getBufferedImage(model.getMap().get(filename)));
         break;
       case ("BRIGHTEN"):
         newFilename = filename + "-br";
         new AdjustBrightness(gui.getIncrement(), filename, newFilename).execute(model,
                 new ImageDisplay(System.out));
         filename = newFilename;
-        gui.getHistogram(filename, model.getMap());
-        this.replaceImage(filename);
+        gui.displayHistogram(model.getMap().get(filename));
+        this.replaceImage(gui.getBufferedImage(model.getMap().get(filename)));
         break;
       case ("DOWNSCALE"):
         newFilename = filename + "-ds";
         new ImageDownscale(gui.getDownScaleWidth(), gui.getDownScaleHeight(), filename, newFilename).execute(model,
                 new ImageDisplay(System.out));
         filename = newFilename;
-        gui.getHistogram(filename, model.getMap());
-        this.replaceImage(filename);
+        gui.displayHistogram(model.getMap().get(filename));
+        this.replaceImage(gui.getBufferedImage(model.getMap().get(filename)));
         break;
       default:
         break;
     }
   }
 
-  public void replaceImage(String filename) {
+  public void replaceImage(BufferedImage oldImage) {
 
-    ImageIcon image = new ImageIcon(gui.getBufferedImage(filename, model.getMap()));
+
+    int width = Math.max(600, oldImage.getWidth());
+   int  height = Math.max(600, oldImage.getHeight());
+    BufferedImage reSizedImage = new BufferedImage(width, height, oldImage.getType());
+    Graphics2D g = reSizedImage.createGraphics();
+    g.drawImage(oldImage, 0,0, width, height, null);
+    ImageIcon image = new ImageIcon(reSizedImage);
     gui.changeImage(image);
   }
 
@@ -465,7 +499,7 @@ public class ImageControllerGUI implements ImageController, ActionListener {
       }
       gui.renderMessage("Image edited!" + "\n" + "Edits preformed:" + inputtedEdits.toString());
       inputtedEdits.clear();
-      gui.resetButtonsAndLabels();
+      gui.reset();
 
     }
 
