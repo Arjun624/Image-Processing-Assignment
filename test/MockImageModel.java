@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.util.HashMap;
 
+import controller.ImageCommands;
 import model.ImageEditor;
 import model.Pixel;
 
@@ -81,6 +82,11 @@ public class MockImageModel implements ImageEditor {
   @Override
   public void imageDownscale(int height, int width, String filename, String newFilename) throws IOException, IllegalArgumentException {
     this.ap.append(String.format("Image downscaled to %dx%d"),height,width);
+  }
+
+  @Override
+  public void partialImageManipulation(String maskName, String filename, String newFilename, ImageCommands c) throws IllegalArgumentException, IOException {
+    this.ap.append("Image partially manipulated");
   }
 
 }
