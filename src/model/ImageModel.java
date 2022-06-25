@@ -166,7 +166,9 @@ public class ImageModel implements ImageEditor {
     Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
     for (int row = 0; row < this.images.get(filename).length; row++) {
       for (int col = 0; col < this.images.get(filename)[0].length; col++) {
-        if (this.images.get(filename)[row][col] != null ) {
+        if (images.get(filename)[row][col] == null) {
+          arr[row][col] = null;
+        } else {
           for (int kernelRow = row - (length / 2); kernelRow
                   < (row - (length / 2)) + length; kernelRow++) {
             for (int kernelCol = col - (width / 2); kernelCol
@@ -180,20 +182,17 @@ public class ImageModel implements ImageEditor {
                 blueCount += images.get(filename)[kernelRow][kernelCol].getBlue() * kernel[kernelRow
                         - (row - (length / 2))][kernelCol - (col - (width / 2))];
               } catch (ArrayIndexOutOfBoundsException ignored) {
+              } catch (NullPointerException ignored) {
               }
-
             }
-          }
 
+          }
           arr[row][col] = new Pixel(fixRGBRange(redCount), fixRGBRange(greenCount),
                   fixRGBRange(blueCount));
 
           redCount = 0;
           greenCount = 0;
           blueCount = 0;
-        }
-        else {
-          arr[row][col] = null;
         }
       }
     }
