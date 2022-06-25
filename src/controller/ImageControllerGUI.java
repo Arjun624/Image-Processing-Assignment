@@ -1,6 +1,7 @@
 package controller;
 
-import java.awt.*;
+import java.awt.Desktop;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -11,7 +12,9 @@ import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.ImageIcon;
 
 import controller.commands.AdjustBrightness;
 import controller.commands.BlueGreyscale;
@@ -45,12 +48,12 @@ public class ImageControllerGUI extends ALoadSave implements ImageController, Ac
   ArrayList<String> inputtedEdits;
 
   /**
-   * Constructs an {@code ImageControllerGUI} based on an inputted model and GUIView
+   * Constructs an {@code ImageControllerGUI} based on an inputted model and GUIView.
    *
    * @param model the model
    * @param view  the view
    */
-  public ImageControllerGUI(ImageEditor model, GUIView view)  {
+  public ImageControllerGUI(ImageEditor model, GUIView view) {
     this.model = model;
     this.gui = view;
     this.filename = "image";

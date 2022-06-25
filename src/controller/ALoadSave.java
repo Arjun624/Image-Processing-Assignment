@@ -1,6 +1,7 @@
 package controller;
 
-import java.awt.*;
+
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,9 +18,20 @@ import model.ImageEditor;
 import model.Pixel;
 import view.ImageView;
 
+/**
+ * Represents an abstract class for loading and saving an image.
+ */
 public abstract class ALoadSave {
 
 
+  /**
+   * Reads a ppm file and returns it as a 2D array of Pixels.
+   *
+   * @param file the file to be read
+   * @param view the view
+   * @return the pixel array of a ppm image
+   * @throws IOException if the program cannot read the input or write the output
+   */
   public Pixel[][] getPPMPixelArray(File file, ImageView view) throws IOException {
     Scanner sc;
 
@@ -66,6 +78,12 @@ public abstract class ALoadSave {
 
   }
 
+  /**
+   * Reads a file that is not a ppm and returns it as a 2D array of Pixels.
+   *
+   * @param b the buffered image to be converted
+   * @return the pixel array of an image
+   */
   public Pixel[][] getOtherPixelArray(BufferedImage b) {
 
 
@@ -82,6 +100,14 @@ public abstract class ALoadSave {
     return arr;
   }
 
+  /**
+   * Saves a ppm image to the local disk.
+   *
+   * @param model    the model
+   * @param filename the name of the file in the model to be saved
+   * @param pathname where the image will be saved
+   * @throws IOException if the program cannot read the input or write the output
+   */
   public void savePPM(ImageEditor model, String filename, String pathname) throws IOException {
     StringBuilder sb = new StringBuilder();
 
@@ -109,7 +135,16 @@ public abstract class ALoadSave {
     writer.close();
   }
 
-  public void saveOther(BufferedImage bufferedImage, String filename, String pathname, ImageView view) throws IOException {
+  /**
+   * Saves an image that is not a ppm to the local disk.
+   *
+   * @param bufferedImage the buffered image that will represent the new image
+   * @param filename      the name of the file in the model to be saved
+   * @param pathname      where the image will be saved
+   * @throws IOException if the program cannot read the input or write the output
+   */
+  public void saveOther(BufferedImage bufferedImage,
+                        String filename, String pathname, ImageView view) throws IOException {
     ArrayList<String> formats = new ArrayList<>(Arrays.asList(ImageIO.getWriterFormatNames()));
     String type2 = pathname.split("\\.")[1];
 

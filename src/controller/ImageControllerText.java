@@ -78,7 +78,7 @@ public class ImageControllerText extends ALoadSave implements ImageController {
     commands.put("blur", s -> new Blur(s.next(), s.next()));
     commands.put("sepia", s -> new Sepia(s.next(), s.next()));
     commands.put("greyscale", s -> new Greyscale(s.next(), s.next()));
-    commands.put("downscale", s -> new ImageDownscale(s.nextInt(),s.nextInt(),s.next(), s.next()));
+    commands.put("downscale", s -> new ImageDownscale(s.nextInt(), s.nextInt(), s.next(), s.next()));
     commands.put("q", s -> new Quit());
 
   }
@@ -96,7 +96,7 @@ public class ImageControllerText extends ALoadSave implements ImageController {
       } else {
         try {
           givenCommand.apply(s).execute(model, view);
-        } catch (InputMismatchException e){
+        } catch (InputMismatchException e) {
           view.renderMessage("Invalid input!");
         }
       }
