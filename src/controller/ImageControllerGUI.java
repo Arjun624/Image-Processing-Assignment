@@ -5,15 +5,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.NoSuchElementException;
-import java.util.Scanner;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -33,14 +28,13 @@ import controller.commands.Sharpen;
 import controller.commands.ValueGreyscale;
 import controller.commands.VerticalFlip;
 import model.ImageEditor;
-import model.Pixel;
 import view.GUIView;
 import view.ImageDisplay;
 
 /**
  * Represents a controller for a GUI fpr a Image Processor.
  */
-public class ImageControllerGUI implements ImageController, ActionListener {
+public class ImageControllerGUI extends ALoadSave implements ImageController, ActionListener {
 
 
   private final ImageEditor model;
@@ -56,7 +50,7 @@ public class ImageControllerGUI implements ImageController, ActionListener {
    * @param model the model
    * @param view  the view
    */
-  public ImageControllerGUI(ImageEditor model, GUIView view) throws IOException {
+  public ImageControllerGUI(ImageEditor model, GUIView view)  {
     this.model = model;
     this.gui = view;
     this.filename = "image";
@@ -68,7 +62,7 @@ public class ImageControllerGUI implements ImageController, ActionListener {
    * Method that takes in the user arguments and preforms any action.
    */
   @Override
-  public void start() throws IOException {
+  public void start() {
     gui.displayWelcomeMessage();
   }
 
@@ -92,50 +86,8 @@ public class ImageControllerGUI implements ImageController, ActionListener {
   }
 
   //loads a ppm image
-  private void loadPPM(File file) throws IOException,
-          NoSuchElementException {
-    Scanner sc;
-
-    try {
-      sc = new Scanner(new FileInputStream(file));
-    } catch (FileNotFoundException e) {
-
-      gui.showErrorPopup("File " + file.getName() + " not found!");
-      return;
-    }
-    StringBuilder builder = new StringBuilder();
-    //read the file line by line, and populate a string. This will throw away any comment lines
-    while (sc.hasNextLine()) {
-      String s = sc.nextLine();
-      if (s.charAt(0) != '#') {
-        builder.append(s).append(System.lineSeparator());
-      }
-    }
-
-    //now set up the scanner to read from the string we just built
-    sc = new Scanner(builder.toString());
-
-    String token;
-
-    token = sc.next();
-    if (!token.equals("P3")) {
-      gui.showErrorPopup("Invalid PPM file: plain RAW file should begin with P3");
-    }
-    int width = sc.nextInt();
-    int height = sc.nextInt();
-    int maxValue = sc.nextInt();
-
-    //now read the image data
-    Pixel[][] pixels = new Pixel[height][width];
-    for (int row = 0; row < height; row++) {
-      for (int col = 0; col < width; col++) {
-        int r = sc.nextInt();
-        int g = sc.nextInt();
-        int b = sc.nextInt();
-        pixels[row][col] = new Pixel(r, g, b);
-      }
-    }
-    model.add(filename, pixels);
+  private void loadPPM(File file) throws IOException, NoSuchElementException {
+    model.add(filename, this.getPPMPixelArray(file, gui));
     this.replaceImage(gui.getBufferedImage(model.getMap().get(filename)));
     gui.displayHistogram(model.getMap().get(filename));
     gui.renderMessage("Image: " + file.getAbsolutePath() + "\nloaded as: " + filename);
@@ -143,11 +95,7 @@ public class ImageControllerGUI implements ImageController, ActionListener {
   }
 
   //loads every other type of image
-  private void loadOther(File file) throws IOException,
-          NoSuchElementException {
-
-    int width;
-    int height;
+  private void loadOther(File file) throws IOException, NoSuchElementException {
     BufferedImage b;
 
 
@@ -159,17 +107,8 @@ public class ImageControllerGUI implements ImageController, ActionListener {
       throw new NoSuchElementException();
     }
 
-    height = b.getHeight();
-    width = b.getWidth();
-
-    Pixel[][] arr = new Pixel[height][width];
-    for (int i = 0; i < width; i++) {
-      for (int j = 0; j < height; j++) {
-        Color c = new Color(b.getRGB(i, j));
-        arr[j][i] = new Pixel(c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha());
-      }
-    }
-    model.add(filename, arr);
+    model.add(filename, this.getOtherPixelArray(b));
+    gui.renderMessage("Image: " + file.getName() + "\nloaded as: " + filename);
     gui.displayHistogram(model.getMap().get(filename));
   }
 
@@ -183,9 +122,8 @@ public class ImageControllerGUI implements ImageController, ActionListener {
    */
   @Override
   public void saveImage(String pathname, String filename) throws IOException {
-    if (pathname.length() >= 4
-            && pathname.substring(pathname.length() - 4)
-            .equalsIgnoreCase(".ppm")) {
+    if (pathname.length() >= 4 && pathname.substring(pathname.length()
+            - 4).equalsIgnoreCase(".ppm")) {
       savePPM(pathname);
     } else {
       saveOther(pathname);
@@ -194,7 +132,6 @@ public class ImageControllerGUI implements ImageController, ActionListener {
 
   //saves a ppm image
   private void savePPM(String pathname) {
-    StringBuilder sb = new StringBuilder();
     try {
       if (!model.getMap().containsKey(filename)) {
         gui.showErrorPopup("Image " + filename + " does not exist or has not been loaded!");
@@ -218,31 +155,10 @@ public class ImageControllerGUI implements ImageController, ActionListener {
     }
 
     try {
-      FileWriter writer = new FileWriter(pathname);
-      sb.append("P3");
-      sb.append((System.lineSeparator()));
-      sb.append(model.getMap().get(filename)[0].length);
-      sb.append(" ");
-      sb.append(model.getMap().get(filename).length);
-      sb.append((System.lineSeparator()));
-      sb.append(model.findTotalValue(filename));
-      sb.append(System.lineSeparator());
-      for (int row = 0; row < model.getMap().get(filename).length; row++) {
-        for (int col = 0; col < model.getMap().get(filename)[0].length; col++) {
-          sb.append(model.getMap().get(filename)[row][col].getRed());
-          sb.append(" ");
-          sb.append((model.getMap().get(filename)[row][col].getGreen()));
-          sb.append(" ");
-          sb.append((model.getMap().get(filename)[row][col].getBlue()));
-          sb.append(" ");
-        }
-        sb.append((System.lineSeparator()));
-      }
-      writer.write(sb.toString());
-      writer.close();
-      // view.renderMessage("Successfully wrote to the file.");
+      this.savePPM(model, filename, pathname);
+      gui.renderMessage("Successfully saved file.");
     } catch (IOException e) {
-      // view.renderMessage("An error occurred.");
+      gui.showErrorPopup("An error occurred.");
       e.printStackTrace();
     }
 
@@ -252,7 +168,6 @@ public class ImageControllerGUI implements ImageController, ActionListener {
   private void saveOther(String pathname) throws IOException {
 
     if (!model.getMap().containsKey(filename)) {
-
       return;
     }
 
@@ -260,17 +175,7 @@ public class ImageControllerGUI implements ImageController, ActionListener {
     BufferedImage bufferedImage = gui.getBufferedImage(model.getMap().get(filename));
 
 
-    ArrayList<String> formats = new ArrayList<>(Arrays.asList(ImageIO.getWriterFormatNames()));
-    String type2 = pathname.split("\\.")[1];
-
-    if (formats.contains(type2)) {
-      File file = new File(pathname);
-      ImageIO.write(bufferedImage, type2, file);
-      gui.renderMessage("Image: " + filename + "\nsaved as: " + pathname);
-    } else {
-      gui.showErrorPopup("Image type not supported");
-    }
-
+    saveOther(bufferedImage, filename, pathname, gui);
 
   }
 
@@ -295,7 +200,8 @@ public class ImageControllerGUI implements ImageController, ActionListener {
     if (game.equals("ValidCommands")) {
       try {
         Desktop desktop = java.awt.Desktop.getDesktop();
-        URI oURL = new URI("https://github.com/Arjun624/Image-Processing-Assignment/blob/master/USEME.md");
+        URI oURL = new URI("https://github.com/Arjun624/Image-Processing-Assignment/blob/master"
+                + "/USEME.md");
         desktop.browse(oURL);
         return;
       } catch (Exception ex) {
@@ -473,8 +379,8 @@ public class ImageControllerGUI implements ImageController, ActionListener {
         break;
       case ("DOWNSCALE"):
         newFilename = filename + "-ds";
-        new ImageDownscale(gui.getDownScaleWidth(), gui.getDownScaleHeight(), filename, newFilename).execute(model,
-                new ImageDisplay(System.out));
+        new ImageDownscale(gui.getDownScaleWidth(), gui.getDownScaleHeight(), filename,
+                newFilename).execute(model, new ImageDisplay(System.out));
         filename = newFilename;
         gui.displayHistogram(model.getMap().get(filename));
         this.replaceImage(gui.getBufferedImage(model.getMap().get(filename)));
