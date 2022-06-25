@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.InputMismatchException;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -99,7 +100,11 @@ public class ImageControllerText implements ImageController {
       if (givenCommand == null) {
         view.renderMessage("Invalid command!");
       } else {
-        givenCommand.apply(s).execute(model, view);
+        try {
+          givenCommand.apply(s).execute(model, view);
+        } catch (InputMismatchException e){
+          view.renderMessage("Invalid input!");
+        }
       }
     }
 
