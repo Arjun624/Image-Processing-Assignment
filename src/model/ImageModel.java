@@ -11,7 +11,7 @@ import view.ImageView;
  * Represents a way to edit, load, and save PPM images.
  */
 public class ImageModel implements ImageEditor {
-  private HashMap<String, Pixel[][]> images;
+  private final HashMap<String, Pixel[][]> images;
   private boolean quit;
 
   ImageView view;
@@ -95,6 +95,7 @@ public class ImageModel implements ImageEditor {
     view.renderMessage("image " + filename + " changed to " + type + " greyscale");
   }
 
+  // gets the type of greyscale
   private Pixel getType(String type, Pixel pixel) {
     int val = -1;
     if (type.equalsIgnoreCase("red")) {
@@ -258,6 +259,7 @@ public class ImageModel implements ImageEditor {
 
   }
 
+  //Makes sure not RGB value is out of range
   private int fixRGBRange(double value) {
     if (value > 255) {
       return 255;
@@ -272,8 +274,8 @@ public class ImageModel implements ImageEditor {
   @Override
   public void imageDownscale(int height, int width, String filename, String newFilename) throws IOException,
           IllegalArgumentException {
-    if(height < 0 || width < 0 || width > images.get(filename)[0].length
-            || height > images.get(filename).length ){
+    if (height < 0 || width < 0 || width > images.get(filename)[0].length
+            || height > images.get(filename).length) {
       throw new IllegalArgumentException("invalid size");
     }
     Pixel[][] arr = new Pixel[height][width];
@@ -325,7 +327,7 @@ public class ImageModel implements ImageEditor {
   @Override
   public void partialImageManipulation(String maskName, String filename, String newFilename, ImageCommands c) throws IllegalArgumentException, IOException {
     Pixel[][] mask = images.get(maskName);
-    if (mask.length != images.get(filename).length && mask[0].length != images.get(filename)[0].length) {
+    if (mask.length > images.get(filename).length || mask[0].length > images.get(filename)[0].length) {
       throw new IllegalArgumentException("mask is invalid size");
     }
     Pixel[][] temp = new Pixel[images.get(filename).length][images.get(filename)[0].length];

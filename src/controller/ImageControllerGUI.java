@@ -12,9 +12,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 import java.util.Scanner;
 
 import javax.imageio.ImageIO;
@@ -39,6 +37,9 @@ import model.Pixel;
 import view.GUIView;
 import view.ImageDisplay;
 
+/**
+ * Represents a controller for a GUI fpr a Image Processor.
+ */
 public class ImageControllerGUI implements ImageController, ActionListener {
 
 
@@ -49,7 +50,13 @@ public class ImageControllerGUI implements ImageController, ActionListener {
 
   ArrayList<String> inputtedEdits;
 
-  public ImageControllerGUI(ImageEditor model, GUIView view) throws IOException {
+  /**
+   * Constructs an {@code ImageControllerGUI} based on an inputted model and GUIView
+   *
+   * @param model the model
+   * @param view  the view
+   */
+  public ImageControllerGUI(ImageEditor model, GUIView view) {
     this.model = model;
     this.gui = view;
     this.filename = "image";
@@ -59,11 +66,9 @@ public class ImageControllerGUI implements ImageController, ActionListener {
 
   /**
    * Method that takes in the user arguments and preforms any action.
-   *
-   * @throws IOException if the program cannot read the input or write the output
    */
   @Override
-  public void start() throws IOException {
+  public void start() {
     gui.displayWelcomeMessage();
   }
 
@@ -86,6 +91,7 @@ public class ImageControllerGUI implements ImageController, ActionListener {
     }
   }
 
+  //loads a ppm image
   private void loadPPM(File file) throws IOException,
           NoSuchElementException {
     Scanner sc;
@@ -136,6 +142,7 @@ public class ImageControllerGUI implements ImageController, ActionListener {
 
   }
 
+  //loads every other type of image
   private void loadOther(File file) throws IOException,
           NoSuchElementException {
 
@@ -185,7 +192,8 @@ public class ImageControllerGUI implements ImageController, ActionListener {
     }
   }
 
-  private void savePPM(String pathname) throws IOException {
+  //saves a ppm image
+  private void savePPM(String pathname) {
     StringBuilder sb = new StringBuilder();
     try {
       if (!model.getMap().containsKey(filename)) {
@@ -240,6 +248,7 @@ public class ImageControllerGUI implements ImageController, ActionListener {
 
   }
 
+  //saves every other type of image
   private void saveOther(String pathname) throws IOException {
 
     if (!model.getMap().containsKey(filename)) {
@@ -283,7 +292,7 @@ public class ImageControllerGUI implements ImageController, ActionListener {
         gui.showErrorPopup("Error loading file, please check file format.");
       }
     }
-    if(game.equals("ValidCommands")){
+    if (game.equals("ValidCommands")) {
       try {
         Desktop desktop = java.awt.Desktop.getDesktop();
         URI oURL = new URI("https://github.com/Arjun624/Image-Processing-Assignment/blob/master/USEME.md");
@@ -293,7 +302,7 @@ public class ImageControllerGUI implements ImageController, ActionListener {
         ex.printStackTrace();
       }
     }
-    if(model.getMap().isEmpty()) {
+    if (model.getMap().isEmpty()) {
       gui.showErrorPopup("No image loaded");
       return;
     }
@@ -321,17 +330,16 @@ public class ImageControllerGUI implements ImageController, ActionListener {
       }
     }
     if (game.equals("Down Scale")) {
-      if(gui.getDownScaleWidth() == 0){
+      if (gui.getDownScaleWidth() == 0) {
         gui.setDownScaleWidth(model.getMap().get(filename)[0].length);
       }
-      if(gui.getDownScaleHeight() == 0){
-        gui.setDownScaleHeight( model.getMap().get(filename).length);
+      if (gui.getDownScaleHeight() == 0) {
+        gui.setDownScaleHeight(model.getMap().get(filename).length);
       }
-      if(gui.getDownScaleHeight() != 0 && gui.getDownScaleWidth() != 0){
+      if (gui.getDownScaleHeight() != 0 && gui.getDownScaleWidth() != 0) {
         gui.addEdit("DOWNSCALE", inputtedEdits);
         gui.changeLabelText("DOWNSCALE");
       }
-
 
 
     }
@@ -367,6 +375,7 @@ public class ImageControllerGUI implements ImageController, ActionListener {
     }
   }
 
+  //processes the inpuuted edit in order to edit an image
   private void edit(String command) throws IOException {
     String newFilename;
     switch (command) {
@@ -475,18 +484,24 @@ public class ImageControllerGUI implements ImageController, ActionListener {
     }
   }
 
+  /**
+   * replaces an Image with a new one.
+   *
+   * @param oldImage the image to be replaced.
+   */
   public void replaceImage(BufferedImage oldImage) {
 
 
     int width = Math.max(600, oldImage.getWidth());
-   int  height = Math.max(600, oldImage.getHeight());
+    int height = Math.max(600, oldImage.getHeight());
     BufferedImage reSizedImage = new BufferedImage(width, height, oldImage.getType());
     Graphics2D g = reSizedImage.createGraphics();
-    g.drawImage(oldImage, 0,0, width, height, null);
+    g.drawImage(oldImage, 0, 0, width, height, null);
     ImageIcon image = new ImageIcon(reSizedImage);
     gui.changeImage(image);
   }
 
+  //edits an image
   private void editImage() throws IOException {
     if (inputtedEdits.isEmpty()) {
       JOptionPane.showMessageDialog(new JFrame(), "No edits to apply", "Error",

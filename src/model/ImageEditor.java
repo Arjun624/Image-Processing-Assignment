@@ -1,7 +1,6 @@
 package model;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 import controller.ImageCommands;
@@ -108,7 +107,7 @@ public interface ImageEditor {
           throws IOException, IllegalArgumentException;
 
   /**
-   * Transforms an images colors according to an inputted matrix.
+   * Transforms an images colors according to an inputted 3x3 matrix to transform each RGB value.
    *
    * @param colors      the value matrix that will edit the colors
    * @param filename    the file reference
@@ -122,17 +121,29 @@ public interface ImageEditor {
 
   /**
    * Downscales an image.
-   * @param height the height of the new image.
-   * @param width the width of the new image
-   * @param filename the name of the reference
+   *
+   * @param height      the height of the new image.
+   * @param width       the width of the new image
+   * @param filename    the name of the reference
    * @param newFilename the name that the new image will be stored as
-   * @throws IOException if the program cannot read the input or write the output
+   * @throws IOException              if the program cannot read the input or write the output
    * @throws IllegalArgumentException if the height or width are negative,
-   * or if the file doesn't exist.
+   *                                  or if the file doesn't exist.
    */
-  void imageDownscale(int height, int width, String filename, String newFilename) throws IOException,
-          IllegalArgumentException;
+  void imageDownscale(int height, int width, String filename, String newFilename)
+          throws IOException, IllegalArgumentException;
 
-  void partialImageManipulation(String maskName, String filename, String newFilename, ImageCommands c) throws IOException,
+  /**
+   * Partially manipulates an image based on an inputted mask
+   *
+   * @param maskName    the name of the mask image
+   * @param filename    the name of the image to be edited
+   * @param newFilename the name of the new file will be stored as
+   * @param c           the type of edit to be preformed on the image
+   * @throws IOException              if the program cannot read the input or write the output
+   * @throws IllegalArgumentException if the mask is larger than the image.
+   */
+  void partialImageManipulation(String maskName, String filename,
+                                String newFilename, ImageCommands c) throws IOException,
           IllegalArgumentException;
 }

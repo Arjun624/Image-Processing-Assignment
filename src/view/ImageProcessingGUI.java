@@ -5,12 +5,15 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Map;
+
 
 import javax.swing.*;
 
 import model.Pixel;
 
+/**
+ * Represents a GUI view for an image processor.
+ */
 public class ImageProcessingGUI extends JFrame implements GUIView {
 
 
@@ -60,12 +63,15 @@ public class ImageProcessingGUI extends JFrame implements GUIView {
 
   private final ImageIcon[] imageBoxes;
 
-  JMenuItem validCommands ;
-  JMenuItem documentation ;
+  JMenuItem validCommands;
+  JMenuItem documentation;
 
   JMenuItem quit;
 
 
+  /**
+   * Constructs a default {@code ImageProcessingGUI}.
+   */
   public ImageProcessingGUI() {
     this.instantiateLabels();
     this.instantiatePanelsAndLayout();
@@ -93,6 +99,9 @@ public class ImageProcessingGUI extends JFrame implements GUIView {
     this.setVisible(true);
   }
 
+  /**
+   * Instantiates the panels and layout of the GUI.
+   */
   private void instantiatePanelsAndLayout() {
     this.flipCommands = new JPanel();
     this.filterCommands = new JPanel();
@@ -120,6 +129,9 @@ public class ImageProcessingGUI extends JFrame implements GUIView {
     this.allCommands.setLayout(new GridLayout(7, 1));
   }
 
+  /**
+   * Instantiates the labels of the GUI.
+   */
   private void instantiateLabels() {
     this.incrementLabel = new JLabel("Increment: N/A");
     this.chosenFlip = new JLabel("\tNone selected");
@@ -130,6 +142,9 @@ public class ImageProcessingGUI extends JFrame implements GUIView {
   }
 
 
+  /**
+   * Instantiates the buttons  of the GUI.
+   */
   public void instantiateButtons() {
     this.editImageButton = new JButton("Edit Image");
     chooseGreyscaleButton = new JButton("Choose Greyscale");
@@ -150,6 +165,9 @@ public class ImageProcessingGUI extends JFrame implements GUIView {
 
   }
 
+  /**
+   * Adds elements to the panels of the GUI.
+   */
   private void addElementsToPanels() {
     this.filterCommands.add(this.dropDownFilters);
     this.filterCommands.add(chooseFilterButton);
@@ -179,6 +197,7 @@ public class ImageProcessingGUI extends JFrame implements GUIView {
   }
 
 
+  @Override
   public void setActionListeners(ActionListener listener) {
     load.addActionListener(listener);
     save.addActionListener(listener);
@@ -194,6 +213,9 @@ public class ImageProcessingGUI extends JFrame implements GUIView {
     downScaleButton.addActionListener(listener);
   }
 
+  /**
+   * Displays the images and histogram on the GUI.
+   */
   protected void displayImage() {
 
 
@@ -216,6 +238,9 @@ public class ImageProcessingGUI extends JFrame implements GUIView {
 
   }
 
+  /**
+   * Instantiates the dropdowns of the GUI.
+   */
   private void instantiateDropDowns() {
     String[] greyScale = new String[]{"NONE", "RED", "GREEN", "BLUE", "LUMA", "VALUE", "INTENSITY"};
     this.dropDownGreyscale = new JComboBox<>(greyScale);
@@ -235,6 +260,9 @@ public class ImageProcessingGUI extends JFrame implements GUIView {
     this.dropDownFlips.setAlignmentX(0.5F);
   }
 
+  /**
+   * Instantiates the menu bar of the GUI.
+   */
   private void instantiateMenuBar() {
     JMenuBar menuBar = new JMenuBar();
 
@@ -270,6 +298,7 @@ public class ImageProcessingGUI extends JFrame implements GUIView {
     setJMenuBar(menuBar);
   }
 
+  @Override
   public void changeLabelText(String type) {
     if (type.equals("FLIP")) {
       chosenFlip.setText("\tSelected: "
@@ -297,10 +326,11 @@ public class ImageProcessingGUI extends JFrame implements GUIView {
       incrementLabel.setText("Invalid Increment, Please try again.");
     }
     if (type.equals("DOWNSCALE")) {
-      downScaleLabel.setText("Width: " + downscaleWidth +"," +" Height: " + downscaleHeight);
+      downScaleLabel.setText("Width: " + downscaleWidth + "," + " Height: " + downscaleHeight);
     }
   }
 
+  @Override
   public void setIncrement() {
     String increment = JOptionPane.showInputDialog(new JFrame(), "Enter an increment. Positive "
             + "to increase brightness and negative to decrease brightness");
@@ -311,10 +341,12 @@ public class ImageProcessingGUI extends JFrame implements GUIView {
     }
   }
 
+  @Override
   public int getIncrement() {
     return brightness;
   }
 
+  @Override
   public void addEdit(String type, ArrayList<String> inputtedEdits) {
     if (type.equals("FLIP")) {
       inputtedEdits.add(this.getLabelText(chosenFlip));
@@ -340,13 +372,19 @@ public class ImageProcessingGUI extends JFrame implements GUIView {
       inputtedEdits.add("BRIGHTEN");
       adjustBrightnessButton.setEnabled(false);
     }
-    if(type.equals("DOWNSCALE")){
+    if (type.equals("DOWNSCALE")) {
       inputtedEdits.add("DOWNSCALE");
       downScaleButton.setEnabled(false);
     }
 
   }
 
+  /**
+   * Gets the label text of a specific label.
+   *
+   * @param label the label to have its text returned
+   * @return the text of the inputted label
+   */
   private String getLabelText(JLabel label) {
     if (!label.toString().equalsIgnoreCase("NONE")) {
       return label.getText().substring(11);
@@ -355,6 +393,7 @@ public class ImageProcessingGUI extends JFrame implements GUIView {
 
   }
 
+  @Override
   public void displayHistogram(Pixel[][] pixels) {
 
     int[] red = new int[256];
@@ -395,6 +434,15 @@ public class ImageProcessingGUI extends JFrame implements GUIView {
     return bufferedImage;
   }
 
+  /**
+   * Makes a buffered image out of the intensity of the RGB and intensity of an image.
+   *
+   * @param red       the red values of an image
+   * @param green     the green values of an image
+   * @param blue      the blue values of an image
+   * @param intensity the intensity of each RBG value
+   * @return a buffered image of the histogram to be displayed on the GUI.
+   */
   private BufferedImage makeHistogram(int[] red, int[] green, int[] blue, int[] intensity) {
     BufferedImage bufferedImage = new BufferedImage(600, 950, BufferedImage.TYPE_INT_RGB);
     Graphics2D graph = bufferedImage.createGraphics();
@@ -405,6 +453,13 @@ public class ImageProcessingGUI extends JFrame implements GUIView {
     return bufferedImage;
   }
 
+  /**
+   * Draws the lines of the histogram.
+   *
+   * @param graph the graphics used to draw the lines on the buffered image
+   * @param nums  the array of numbers to be displayed
+   * @param c     the color of the line
+   */
   private void drawLines(Graphics2D graph, int[] nums, Color c) {
     graph.setColor(c);
     for (int i = 0; i < 254; i++) {
@@ -416,25 +471,18 @@ public class ImageProcessingGUI extends JFrame implements GUIView {
   }
 
 
+  @Override
   public void showErrorPopup(String errorMessage) {
     JOptionPane.showMessageDialog(new JFrame(), errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
   }
 
 
-  /**
-   * Renders the inputted message.
-   *
-   * @param message the inputted message
-   */
   @Override
   public void renderMessage(String message) {
-    JOptionPane.showMessageDialog(new JFrame(), message, "Messsage",
+    JOptionPane.showMessageDialog(new JFrame(), message, "Message",
             JOptionPane.INFORMATION_MESSAGE);
   }
 
-  /**
-   * Displays the welcome message.
-   */
   @Override
   public void displayWelcomeMessage() {
     StringBuilder welcomeMessage = new StringBuilder("Welcome to the Image Program!" +
@@ -458,23 +506,27 @@ public class ImageProcessingGUI extends JFrame implements GUIView {
             JOptionPane.INFORMATION_MESSAGE);
   }
 
+  @Override
   public void changeImage(ImageIcon image) {
     imageBoxes[0] = image;
     displayImage();
   }
 
+  @Override
   public File getSaveFile() {
     JFileChooser chooser = new JFileChooser();
     chooser.showSaveDialog(this);
     return chooser.getSelectedFile();
   }
 
+  @Override
   public File GetLoadFile() {
     JFileChooser chooser = new JFileChooser();
     chooser.showOpenDialog(this);
     return chooser.getSelectedFile();
   }
 
+  @Override
   public void reset() {
     this.dropDownColorCombinations.setEnabled(true);
     this.chooseColorButton.setEnabled(true);
@@ -492,12 +544,13 @@ public class ImageProcessingGUI extends JFrame implements GUIView {
     this.incrementLabel.setText("Increment: N/A");
     this.downScaleButton.setEnabled(true);
     this.downScaleLabel.setText("Please select a width and a height");
-    this.downscaleHeight=0;
-    this.downscaleWidth=0;
-    this.brightness=0;
+    this.downscaleHeight = 0;
+    this.downscaleWidth = 0;
+    this.brightness = 0;
 
   }
 
+  @Override
   public void setDownScaleHeight(int imageHeight) {
     String downScaleHeight = JOptionPane.showInputDialog(new JFrame(), "Enter a downscale Height. "
             + "Must be an positive integer.");
@@ -512,25 +565,30 @@ public class ImageProcessingGUI extends JFrame implements GUIView {
       downScaleLabel.setText("Invalid Downscale Height, Please try again.");
     }
   }
+
+  @Override
   public void setDownScaleWidth(int imageWidth) {
     String downScaleWidth = JOptionPane.showInputDialog(new JFrame(), "Enter a downscale width. "
             + "Must be an positive integer.");
     try {
       downscaleWidth = Integer.parseInt(downScaleWidth);
-      if(downscaleWidth>imageWidth || downscaleWidth<=0) {
+      if (downscaleWidth > imageWidth || downscaleWidth <= 0) {
         downScaleLabel.setText("Invalid Downscale Width.\n Must be positive and less than or equal to the "
                 + "image height.");
-        downscaleWidth=0;
+        downscaleWidth = 0;
       }
     } catch (Exception ex) {
       downScaleLabel.setText("Invalid Downscale Width, Please try again.");
     }
   }
 
-  public int getDownScaleHeight(){
+  @Override
+  public int getDownScaleHeight() {
     return downscaleHeight;
   }
-  public int getDownScaleWidth(){
+
+  @Override
+  public int getDownScaleWidth() {
     return downscaleWidth;
   }
 }
