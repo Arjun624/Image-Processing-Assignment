@@ -205,21 +205,25 @@ public class ImageModel implements ImageEditor {
     for (int row = 0; row < images.get(filename).length; row++) {
       for (int col = 0; col < images.get(filename)[0].length; col++) {
         Pixel p = images.get(filename)[row][col];
-        double newRed =
-                (colors[0][0] * p.getRed()
-                        + colors[0][1] * p.getGreen()
-                        + colors[0][2] * p.getBlue());
-        double newGreen =
-                (colors[1][0] * p.getRed()
-                        + colors[1][1] * p.getGreen()
-                        + colors[1][2] * p.getBlue());
-        double newBlue =
-                (colors[2][0] * p.getRed()
-                        + colors[2][1] * p.getGreen()
-                        + colors[2][2] * p.getBlue());
+        if (p == null) {
+          arr[row][col] = null;
+        } else {
+          double newRed =
+                  (colors[0][0] * p.getRed()
+                          + colors[0][1] * p.getGreen()
+                          + colors[0][2] * p.getBlue());
+          double newGreen =
+                  (colors[1][0] * p.getRed()
+                          + colors[1][1] * p.getGreen()
+                          + colors[1][2] * p.getBlue());
+          double newBlue =
+                  (colors[2][0] * p.getRed()
+                          + colors[2][1] * p.getGreen()
+                          + colors[2][2] * p.getBlue());
 
-        arr[row][col] = new Pixel(fixRGBRange(newRed), fixRGBRange(newGreen),
-                fixRGBRange(newBlue), p.getAlpha());
+          arr[row][col] = new Pixel(fixRGBRange(newRed), fixRGBRange(newGreen),
+                  fixRGBRange(newBlue), p.getAlpha());
+        }
       }
     }
     images.put(newFilename, arr);
@@ -337,7 +341,7 @@ public class ImageModel implements ImageEditor {
     if (images.get(maskName) == null) {
       throw new IllegalArgumentException("mask doesn't exist");
     }
-    if (c == null){
+    if (c == null) {
       throw new IllegalArgumentException("command is null");
     }
     Pixel[][] mask = images.get(maskName);
@@ -352,20 +356,21 @@ public class ImageModel implements ImageEditor {
       }
     }
     Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
-    for (int i = 0; i < mask.length; i++) {
-      for (int j = 0; j < mask[0].length; j++) {
-        if (mask[i][j].equals(new Pixel(0, 0, 0))) {
-          Pixel p = temp[i][j];
-          arr[i][j] = new Pixel(p.getRed(), p.getGreen(), p.getBlue(), p.getAlpha());
-        } else {
-          arr[i][j] = null;
+    for (int i = 0; i < arr.length; i++) {
+      for (int j = 0; j < arr[0].length; j++) {
+        if (i < mask.length && j < mask[0].length) {
+          if (mask[i][j].equals(new Pixel(0, 0, 0))) {
+            Pixel p = temp[i][j];
+            arr[i][j] = new Pixel(p.getRed(), p.getGreen(), p.getBlue(), p.getAlpha());
+          } else {
+            arr[i][j] = null;
+          }
         }
       }
     }
     images.remove(filename);
     images.put(filename, arr);
     c.execute(this, this.view);
-
     Pixel[][] newPic = new Pixel[temp.length][temp[0].length];
     for (int i = 0; i < temp.length; i++) {
       for (int j = 0; j < temp[0].length; j++) {

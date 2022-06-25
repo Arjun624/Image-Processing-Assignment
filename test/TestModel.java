@@ -1,8 +1,12 @@
 import org.junit.Test;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 
+import controller.ImageController;
+import controller.ImageControllerText;
+import controller.commands.Sepia;
 import controller.commands.VerticalFlip;
 import model.ImageModel;
 import model.Pixel;
@@ -770,4 +774,36 @@ public class TestModel {
     }
   }
 
+  @Test
+  public void makePic() throws IOException {
+    ImageView v = new ImageDisplay(new StringBuilder());
+    HashMap<String, Pixel[][]> testMap = new HashMap<>();
+    ImageModel m1 = new ImageModel(testMap, v);
+    ImageController c = new ImageControllerText(v,new InputStreamReader(System.in),m1);
+    c.loadImage("res/battlefield.jpg","test");
+    c.loadImage("res/newMask.jpg","mask");
+    Sepia sep = new Sepia("test","test-vf");
+    m1.partialImageManipulation("mask","test","test-vf",sep);
+    c.saveImage("res/maskTest.jpg","test-vf");
+  }
+
+  @Test
+  public void makeMask() throws IOException {
+    ImageView v = new ImageDisplay(new StringBuilder());
+    HashMap<String, Pixel[][]> testMap = new HashMap<>();
+    ImageModel m1 = new ImageModel(testMap, v);
+    ImageController c = new ImageControllerText(v,new InputStreamReader(System.in),m1);
+    Pixel[][] arr = new Pixel[800][600];
+    for (int i = 0; i < 800; i++) {
+      for (int j = 0; j < 600; j++) {
+        if (i < 201 || i > 599){
+          arr[i][j] = new Pixel(0,0,0);
+        } else {
+          arr[i][j] = new Pixel(255,255,255);
+        }
+      }
+    }
+    m1.add("test",arr);
+    c.saveImage("res/newMask.jpg","test");
+  }
 }
