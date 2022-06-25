@@ -166,13 +166,11 @@ public class ImageModel implements ImageEditor {
     Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
     for (int row = 0; row < this.images.get(filename).length; row++) {
       for (int col = 0; col < this.images.get(filename)[0].length; col++) {
-
-        for (int kernelRow = row - (length / 2); kernelRow
-                < (row - (length / 2)) + length; kernelRow++) {
-          for (int kernelCol = col - (width / 2); kernelCol
-                  < (col - (width / 2)) + width; kernelCol++) {
-            Pixel p = images.get(filename)[kernelRow][kernelCol];
-            if (p != null) {
+        if (this.images.get(filename)[row][col] != null ) {
+          for (int kernelRow = row - (length / 2); kernelRow
+                  < (row - (length / 2)) + length; kernelRow++) {
+            for (int kernelCol = col - (width / 2); kernelCol
+                    < (col - (width / 2)) + width; kernelCol++) {
               try {
                 redCount += images.get(filename)[kernelRow][kernelCol].getRed() * kernel[kernelRow - (
                         row
@@ -183,17 +181,20 @@ public class ImageModel implements ImageEditor {
                         - (row - (length / 2))][kernelCol - (col - (width / 2))];
               } catch (ArrayIndexOutOfBoundsException ignored) {
               }
+
             }
           }
+
+          arr[row][col] = new Pixel(fixRGBRange(redCount), fixRGBRange(greenCount),
+                  fixRGBRange(blueCount));
+
+          redCount = 0;
+          greenCount = 0;
+          blueCount = 0;
         }
-
-        arr[row][col] = new Pixel(fixRGBRange(redCount), fixRGBRange(greenCount),
-                fixRGBRange(blueCount));
-
-        redCount = 0;
-        greenCount = 0;
-        blueCount = 0;
-
+        else {
+          arr[row][col] = null;
+        }
       }
     }
     view.renderMessage("Image " + filename + " filtered successfully");
