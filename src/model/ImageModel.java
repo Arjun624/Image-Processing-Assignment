@@ -97,6 +97,9 @@ public class ImageModel implements ImageEditor {
 
   // gets the type of greyscale
   private Pixel getType(String type, Pixel pixel) {
+    if (pixel == null) {
+      return null;
+    }
     int val = -1;
     if (type.equalsIgnoreCase("red")) {
       val = pixel.getRed();
@@ -124,11 +127,16 @@ public class ImageModel implements ImageEditor {
     Pixel[][] arr = new Pixel[images.get(filename).length][images.get(filename)[0].length];
     for (int row = 0; row < images.get(filename).length; row++) {
       for (int col = 0; col < images.get(filename)[0].length; col++) {
-        int newRed = this.images.get(filename)[row][col].getRed() + increment;
-        int newGreen = this.images.get(filename)[row][col].getGreen() + increment;
-        int newBlue = this.images.get(filename)[row][col].getBlue() + increment;
+        Pixel p = this.images.get(filename)[row][col];
+        if (p == null) {
+          arr[row][col] = null;
+        } else {
+          int newRed = p.getRed() + increment;
+          int newGreen = p.getGreen() + increment;
+          int newBlue = p.getBlue() + increment;
 
-        arr[row][col] = new Pixel(fixRGBRange(newRed), fixRGBRange(newGreen), fixRGBRange(newBlue));
+          arr[row][col] = new Pixel(fixRGBRange(newRed), fixRGBRange(newGreen), fixRGBRange(newBlue));
+        }
       }
     }
     images.put(newFilename, arr);
@@ -163,15 +171,18 @@ public class ImageModel implements ImageEditor {
                 < (row - (length / 2)) + length; kernelRow++) {
           for (int kernelCol = col - (width / 2); kernelCol
                   < (col - (width / 2)) + width; kernelCol++) {
-            try {
-              redCount += images.get(filename)[kernelRow][kernelCol].getRed() * kernel[kernelRow - (
-                      row
-                              - (length / 2))][kernelCol - (col - (width / 2))];
-              greenCount += images.get(filename)[kernelRow][kernelCol].getGreen() * kernel[kernelRow
-                      - (row - (length / 2))][kernelCol - (col - (width / 2))];
-              blueCount += images.get(filename)[kernelRow][kernelCol].getBlue() * kernel[kernelRow
-                      - (row - (length / 2))][kernelCol - (col - (width / 2))];
-            } catch (ArrayIndexOutOfBoundsException ignored) {
+            Pixel p = images.get(filename)[kernelRow][kernelCol];
+            if (p != null) {
+              try {
+                redCount += images.get(filename)[kernelRow][kernelCol].getRed() * kernel[kernelRow - (
+                        row
+                                - (length / 2))][kernelCol - (col - (width / 2))];
+                greenCount += images.get(filename)[kernelRow][kernelCol].getGreen() * kernel[kernelRow
+                        - (row - (length / 2))][kernelCol - (col - (width / 2))];
+                blueCount += images.get(filename)[kernelRow][kernelCol].getBlue() * kernel[kernelRow
+                        - (row - (length / 2))][kernelCol - (col - (width / 2))];
+              } catch (ArrayIndexOutOfBoundsException ignored) {
+              }
             }
           }
         }
