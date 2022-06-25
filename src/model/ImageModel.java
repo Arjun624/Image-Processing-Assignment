@@ -135,7 +135,8 @@ public class ImageModel implements ImageEditor {
           int newGreen = p.getGreen() + increment;
           int newBlue = p.getBlue() + increment;
 
-          arr[row][col] = new Pixel(fixRGBRange(newRed), fixRGBRange(newGreen), fixRGBRange(newBlue));
+          arr[row][col] = new Pixel(fixRGBRange(newRed), fixRGBRange(newGreen),
+                  fixRGBRange(newBlue));
         }
       }
     }
@@ -174,12 +175,14 @@ public class ImageModel implements ImageEditor {
             for (int kernelCol = col - (width / 2); kernelCol
                     < (col - (width / 2)) + width; kernelCol++) {
               try {
-                redCount += images.get(filename)[kernelRow][kernelCol].getRed() * kernel[kernelRow - (
-                        row
-                                - (length / 2))][kernelCol - (col - (width / 2))];
-                greenCount += images.get(filename)[kernelRow][kernelCol].getGreen() * kernel[kernelRow
+                redCount += images.get(filename)[kernelRow][kernelCol].getRed()
+                        * kernel[kernelRow - (row
+                        - (length / 2))][kernelCol - (col - (width / 2))];
+                greenCount += images.get(filename)[kernelRow][kernelCol].getGreen()
+                        * kernel[kernelRow
                         - (row - (length / 2))][kernelCol - (col - (width / 2))];
-                blueCount += images.get(filename)[kernelRow][kernelCol].getBlue() * kernel[kernelRow
+                blueCount += images.get(filename)[kernelRow][kernelCol].getBlue()
+                        * kernel[kernelRow
                         - (row - (length / 2))][kernelCol - (col - (width / 2))];
               } catch (ArrayIndexOutOfBoundsException ignored) {
               } catch (NullPointerException ignored) {
@@ -287,8 +290,8 @@ public class ImageModel implements ImageEditor {
   }
 
   @Override
-  public void imageDownscale(int height, int width, String filename, String newFilename) throws IOException,
-          IllegalArgumentException {
+  public void imageDownscale(int height, int width, String filename, String newFilename)
+          throws IOException, IllegalArgumentException {
     if (images.get(filename) == null) {
       throw new IllegalArgumentException("file doesn't exist");
     }
@@ -356,7 +359,8 @@ public class ImageModel implements ImageEditor {
       throw new IllegalArgumentException("command is null");
     }
     Pixel[][] mask = images.get(maskName);
-    if (mask.length > images.get(filename).length || mask[0].length > images.get(filename)[0].length) {
+    if (mask.length > images.get(filename).length
+            || mask[0].length > images.get(filename)[0].length) {
       throw new IllegalArgumentException("mask is too big");
     }
     Pixel[][] temp = new Pixel[images.get(filename).length][images.get(filename)[0].length];

@@ -82,7 +82,7 @@ public interface GUIView extends ImageView {
    *
    * @return the file to be loaded
    */
-  File GetLoadFile() ;
+  File getLoadFile() ;
 
   /**
    * Changes the image shown by the GUI.

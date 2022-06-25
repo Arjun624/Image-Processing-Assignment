@@ -134,7 +134,7 @@ public interface ImageEditor {
           throws IOException, IllegalArgumentException;
 
   /**
-   * Partially manipulates an image based on an inputted mask
+   * Partially manipulates an image based on an inputted mask.
    *
    * @param maskName    the name of the mask image
    * @param filename    the name of the image to be edited

@@ -2,18 +2,27 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
 
 import controller.ImageController;
-import view.GUIView;
 
+
+/**
+ * Represents a mock controller used strictly for testing.
+ */
 public class MockControllerGUI implements ImageController, ActionListener {
 
 
   private Appendable log;
   private MockGUIView v;
 
-  public MockControllerGUI(Appendable ap, MockGUIView v){
+  /**
+   * Constructs a mock controller customizable by its appendable and view.
+   *
+   * @param ap the appendable object
+   * @param v  the view
+   */
+  public MockControllerGUI(Appendable ap, MockGUIView v) {
     this.log = ap;
     this.v = v;
   }
@@ -36,13 +45,13 @@ public class MockControllerGUI implements ImageController, ActionListener {
    *
    * @param pathname is the path to the image to be loaded.
    * @param filename is the name of the image to be loaded.
-   * @throws IOException            if the image cannot be loaded.
+   * @throws IOException if the image cannot be loaded.
    */
   @Override
   public void loadImage(String pathname, String filename) throws IOException {
 
     log.append("Loaded image\n");
-    v.GetLoadFile();
+    v.getLoadFile();
     v.changeImage(new ImageIcon(pathname));
 
   }
@@ -69,7 +78,7 @@ public class MockControllerGUI implements ImageController, ActionListener {
   @Override
   public void actionPerformed(ActionEvent e) {
 
-    try{
+    try {
       log.append("Action performed: ").append(e.getActionCommand()).append("\n");
     } catch (IOException e1) {
       throw new RuntimeException(e1);

@@ -77,16 +77,21 @@ public class MockImageModel implements ImageEditor {
   @Override
   public void colorTransform(float[][] colors, String filename, String newFilename)
           throws IOException, IllegalArgumentException {
-    this.ap.append("transformed ").append(filename).append(". Is now ").append(newFilename).append("\n");
+    this.ap.append("transformed ").append(filename).append(". Is now ")
+            .append(newFilename).append("\n");
   }
 
   @Override
-  public void imageDownscale(int height, int width, String filename, String newFilename) throws IOException, IllegalArgumentException {
-    this.ap.append("image downscaled to ").append(String.valueOf(width)).append(" ").append(String.valueOf(height));
+  public void imageDownscale(int height, int width, String filename, String newFilename)
+          throws IOException, IllegalArgumentException {
+    this.ap.append("image downscaled to ").append(String.valueOf(width)).append(" ")
+            .append(String.valueOf(height));
   }
 
   @Override
-  public void partialImageManipulation(String maskName, String filename, String newFilename, ImageCommands c) throws IllegalArgumentException, IOException {
+  public void partialImageManipulation(String maskName, String filename,
+                                       String newFilename, ImageCommands c)
+          throws IllegalArgumentException, IOException {
     this.ap.append("Image partially manipulated");
   }
 

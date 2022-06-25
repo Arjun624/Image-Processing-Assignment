@@ -1,16 +1,8 @@
 import org.junit.Test;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.HashMap;
 
-import controller.ImageController;
-import controller.ImageControllerText;
-import controller.commands.AdjustBrightness;
-import controller.commands.Blur;
-import controller.commands.HorizontalFlip;
-import controller.commands.RedGreyscale;
-import controller.commands.Sepia;
 import controller.commands.VerticalFlip;
 import model.ImageModel;
 import model.Pixel;
@@ -650,9 +642,9 @@ public class TestModel {
     }
     testMap.put(file, arr);
     ImageModel m1 = new ImageModel(testMap, v);
-    m1.imageDownscale(2,2,"test","testID");
-    assertEquals(m1.getMap().get("testID").length,2);
-    assertEquals(m1.getMap().get("testID")[0].length,2);
+    m1.imageDownscale(2, 2, "test", "testID");
+    assertEquals(m1.getMap().get("testID").length, 2);
+    assertEquals(m1.getMap().get("testID")[0].length, 2);
     Pixel[][] arr2 = new Pixel[2][2];
     for (int i = 0; i < 2; i++) {
       for (int j = 0; j < 2; j++) {
@@ -668,35 +660,35 @@ public class TestModel {
     try {
       m1.imageDownscale(-1, 2, "test", "yes");
       fail("should have thrown an exception");
-    } catch (IllegalArgumentException e){
+    } catch (IllegalArgumentException e) {
       assertEquals(e.getMessage(), "invalid size");
     }
 
     try {
       m1.imageDownscale(2, -2, "test", "yes");
       fail("should have thrown an exception");
-    } catch (IllegalArgumentException e){
+    } catch (IllegalArgumentException e) {
       assertEquals(e.getMessage(), "invalid size");
     }
 
     try {
       m1.imageDownscale(5, 2, "test", "yes");
       fail("should have thrown an exception");
-    } catch (IllegalArgumentException e){
+    } catch (IllegalArgumentException e) {
       assertEquals(e.getMessage(), "invalid size");
     }
 
     try {
       m1.imageDownscale(2, 20, "test", "yes");
       fail("should have thrown an exception");
-    } catch (IllegalArgumentException e){
+    } catch (IllegalArgumentException e) {
       assertEquals(e.getMessage(), "invalid size");
     }
 
     try {
       m1.imageDownscale(2, 2, "incorrect", "yes");
       fail("should have thrown an exception");
-    } catch (IllegalArgumentException e){
+    } catch (IllegalArgumentException e) {
       assertEquals(e.getMessage(), "file doesn't exist");
     }
   }
@@ -720,24 +712,23 @@ public class TestModel {
       for (int j = 0; j < 4; j++) {
         if (j < 2) {
           maskArr[i][j] = new Pixel(100, 100, 100);
-        }
-        else {
+        } else {
           maskArr[i][j] = new Pixel(0, 0, 0);
         }
       }
     }
     testMap.put(mask, maskArr);
-    VerticalFlip vf = new VerticalFlip("test","test-vf");
-    m1.partialImageManipulation("mask","test","test-vf",vf);
+    VerticalFlip vf = new VerticalFlip("test", "test-vf");
+    m1.partialImageManipulation("mask", "test", "test-vf", vf);
     Pixel[][] result = new Pixel[4][4];
     for (int i = 0; i < 4; i++) {
       for (int j = 0; j < 4; j++) {
-        if (j < 2){
+        if (j < 2) {
           Pixel p = arr[i][j];
-          result[i][j] = new Pixel(p.getRed(),p.getGreen(),p.getBlue());
+          result[i][j] = new Pixel(p.getRed(), p.getGreen(), p.getBlue());
         } else {
           Pixel p = arr[3 - i][j];
-          result[i][j] = new Pixel(p.getRed(),p.getGreen(),p.getBlue());
+          result[i][j] = new Pixel(p.getRed(), p.getGreen(), p.getBlue());
         }
       }
     }
@@ -757,72 +748,25 @@ public class TestModel {
     testMap.put(file3, arr3);
 
     try {
-      m1.partialImageManipulation("bigMask","test","yes", vf);
+      m1.partialImageManipulation("bigMask", "test", "yes", vf);
       fail("should have thrown an exception");
     } catch (IllegalArgumentException e) {
       assertEquals(e.getMessage(), "mask is too big");
     }
 
     try {
-      m1.partialImageManipulation("bigMask","yes","yes", vf);
+      m1.partialImageManipulation("bigMask", "yes", "yes", vf);
       fail("should have thrown an exception");
     } catch (IllegalArgumentException e) {
       assertEquals(e.getMessage(), "file doesn't exist");
     }
 
     try {
-      m1.partialImageManipulation("yes","test","yes2", vf);
+      m1.partialImageManipulation("yes", "test", "yes2", vf);
       fail("should have thrown an exception");
     } catch (IllegalArgumentException e) {
       assertEquals(e.getMessage(), "mask doesn't exist");
     }
   }
 
-  @Test
-  public void makePic() throws IOException {
-    ImageView v = new ImageDisplay(new StringBuilder());
-    HashMap<String, Pixel[][]> testMap = new HashMap<>();
-    ImageModel m1 = new ImageModel(testMap, v);
-    ImageController c = new ImageControllerText(v,new InputStreamReader(System.in),m1);
-    c.loadImage("res/battlefield.jpg","test");
-    c.loadImage("res/newMask.jpg","mask");
-    Sepia sep = new Sepia("test","test-sp");
-    m1.partialImageManipulation("mask","test","test-sp",sep);
-    c.saveImage("res/maskTest.jpg","test-sp");
-    Blur bl = new Blur("test","test-bl");
-    m1.partialImageManipulation("mask","test","test-bl",bl);
-    c.saveImage("res/maskTestBlur.jpg","test-bl");
-    VerticalFlip vf = new VerticalFlip("test","test-vf");
-    m1.partialImageManipulation("mask","test","test-vf",vf);
-    c.saveImage("res/maskTestVF.jpg","test-vf");
-    RedGreyscale rg = new RedGreyscale("test","test-rg");
-    m1.partialImageManipulation("mask","test","test-rg",rg);
-    c.saveImage("res/maskTestRG.jpg","test-rg");
-    HorizontalFlip hf = new HorizontalFlip("test","test-hf");
-    m1.partialImageManipulation("mask","test","test-hf",hf);
-    c.saveImage("res/maskTestHF.jpg","test-hf");
-    AdjustBrightness ab = new AdjustBrightness(50,"test","test-ab");
-    m1.partialImageManipulation("mask","test","test-ab",ab);
-    c.saveImage("res/maskTestAB.jpg","test-ab");
-  }
-
-  @Test
-  public void makeMask() throws IOException {
-    ImageView v = new ImageDisplay(new StringBuilder());
-    HashMap<String, Pixel[][]> testMap = new HashMap<>();
-    ImageModel m1 = new ImageModel(testMap, v);
-    ImageController c = new ImageControllerText(v,new InputStreamReader(System.in),m1);
-    Pixel[][] arr = new Pixel[800][600];
-    for (int i = 0; i < 800; i++) {
-      for (int j = 0; j < 600; j++) {
-        if (i < 201 || i > 599){
-          arr[i][j] = new Pixel(0,0,0);
-        } else {
-          arr[i][j] = new Pixel(255,255,255);
-        }
-      }
-    }
-    m1.add("test",arr);
-    c.saveImage("res/newMask.jpg","test");
-  }
 }

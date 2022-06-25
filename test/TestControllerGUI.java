@@ -3,23 +3,18 @@ import org.junit.Test;
 
 import java.awt.event.ActionEvent;
 import java.io.IOException;
-import java.io.StringReader;
-import java.util.NoSuchElementException;
 
-import javax.swing.*;
+import javax.swing.JButton;
 
 import controller.ImageController;
-import controller.ImageControllerGUI;
-import controller.ImageControllerText;
 import model.ImageEditor;
 import view.GUIView;
-import view.ImageDisplay;
-import view.ImageView;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
 
+/**
+ * Tests that the GUI controller can handle input.
+ */
 public class TestControllerGUI {
 
   GUIView v;
@@ -68,7 +63,7 @@ public class TestControllerGUI {
     MockGUIView v = new MockGUIView(apView);
     MockControllerGUI c = new MockControllerGUI(ap, v);
     ActionEvent e = new ActionEvent(new JButton(), 0, "load");
-     c.actionPerformed(e);
+    c.actionPerformed(e);
     assertEquals("Action performed: load\n", ap.toString());
   }
 }
