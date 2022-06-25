@@ -328,10 +328,21 @@ public class ImageModel implements ImageEditor {
   }
 
   @Override
-  public void partialImageManipulation(String maskName, String filename, String newFilename, ImageCommands c) throws IllegalArgumentException, IOException {
+  public void partialImageManipulation(String maskName, String filename,
+                                       String newFilename, ImageCommands c)
+          throws IllegalArgumentException, IOException {
+    if (images.get(filename) == null) {
+      throw new IllegalArgumentException("file doesn't exist");
+    }
+    if (images.get(maskName) == null) {
+      throw new IllegalArgumentException("mask doesn't exist");
+    }
+    if (c == null){
+      throw new IllegalArgumentException("command is null");
+    }
     Pixel[][] mask = images.get(maskName);
     if (mask.length > images.get(filename).length || mask[0].length > images.get(filename)[0].length) {
-      throw new IllegalArgumentException("mask is invalid size");
+      throw new IllegalArgumentException("mask is too big");
     }
     Pixel[][] temp = new Pixel[images.get(filename).length][images.get(filename)[0].length];
     for (int i = 0; i < images.get(filename).length; i++) {

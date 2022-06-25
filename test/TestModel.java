@@ -3,6 +3,7 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.HashMap;
 
+import controller.commands.VerticalFlip;
 import model.ImageModel;
 import model.Pixel;
 import view.ImageDisplay;
@@ -689,6 +690,83 @@ public class TestModel {
       fail("should have thrown an exception");
     } catch (IllegalArgumentException e){
       assertEquals(e.getMessage(), "file doesn't exist");
+    }
+  }
+
+  @Test
+  public void testPartialImageManipulation() throws IOException {
+    ImageView v = new ImageDisplay(new StringBuilder());
+    HashMap<String, Pixel[][]> testMap = new HashMap<>();
+    String file = "test";
+    Pixel[][] arr = new Pixel[4][4];
+    for (int i = 0; i < 4; i++) {
+      for (int j = 0; j < 4; j++) {
+        arr[i][j] = new Pixel(100 + i, 100 + i, 100 + i);
+      }
+    }
+    testMap.put(file, arr);
+    ImageModel m1 = new ImageModel(testMap, v);
+    String mask = "mask";
+    Pixel[][] maskArr = new Pixel[4][4];
+    for (int i = 0; i < 4; i++) {
+      for (int j = 0; j < 4; j++) {
+        if (j < 2) {
+          maskArr[i][j] = new Pixel(100, 100, 100);
+        }
+        else {
+          maskArr[i][j] = new Pixel(0, 0, 0);
+        }
+      }
+    }
+    testMap.put(mask, maskArr);
+    VerticalFlip vf = new VerticalFlip("test","test-vf");
+    m1.partialImageManipulation("mask","test","test-vf",vf);
+    Pixel[][] result = new Pixel[4][4];
+    for (int i = 0; i < 4; i++) {
+      for (int j = 0; j < 4; j++) {
+        if (j < 2){
+          Pixel p = arr[i][j];
+          result[i][j] = new Pixel(p.getRed(),p.getGreen(),p.getBlue());
+        } else {
+          Pixel p = arr[3 - i][j];
+          result[i][j] = new Pixel(p.getRed(),p.getGreen(),p.getBlue());
+        }
+      }
+    }
+    for (int i = 0; i < 2; i++) {
+      for (int j = 0; j < 2; j++) {
+        assertEquals(m1.getMap().get("test-vf")[i][j], result[i][j]);
+      }
+    }
+
+    String file3 = "bigMask";
+    Pixel[][] arr3 = new Pixel[5][5];
+    for (int i = 0; i < 5; i++) {
+      for (int j = 0; j < 5; j++) {
+        arr3[i][j] = new Pixel(100 + i, 100 + i, 100 + i);
+      }
+    }
+    testMap.put(file3, arr3);
+
+    try {
+      m1.partialImageManipulation("bigMask","test","yes", vf);
+      fail("should have thrown an exception");
+    } catch (IllegalArgumentException e) {
+      assertEquals(e.getMessage(), "mask is too big");
+    }
+
+    try {
+      m1.partialImageManipulation("bigMask","yes","yes", vf);
+      fail("should have thrown an exception");
+    } catch (IllegalArgumentException e) {
+      assertEquals(e.getMessage(), "file doesn't exist");
+    }
+
+    try {
+      m1.partialImageManipulation("yes","test","yes2", vf);
+      fail("should have thrown an exception");
+    } catch (IllegalArgumentException e) {
+      assertEquals(e.getMessage(), "mask doesn't exist");
     }
   }
 
