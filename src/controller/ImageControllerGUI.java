@@ -46,7 +46,7 @@ public class ImageControllerGUI extends ALoadSave implements ImageController, Ac
 
   private String filename;
 
-  ArrayList<String> inputtedEdits;
+  private ArrayList<String> inputtedEdits;
 
   /**
    * Constructs an {@code ImageControllerGUI} based on an inputted model and GUIView.
