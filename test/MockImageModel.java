@@ -54,7 +54,7 @@ public class MockImageModel implements ImageEditor {
 
   @Override
   public void add(String imageName, Pixel[][] arr) throws IOException {
-    this.ap.append("added " + imageName + " to hashmap\n");
+    this.ap.append("added ").append(imageName).append(" to hashmap\n");
   }
 
   @Override
@@ -70,18 +70,19 @@ public class MockImageModel implements ImageEditor {
   @Override
   public void filterImage(String fileName, String newFileName, double[][] kernal)
           throws IOException, IllegalArgumentException {
-    this.ap.append("filtered " + fileName + ". Is now " + newFileName + "\n");
+    this.ap.append("filtered ").append(fileName).append(". Is now ").append(newFileName).append(
+            "\n");
   }
 
   @Override
   public void colorTransform(float[][] colors, String filename, String newFilename)
           throws IOException, IllegalArgumentException {
-    this.ap.append("transformed " + filename + ". Is now " + newFilename + "\n");
+    this.ap.append("transformed ").append(filename).append(". Is now ").append(newFilename).append("\n");
   }
 
   @Override
   public void imageDownscale(int height, int width, String filename, String newFilename) throws IOException, IllegalArgumentException {
-    this.ap.append("image downscaled to " + width + " " + height);
+    this.ap.append("image downscaled to ").append(String.valueOf(width)).append(" ").append(String.valueOf(height));
   }
 
   @Override

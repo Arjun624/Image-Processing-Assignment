@@ -153,11 +153,11 @@ public class TestActions {
   @Test
   public void mockControllerInitialization() throws IOException {
     Appendable ap = new StringBuilder("hello");
-    ImageController m = new MockController(ap);
+    ImageController m = new MockControllerText(ap);
     assertEquals(ap.toString(), "hello");
     m.saveImage("y", "y");
     try {
-      new MockController(null);
+      new MockControllerText(null);
     } catch (NullPointerException e) {
       assertNull(e.getMessage());
     }
@@ -172,7 +172,7 @@ public class TestActions {
     assertEquals("arjun does not exist!\n", ap2.toString());
 
     Appendable test = new StringBuilder();
-    ImageController mock = new MockController(test);
+    ImageController mock = new MockControllerText(test);
     mock.loadImage("arjun", "test");
     assertEquals("loaded arjun as test", test.toString());
   }
@@ -185,7 +185,7 @@ public class TestActions {
     assertEquals("Image test does not exist or has not been loaded!\n", ap2.toString());
 
     Appendable test = new StringBuilder();
-    ImageController mock = new MockController(test);
+    ImageController mock = new MockControllerText(test);
     mock.saveImage("arjun", "test");
     assertEquals("saved test as arjun", test.toString());
   }

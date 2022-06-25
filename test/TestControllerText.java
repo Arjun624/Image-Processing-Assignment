@@ -31,7 +31,7 @@ import static org.junit.Assert.fail;
 /**
  * Test that the {@code ImageControllerImpl} handles inout correctly.
  */
-public class TestController {
+public class TestControllerText {
 
   ImageView v;
   ImageEditor m;
@@ -380,8 +380,7 @@ public class TestController {
     InputStreamReader in = new FileReader("res/testScript.txt");
     ImageControllerText controller = new ImageControllerText(view, in, model);
     controller.start();
-    assertEquals("added test to hashmap\n" +
-            "flipped test vertically. Is now test-vf\n" +
+    assertEquals("flipped test vertically. Is now test-vf\n" +
             "flipped test horizontally. Is now test-hf\n" +
             "preformed a greyscale of type red on test. Is now test-rg\n" +
             "preformed a greyscale of type green on test. Is now test-gg\n" +

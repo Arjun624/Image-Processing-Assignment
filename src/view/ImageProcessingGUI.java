@@ -420,7 +420,7 @@ public class ImageProcessingGUI extends JFrame implements GUIView {
   @Override
   public BufferedImage getBufferedImage(Pixel[][] pixels) {
     int length = pixels.length;
-    int width = pixels.length;
+    int width = pixels[0].length;
     BufferedImage bufferedImage = new BufferedImage(width, length, BufferedImage.TYPE_INT_RGB);
     for (int row = 0; row < length; row++) {
       for (int col = 0; col < width; col++) {

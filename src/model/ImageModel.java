@@ -8,7 +8,7 @@ import view.ImageDisplay;
 import view.ImageView;
 
 /**
- * Represents a way to edit, load, and save PPM images.
+ * Represents a way to preform edits on an image. Contains all the methods found in te ImageModel
  */
 public class ImageModel implements ImageEditor {
   private final HashMap<String, Pixel[][]> images;

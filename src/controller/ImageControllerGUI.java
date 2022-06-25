@@ -56,7 +56,7 @@ public class ImageControllerGUI implements ImageController, ActionListener {
    * @param model the model
    * @param view  the view
    */
-  public ImageControllerGUI(ImageEditor model, GUIView view) {
+  public ImageControllerGUI(ImageEditor model, GUIView view) throws IOException {
     this.model = model;
     this.gui = view;
     this.filename = "image";
@@ -68,7 +68,7 @@ public class ImageControllerGUI implements ImageController, ActionListener {
    * Method that takes in the user arguments and preforms any action.
    */
   @Override
-  public void start() {
+  public void start() throws IOException {
     gui.displayWelcomeMessage();
   }
 
@@ -489,7 +489,7 @@ public class ImageControllerGUI implements ImageController, ActionListener {
    *
    * @param oldImage the image to be replaced.
    */
-  public void replaceImage(BufferedImage oldImage) {
+  public void replaceImage(BufferedImage oldImage) throws IOException {
 
 
     int width = Math.max(600, oldImage.getWidth());

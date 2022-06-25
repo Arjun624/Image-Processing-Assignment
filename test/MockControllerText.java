@@ -6,7 +6,7 @@ import controller.ImageController;
 /**
  * Represents a mock controller used strictly for testing.
  */
-public class MockController implements ImageController {
+public class MockControllerText implements ImageController {
   private final Appendable ap;
 
   /**
@@ -15,7 +15,7 @@ public class MockController implements ImageController {
    * @param ap the appendable
    * @throws NullPointerException if appendable is null
    */
-  public MockController(Appendable ap) {
+  public MockControllerText(Appendable ap) {
     Objects.requireNonNull(ap);
     this.ap = ap;
   }
