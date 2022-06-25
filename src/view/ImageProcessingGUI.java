@@ -199,18 +199,19 @@ public class ImageProcessingGUI extends JFrame implements GUIView {
 
   @Override
   public void setActionListeners(ActionListener listener) {
-    load.addActionListener(listener);
-    save.addActionListener(listener);
-    howTo.addActionListener(listener);
-    validCommands.addActionListener(listener);
-    documentation.addActionListener(listener);
-    chooseFilterButton.addActionListener(listener);
-    chooseColorButton.addActionListener(listener);
-    chooseGreyscaleButton.addActionListener(listener);
-    chooseFlipButton.addActionListener(listener);
+    this.load.addActionListener(listener);
+    this.save.addActionListener(listener);
+    this.howTo.addActionListener(listener);
+    this.quit.addActionListener(listener);
+    this.validCommands.addActionListener(listener);
+    this.documentation.addActionListener(listener);
+    this.chooseFilterButton.addActionListener(listener);
+    this.chooseColorButton.addActionListener(listener);
+    this.chooseGreyscaleButton.addActionListener(listener);
+    this.chooseFlipButton.addActionListener(listener);
     this.editImageButton.addActionListener(listener);
-    adjustBrightnessButton.addActionListener(listener);
-    downScaleButton.addActionListener(listener);
+    this.adjustBrightnessButton.addActionListener(listener);
+    this.downScaleButton.addActionListener(listener);
   }
 
   /**
@@ -501,6 +502,7 @@ public class ImageProcessingGUI extends JFrame implements GUIView {
     welcomeMessage.append("\n" + "\t" + "11. Luma Greyscale");
     welcomeMessage.append("\n" + "\t" + "12. Value Greyscale");
     welcomeMessage.append("\n" + "\t" + "13. Intensity Greyscale");
+    welcomeMessage.append("\n" + "\t" + "14. Downscale Image");
 
     JOptionPane.showMessageDialog(new JFrame(), welcomeMessage, "Welcome",
             JOptionPane.INFORMATION_MESSAGE);

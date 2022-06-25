@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -111,8 +112,8 @@ public class ImageControllerGUI extends ALoadSave implements ImageController, Ac
     }
 
     model.add(filename, this.getOtherPixelArray(b));
-    gui.renderMessage("Image: " + file.getName() + "\nloaded as: " + filename);
     gui.displayHistogram(model.getMap().get(filename));
+    gui.renderMessage("Image: " + file.getName() + "\nloaded as: " + filename);
   }
 
 
@@ -193,6 +194,7 @@ public class ImageControllerGUI extends ALoadSave implements ImageController, Ac
     if (game.equals("Load")) {
       try {
         File file = gui.GetLoadFile();
+        Objects.requireNonNull(file.getName());
         filename = file.getName();
         this.loadImage(file.getAbsolutePath(), filename);
       } catch (Exception ex) {
@@ -210,6 +212,25 @@ public class ImageControllerGUI extends ALoadSave implements ImageController, Ac
       } catch (Exception ex) {
         ex.printStackTrace();
       }
+    }
+    if (game.equals("Documentation")) {
+      try {
+        Desktop desktop = java.awt.Desktop.getDesktop();
+        URI oURL = new URI("https://github.com/Arjun624/Image-Processing-Assignment/blob/master"
+                + "/README.md");
+        desktop.browse(oURL);
+        return;
+      } catch (Exception ex) {
+        ex.printStackTrace();
+      }
+    }
+    if (game.equals("HowTo")) {
+      gui.renderMessage("1. Load an image.\n2. Select an image edit(s).\n3. Click Edit.\n4. Save the image.");
+      return;
+    }
+    if (game.equals("Quit")) {
+      System.exit(0);
+      return;
     }
     if (model.getMap().isEmpty()) {
       gui.showErrorPopup("No image loaded");
