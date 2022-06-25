@@ -39,7 +39,7 @@ import model.Pixel;
 import view.ImageView;
 
 /**
- * Implementation of an image controller.
+ * Implementation of an image controller for text based commands.
  */
 public class ImageControllerText implements ImageController {
 

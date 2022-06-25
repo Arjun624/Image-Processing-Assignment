@@ -11,8 +11,8 @@ import view.ImageView;
  * Represents a way to edit, load, and save PPM images.
  */
 public class ImageModel implements ImageEditor {
-  public HashMap<String, Pixel[][]> images;
-  public boolean quit;
+  private HashMap<String, Pixel[][]> images;
+  private boolean quit;
 
   ImageView view;
 
@@ -322,10 +322,9 @@ public class ImageModel implements ImageEditor {
     view.renderMessage("downscale");
   }
 
-  public void PartialImageManipulation(String filename,
-                                       String newFilename, ImageCommands c)
-          throws IllegalArgumentException, IOException {
-    Pixel[][] mask = images.get("mask");
+  @Override
+  public void partialImageManipulation(String maskName, String filename, String newFilename, ImageCommands c) throws IllegalArgumentException, IOException {
+    Pixel[][] mask = images.get(maskName);
     if (mask.length != images.get(filename).length && mask[0].length != images.get(filename)[0].length) {
       throw new IllegalArgumentException("mask is invalid size");
     }
@@ -367,5 +366,8 @@ public class ImageModel implements ImageEditor {
     images.put(filename, temp);
     images.remove(newFilename);
     images.put(newFilename, newPic);
+    view.renderMessage("image partially manipulated");
   }
+
+
 }

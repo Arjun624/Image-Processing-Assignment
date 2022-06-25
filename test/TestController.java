@@ -207,7 +207,7 @@ public class TestController {
 
     for (int i = 0; i < pixels.length; i++) {
       for (int j = 0; j < pixels[0].length; j++) {
-        assertEquals(m.images.get("test")[i][j], pixels[i][j]);
+        assertEquals(m.getMap().get("test")[i][j], pixels[i][j]);
       }
     }
 
@@ -244,7 +244,7 @@ public class TestController {
 
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
-        assertEquals(m.images.get("test")[i][j], arr[i][j]);
+        assertEquals(m.getMap().get("test")[i][j], arr[i][j]);
       }
     }
 
@@ -305,7 +305,7 @@ public class TestController {
 
     for (int i = 0; i < pixels.length; i++) {
       for (int j = 0; j < pixels[0].length; j++) {
-        assertEquals(m.images.get("test")[i][j], pixels[i][j]);
+        assertEquals(m.getMap().get("test")[i][j], pixels[i][j]);
       }
     }
   }
@@ -336,7 +336,7 @@ public class TestController {
 
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
-        assertEquals(m.images.get("test")[i][j], arr[i][j]);
+        assertEquals(m.getMap().get("test")[i][j], arr[i][j]);
       }
     }
   }
@@ -367,7 +367,7 @@ public class TestController {
 
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
-        assertEquals(m.images.get("test")[i][j], arr[i][j]);
+        assertEquals(m.getMap().get("test")[i][j], arr[i][j]);
       }
     }
   }

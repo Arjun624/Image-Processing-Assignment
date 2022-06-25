@@ -2,6 +2,9 @@ package model;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
+
+import controller.ImageCommands;
 
 /**
  * Represents all the actions that can be performed on an image.
@@ -80,7 +83,7 @@ public interface ImageEditor {
    *
    * @return the hashmap of images
    */
-  HashMap<String, Pixel[][]> getMap();
+  Map<String, Pixel[][]> getMap();
 
   /**
    * Finds the total value of the image, which is the max value of each pixel.
@@ -128,5 +131,8 @@ public interface ImageEditor {
    * or if the file doesn't exist.
    */
   void imageDownscale(int height, int width, String filename, String newFilename) throws IOException,
+          IllegalArgumentException;
+
+  void partialImageManipulation(String maskName, String filename, String newFilename, ImageCommands c) throws IOException,
           IllegalArgumentException;
 }
