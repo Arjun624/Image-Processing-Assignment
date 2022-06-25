@@ -786,24 +786,24 @@ public class TestModel {
     ImageController c = new ImageControllerText(v,new InputStreamReader(System.in),m1);
     c.loadImage("res/battlefield.jpg","test");
     c.loadImage("res/newMask.jpg","mask");
-//    Sepia sep = new Sepia("test","test-sp");
-//    m1.partialImageManipulation("mask","test","test-sp",sep);
-//    c.saveImage("res/maskTest.jpg","test-sp");
+    Sepia sep = new Sepia("test","test-sp");
+    m1.partialImageManipulation("mask","test","test-sp",sep);
+    c.saveImage("res/maskTest.jpg","test-sp");
     Blur bl = new Blur("test","test-bl");
     m1.partialImageManipulation("mask","test","test-bl",bl);
     c.saveImage("res/maskTestBlur.jpg","test-bl");
-//    VerticalFlip vf = new VerticalFlip("test","test-vf");
-//    m1.partialImageManipulation("mask","test","test-vf",vf);
-//    c.saveImage("res/maskTestVF.jpg","test-vf");
-//    RedGreyscale rg = new RedGreyscale("test","test-rg");
-//    m1.partialImageManipulation("mask","test","test-rg",rg);
-//    c.saveImage("res/maskTestRG.jpg","test-rg");
-//    HorizontalFlip hf = new HorizontalFlip("test","test-hf");
-//    m1.partialImageManipulation("mask","test","test-hf",hf);
-//    c.saveImage("res/maskTestHF.jpg","test-hf");
-//    AdjustBrightness ab = new AdjustBrightness(50,"test","test-ab");
-//    m1.partialImageManipulation("mask","test","test-ab",ab);
-//    c.saveImage("res/maskTestAB.jpg","test-ab");
+    VerticalFlip vf = new VerticalFlip("test","test-vf");
+    m1.partialImageManipulation("mask","test","test-vf",vf);
+    c.saveImage("res/maskTestVF.jpg","test-vf");
+    RedGreyscale rg = new RedGreyscale("test","test-rg");
+    m1.partialImageManipulation("mask","test","test-rg",rg);
+    c.saveImage("res/maskTestRG.jpg","test-rg");
+    HorizontalFlip hf = new HorizontalFlip("test","test-hf");
+    m1.partialImageManipulation("mask","test","test-hf",hf);
+    c.saveImage("res/maskTestHF.jpg","test-hf");
+    AdjustBrightness ab = new AdjustBrightness(50,"test","test-ab");
+    m1.partialImageManipulation("mask","test","test-ab",ab);
+    c.saveImage("res/maskTestAB.jpg","test-ab");
   }
 
   @Test
