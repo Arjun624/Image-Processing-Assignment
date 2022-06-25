@@ -274,6 +274,9 @@ public class ImageModel implements ImageEditor {
   @Override
   public void imageDownscale(int height, int width, String filename, String newFilename) throws IOException,
           IllegalArgumentException {
+    if (images.get(filename) == null) {
+      throw new IllegalArgumentException("file doesn't exist");
+    }
     if (height < 0 || width < 0 || width > images.get(filename)[0].length
             || height > images.get(filename).length) {
       throw new IllegalArgumentException("invalid size");

@@ -81,7 +81,7 @@ public class MockImageModel implements ImageEditor {
 
   @Override
   public void imageDownscale(int height, int width, String filename, String newFilename) throws IOException, IllegalArgumentException {
-    this.ap.append(String.format("Image downscaled to %dx%d"),height,width);
+    this.ap.append("image downscaled to " + width + " " + height);
   }
 
   @Override

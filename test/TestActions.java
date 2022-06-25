@@ -13,6 +13,7 @@ import controller.commands.Blur;
 import controller.commands.GreenGreyscale;
 import controller.commands.Greyscale;
 import controller.commands.HorizontalFlip;
+import controller.commands.ImageDownscale;
 import controller.commands.IntensityGreyscale;
 import controller.commands.LoadImage;
 import controller.commands.LumaGreyscale;
@@ -227,5 +228,15 @@ public class TestActions {
 
     greyscale.execute(m2, v);
     assertEquals("arjun file doesn't exist\n", ap2.toString());
+  }
+
+  @Test
+  public void testDownscale() throws IOException {
+    ImageDownscale id = new ImageDownscale(10,10, "arjun", "test");
+    id.execute(m, v);
+    assertEquals("image downscaled to 10 10", ap.toString());
+
+    id.execute(m2, v);
+    assertEquals("file doesn't exist 10 10\n", ap2.toString());
   }
 }

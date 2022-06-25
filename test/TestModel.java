@@ -627,4 +627,69 @@ public class TestModel {
       assertEquals(e.getMessage(), "color matrix not size 3x3!");
     }
   }
+
+  @Test
+  public void testImageDownscale() throws IOException {
+    ImageView v = new ImageDisplay(new StringBuilder());
+    HashMap<String, Pixel[][]> testMap = new HashMap<>();
+    String file = "test";
+    Pixel[][] arr = new Pixel[4][4];
+    for (int i = 0; i < 4; i++) {
+      for (int j = 0; j < 4; j++) {
+        arr[i][j] = new Pixel(100, 100, 100);
+      }
+    }
+    testMap.put(file, arr);
+    ImageModel m1 = new ImageModel(testMap, v);
+    m1.imageDownscale(2,2,"test","testID");
+    assertEquals(m1.getMap().get("testID").length,2);
+    assertEquals(m1.getMap().get("testID")[0].length,2);
+    Pixel[][] arr2 = new Pixel[2][2];
+    for (int i = 0; i < 2; i++) {
+      for (int j = 0; j < 2; j++) {
+        arr2[i][j] = new Pixel(100, 100, 100);
+      }
+    }
+    for (int i = 0; i < 2; i++) {
+      for (int j = 0; j < 2; j++) {
+        assertEquals(m1.getMap().get("testID")[i][j], arr2[i][j]);
+      }
+    }
+
+    try {
+      m1.imageDownscale(-1, 2, "test", "yes");
+      fail("should have thrown an exception");
+    } catch (IllegalArgumentException e){
+      assertEquals(e.getMessage(), "invalid size");
+    }
+
+    try {
+      m1.imageDownscale(2, -2, "test", "yes");
+      fail("should have thrown an exception");
+    } catch (IllegalArgumentException e){
+      assertEquals(e.getMessage(), "invalid size");
+    }
+
+    try {
+      m1.imageDownscale(5, 2, "test", "yes");
+      fail("should have thrown an exception");
+    } catch (IllegalArgumentException e){
+      assertEquals(e.getMessage(), "invalid size");
+    }
+
+    try {
+      m1.imageDownscale(2, 20, "test", "yes");
+      fail("should have thrown an exception");
+    } catch (IllegalArgumentException e){
+      assertEquals(e.getMessage(), "invalid size");
+    }
+
+    try {
+      m1.imageDownscale(2, 2, "incorrect", "yes");
+      fail("should have thrown an exception");
+    } catch (IllegalArgumentException e){
+      assertEquals(e.getMessage(), "file doesn't exist");
+    }
+  }
+
 }
