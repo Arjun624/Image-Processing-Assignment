@@ -193,7 +193,7 @@ public class ImageControllerGUI extends ALoadSave implements ImageController, Ac
     Object game = e.getActionCommand();
     if (game.equals("Load")) {
       try {
-        File file = gui.GetLoadFile();
+        File file = gui.getLoadFile();
         Objects.requireNonNull(file.getName());
         filename = file.getName();
         this.loadImage(file.getAbsolutePath(), filename);
@@ -225,7 +225,8 @@ public class ImageControllerGUI extends ALoadSave implements ImageController, Ac
       }
     }
     if (game.equals("HowTo")) {
-      gui.renderMessage("1. Load an image.\n2. Select an image edit(s).\n3. Click Edit.\n4. Save the image.");
+      gui.renderMessage("1. Load an image.\n2. Select an image edit(s).\n3. Click Edit.\n4. " +
+              "Save the image.");
       return;
     }
     if (game.equals("Quit")) {

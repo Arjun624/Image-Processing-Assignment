@@ -1,13 +1,31 @@
 package view;
 
-import java.awt.*;
+import java.awt.Container;
+import java.awt.GridLayout;
+import java.awt.Dimension;
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.BoxLayout;
+import javax.swing.JMenuItem;
+import javax.swing.JComboBox;
+import javax.swing.WindowConstants;
+import javax.swing.BorderFactory;
+import javax.swing.JScrollPane;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JOptionPane;
+import javax.swing.JFileChooser;
 
-import javax.swing.*;
 
 import model.Pixel;
 
@@ -82,7 +100,8 @@ public class ImageProcessingGUI extends JFrame implements GUIView {
     this.downscaleHeight = 0;
     this.downscaleWidth = 0;
     this.edits = new ArrayList<>();
-    this.imageBoxes = new ImageIcon[]{new ImageIcon("none"), new ImageIcon("histogram")};
+    this.imageBoxes =
+            new ImageIcon[]{new ImageIcon("none"), new ImageIcon("histogram")};
     setDefaultLookAndFeelDecorated(true);
     this.setTitle("ImageProcessing");
     this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -253,7 +272,8 @@ public class ImageProcessingGUI extends JFrame implements GUIView {
     this.dropDownFlips = new JComboBox<>(flips);
     this.dropDownGreyscale.setMaximumSize(this.dropDownGreyscale.getPreferredSize());
     this.dropDownGreyscale.setAlignmentX(0.5F);
-    this.dropDownColorCombinations.setMaximumSize(this.dropDownColorCombinations.getPreferredSize());
+    this.dropDownColorCombinations.setMaximumSize(
+            this.dropDownColorCombinations.getPreferredSize());
     this.dropDownColorCombinations.setAlignmentX(0.5F);
     this.dropDownFilters.setMaximumSize(this.dropDownFilters.getPreferredSize());
     this.dropDownFilters.setAlignmentX(0.5F);
@@ -333,8 +353,9 @@ public class ImageProcessingGUI extends JFrame implements GUIView {
 
   @Override
   public void setIncrement() {
-    String increment = JOptionPane.showInputDialog(new JFrame(), "Enter an increment. Positive "
-            + "to increase brightness and negative to decrease brightness");
+    String increment = JOptionPane.showInputDialog(new JFrame(),
+            "Enter an increment. Positive "
+                    + "to increase brightness and negative to decrease brightness");
     try {
       brightness = Integer.parseInt(increment);
     } catch (Exception ex) {
@@ -445,7 +466,8 @@ public class ImageProcessingGUI extends JFrame implements GUIView {
    * @return a buffered image of the histogram to be displayed on the GUI.
    */
   private BufferedImage makeHistogram(int[] red, int[] green, int[] blue, int[] intensity) {
-    BufferedImage bufferedImage = new BufferedImage(600, 950, BufferedImage.TYPE_INT_RGB);
+    BufferedImage bufferedImage = new BufferedImage(600, 950,
+            BufferedImage.TYPE_INT_RGB);
     Graphics2D graph = bufferedImage.createGraphics();
     drawLines(graph, red, Color.red);
     drawLines(graph, green, Color.green);
@@ -474,7 +496,8 @@ public class ImageProcessingGUI extends JFrame implements GUIView {
 
   @Override
   public void showErrorPopup(String errorMessage) {
-    JOptionPane.showMessageDialog(new JFrame(), errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+    JOptionPane.showMessageDialog(new JFrame(), errorMessage, "Error",
+            JOptionPane.ERROR_MESSAGE);
   }
 
 
@@ -522,11 +545,12 @@ public class ImageProcessingGUI extends JFrame implements GUIView {
   }
 
   @Override
-  public File GetLoadFile() {
+  public File getLoadFile() {
     JFileChooser chooser = new JFileChooser();
     chooser.showOpenDialog(this);
     return chooser.getSelectedFile();
   }
+
 
   @Override
   public void reset() {
@@ -554,13 +578,15 @@ public class ImageProcessingGUI extends JFrame implements GUIView {
 
   @Override
   public void setDownScaleHeight(int imageHeight) {
-    String downScaleHeight = JOptionPane.showInputDialog(new JFrame(), "Enter a downscale Height. "
-            + "Must be an positive integer.");
+    String downScaleHeight = JOptionPane.showInputDialog(new JFrame(),
+            "Enter a downscale Height. "
+                    + "Must be an positive integer.");
     try {
       downscaleHeight = Integer.parseInt(downScaleHeight);
       if (downscaleHeight > imageHeight || downscaleHeight <= 0) {
-        downScaleLabel.setText("Invalid downscale height. Must be positive and less than or equal to the "
-                + "image height.");
+        downScaleLabel.setText(
+                "Invalid downscale height. Must be positive and less than or equal to the "
+                        + "image height.");
         downscaleHeight = 0;
       }
     } catch (Exception ex) {
@@ -570,12 +596,14 @@ public class ImageProcessingGUI extends JFrame implements GUIView {
 
   @Override
   public void setDownScaleWidth(int imageWidth) {
-    String downScaleWidth = JOptionPane.showInputDialog(new JFrame(), "Enter a downscale width. "
-            + "Must be an positive integer.");
+    String downScaleWidth = JOptionPane.showInputDialog(new JFrame(),
+            "Enter a downscale width. "
+                    + "Must be an positive integer.");
     try {
       downscaleWidth = Integer.parseInt(downScaleWidth);
       if (downscaleWidth > imageWidth || downscaleWidth <= 0) {
-        downScaleLabel.setText("Invalid Downscale Width.\n Must be positive and less than or equal to the "
+        downScaleLabel.setText("Invalid Downscale Width.\n " +
+                "Must be positive and less than or equal to the "
                 + "image height.");
         downscaleWidth = 0;
       }

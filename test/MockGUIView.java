@@ -4,16 +4,24 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
 
 import model.Pixel;
 import view.GUIView;
 
+/**
+ * Represents a mock view used strictly for testing.
+ */
 public class MockGUIView implements GUIView {
 
   private Appendable log;
 
-  public MockGUIView(Appendable ap){
+  /**
+   * constructs a mock view customizable by its appendable.
+   *
+   * @param ap the appendable object
+   */
+  public MockGUIView(Appendable ap) {
     this.log = ap;
   }
 
@@ -23,7 +31,7 @@ public class MockGUIView implements GUIView {
    * @param s the message
    */
   @Override
-  public void showErrorPopup(String s)  {
+  public void showErrorPopup(String s) {
     try {
       log.append("Error: ").append(s).append("\n");
     } catch (IOException e) {
@@ -141,7 +149,7 @@ public class MockGUIView implements GUIView {
    * @return the file to be saved
    */
   @Override
-  public File getSaveFile(){
+  public File getSaveFile() {
     try {
       log.append("Got save file\n");
     } catch (IOException e) {
@@ -156,7 +164,7 @@ public class MockGUIView implements GUIView {
    * @return the file to be loaded
    */
   @Override
-  public File GetLoadFile() {
+  public File getLoadFile() {
     try {
       log.append("Got load file\n");
     } catch (IOException e) {
@@ -186,7 +194,7 @@ public class MockGUIView implements GUIView {
    * @param listener the listener to be set
    */
   @Override
-  public void setActionListeners(ActionListener listener)  {
+  public void setActionListeners(ActionListener listener) {
 
     try {
       log.append("Set action listeners\n");
@@ -215,7 +223,7 @@ public class MockGUIView implements GUIView {
    * @param imageHeight the height of the downscaled image
    */
   @Override
-  public void setDownScaleHeight(int imageHeight){
+  public void setDownScaleHeight(int imageHeight) {
 
     try {
       log.append("Set downscale height\n");
@@ -273,7 +281,7 @@ public class MockGUIView implements GUIView {
    * Displays the welcome message.
    */
   @Override
-  public void displayWelcomeMessage()  {
+  public void displayWelcomeMessage() {
 
     try {
       log.append("Displayed welcome message\n");
