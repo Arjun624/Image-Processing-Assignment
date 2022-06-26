@@ -345,5 +345,20 @@ Refer to the full script found in the Script.txt file located in the res directo
     - This command will run the jar file and run the script file.
     - The script file must be located in the same directory as the jar file.
     - The lake.jpg file also be located in the same directory as the jar file.
+- To run the program using text commands enter: -jar ImageProcessing.jar -text
+- To run the program using the GUI: -jar ImageProcessing.jar
 
-
+## GUI:
+**Load an image through the Load menu in the top left corner.**
+- To preform an Action:
+  - (1) The user should choose through the dropdown menus the action they wish to preform
+  - (2) Press the choose button so save in the program which action they will be preforming.
+  - (3) When the user has chosen all the edits, press the edit button on the bottom left to preform the actions
+- To save an image:
+  - Navigate to the top left file menu
+  - Select 'Save'
+  - Navigate to desired save path and enter desired file name 
+- For Help:
+  - Navigate to the Help button at the top left
+- Example of the GUI with an image loaded:
+- ![alt text](res/screenshot.jpg)

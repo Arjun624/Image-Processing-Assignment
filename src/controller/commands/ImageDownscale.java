@@ -10,10 +10,10 @@ import view.ImageView;
  * Represents an object that can downscale an image.
  */
 public class ImageDownscale implements ImageCommands {
-  String filename;
-  String newFilename;
-  int width;
-  int height;
+  private final String filename;
+  private final String newFilename;
+  private final int width;
+  private final int height;
 
   /**
    * Constructs an {@code ImageDownscale} that downscales the filename and sets it as the new.

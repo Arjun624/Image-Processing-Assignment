@@ -13,6 +13,7 @@ sharpen test test-sh
 blur test test-bl
 sepia test test-sp
 greyscale test test-gs
+downscale 50 50 test test-ds
 save vertical.jpg test-vf
 save horizontal.jpg test-hf
 save red-greyscale.bmp test-rg
@@ -27,4 +28,5 @@ save sharpened.jpg test-sh
 save blurred.png test-bl
 save sepia.png test-sp
 save greyscale.png test-gs
+save downscale.png test-ds
 q

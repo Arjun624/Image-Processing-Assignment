@@ -14,7 +14,7 @@ public class ImageModel implements ImageEditor {
   private final HashMap<String, Pixel[][]> images;
   private boolean quit;
 
-  ImageView view;
+  private ImageView view;
 
   /**
    * Constructs a {@code ImageModel} that sets the map of files and their pixels to an empty one.

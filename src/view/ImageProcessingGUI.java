@@ -81,10 +81,10 @@ public class ImageProcessingGUI extends JFrame implements GUIView {
 
   private final ImageIcon[] imageBoxes;
 
-  JMenuItem validCommands;
-  JMenuItem documentation;
+  private JMenuItem validCommands;
+  private JMenuItem documentation;
 
-  JMenuItem quit;
+  private JMenuItem quit;
 
 
   /**
