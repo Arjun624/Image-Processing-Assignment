@@ -1,4 +1,4 @@
-load res/lake.jpg test
+load battlefield.jpg test
 vertical-flip test test-vf
 horizontal-flip test test-hf
 greyscale-red test test-rg
